@@ -1,6 +1,6 @@
 import type { DirEntry } from "../core/types";
 
-export type DiffStatus = "added" | "removed" | "modified" | "metadata" | "error";
+export type DiffStatus = "added" | "removed" | "modified" | "error";
 
 export type MetaChange = {
   field: "mode" | "mtime";
@@ -12,7 +12,6 @@ export type DiffAggregate = {
   filesAdded: number;
   filesRemoved: number;
   filesModified: number;
-  filesMetadata: number;
   dirsAdded: number;
   dirsRemoved: number;
   errors: number;
@@ -57,7 +56,6 @@ export function emptyStats(): DiffStats {
     filesAdded: 0,
     filesRemoved: 0,
     filesModified: 0,
-    filesMetadata: 0,
     dirsAdded: 0,
     dirsRemoved: 0,
     errors: 0,
@@ -116,7 +114,6 @@ export function aggregate(children: DiffNode[]): DiffAggregate {
     filesAdded: 0,
     filesRemoved: 0,
     filesModified: 0,
-    filesMetadata: 0,
     dirsAdded: 0,
     dirsRemoved: 0,
     errors: 0,
@@ -134,7 +131,6 @@ export function aggregate(children: DiffNode[]): DiffAggregate {
       agg.filesAdded += child.agg.filesAdded;
       agg.filesRemoved += child.agg.filesRemoved;
       agg.filesModified += child.agg.filesModified;
-      agg.filesMetadata += child.agg.filesMetadata;
       agg.dirsAdded += child.agg.dirsAdded;
       agg.dirsRemoved += child.agg.dirsRemoved;
       agg.errors += child.agg.errors;
@@ -167,9 +163,6 @@ export function aggregate(children: DiffNode[]): DiffAggregate {
         agg.filesModified += 1;
         agg.modifiedDelta += child.delta;
         agg.delta += child.delta;
-        break;
-      case "metadata":
-        agg.filesMetadata += 1;
         break;
     }
   }
@@ -212,12 +205,12 @@ export function compareEntries(
       } else {
         const changes = metaDiffs(a, b);
         if (changes.length > 0) {
-          stats.filesMetadata += 1;
+          stats.filesModified += 1;
           nodes.push({
             id,
             name,
             path,
-            status: "metadata",
+            status: "modified",
             isDir: false,
             typeChanged: false,
             a,

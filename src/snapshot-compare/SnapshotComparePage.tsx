@@ -53,15 +53,13 @@ const STATUS_ORDER: Record<DiffStatus, number> = {
   added: 0,
   removed: 1,
   modified: 2,
-  metadata: 3,
-  error: 4
+  error: 3
 };
 
 const STATUS_COLOR: Record<DiffStatus, MantineColor> = {
   added: "green.6",
   removed: "red.6",
   modified: "blue.6",
-  metadata: "gray.5",
   error: "yellow.6"
 };
 
@@ -69,7 +67,6 @@ const STATUS_GLYPH: Record<DiffStatus, string> = {
   added: "+",
   removed: "−",
   modified: "±",
-  metadata: "≈",
   error: "!"
 };
 
@@ -133,8 +130,6 @@ function countFor(stats: DiffStats, status: DiffStatus): number {
       return stats.filesRemoved;
     case "modified":
       return stats.filesModified;
-    case "metadata":
-      return stats.filesMetadata;
     default:
       return stats.errors;
   }
@@ -148,8 +143,6 @@ function pillLabel(status: DiffStatus): string {
       return t`removed`;
     case "modified":
       return t`modified`;
-    case "metadata":
-      return t`metadata`;
     default:
       return t`errors`;
   }
@@ -415,7 +408,6 @@ function SnapshotComparePage() {
       if (node.agg.filesAdded) aggParts.push(`+${node.agg.filesAdded}`);
       if (node.agg.filesRemoved) aggParts.push(`−${node.agg.filesRemoved}`);
       if (node.agg.filesModified) aggParts.push(`±${node.agg.filesModified}`);
-      if (node.agg.filesMetadata) aggParts.push(`≈${node.agg.filesMetadata}`);
       if (node.agg.errors) aggParts.push(`!${node.agg.errors}`);
     }
     const delta = nodeDelta(node);
@@ -493,7 +485,7 @@ function SnapshotComparePage() {
         {showDetail && (
           <Paper withBorder ml={depth * 22 + 30} mb={4} p="xs" radius="sm">
             <Stack gap={2}>
-              {node.status === "metadata" &&
+              {node.metaChanges &&
                 node.metaChanges?.map((change) => (
                   <Group key={change.field} gap="xs" wrap="nowrap">
                     <Text fz="xs" c="dimmed" w={70}>
@@ -674,9 +666,8 @@ function SnapshotComparePage() {
                   )}
                 </Stack>
                 <Pill.Group style={{ flexShrink: 0 }}>
-                  {(["added", "removed", "modified", "metadata"] as DiffStatus[]).map((key) => {
+                  {(["added", "removed", "modified"] as DiffStatus[]).map((key) => {
                     const count = countFor(stats, key);
-                    if (count === 0 && key === "metadata") return null;
                     return (
                       <Pill
                         key={key}

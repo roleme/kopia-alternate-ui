@@ -45,12 +45,12 @@ describe("compareEntries", () => {
     expect(stats.delta).toBe(0);
   });
 
-  it("reports metadata-only changes for identical files with different mode", () => {
+  it("counts metadata-only changes as modified with zero delta", () => {
     const { nodes, stats } = walk([file("f", "o1", 10, { mode: "0644" })], [file("f", "o1", 10, { mode: "0600" })]);
     expect(nodes).toHaveLength(1);
-    expect(nodes[0].status).toBe("metadata");
+    expect(nodes[0].status).toBe("modified");
     expect(nodes[0].metaChanges).toEqual([{ field: "mode", from: "0644", to: "0600" }]);
-    expect(stats.filesMetadata).toBe(1);
+    expect(stats.filesModified).toBe(1);
     expect(stats.delta).toBe(0);
   });
 
