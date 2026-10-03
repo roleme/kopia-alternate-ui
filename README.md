@@ -24,6 +24,13 @@ default) and one API path per instance, prefixed with the instance id. The
 concrete configuration for our deployment lives in the infrastructure
 repository.
 
+## Releases
+
+Each `v*` tag publishes `kopia-alternate-ui-<version>.tar.gz` (the contents of
+`dist/` at the archive root) and a `SHA256SUMS` file as GitHub Release assets.
+Verify with `sha256sum -c SHA256SUMS` and serve the extracted files from any
+static web server.
+
 ## Features
 
 - Clean UI for sources, snapshots, browse/restore, policies, tasks and repo settings
