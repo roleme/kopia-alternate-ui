@@ -276,7 +276,6 @@ function SnapshotComparePage() {
   };
 
   const stats = result?.stats;
-  const totalASize = snapshotA?.summary?.size ?? 0;
   const walking = !result && !walkError && Boolean(paramA && paramB && paramA !== paramB);
   const narrow = filter !== "all" || query.trim() !== "";
 
@@ -656,22 +655,16 @@ function SnapshotComparePage() {
         {stats && (stats.errors > 0 || stats.delta !== 0 || visibleRoots.length > 0) && (
           <>
             <Paper withBorder p="md" radius="md">
-              <Group justify="space-between" align="flex-start" gap="md" wrap="wrap">
-                <Stack gap={4} style={{ minWidth: 0 }}>
-                  <Text
-                    ff="monospace"
-                    fz="xl"
-                    fw={500}
-                    c={stats.delta > 0 ? "green.6" : stats.delta < 0 ? "red.6" : undefined}
-                  >
-                    {stats.errors > 0 ? "\u2265 " : ""}
-                    {signedSize(stats.delta, bytesStringBase2)}
-                  </Text>
-                  <Text fz="xs" c="dimmed" style={{ whiteSpace: "nowrap" }}>
-                    {sizeDisplayName(totalASize, bytesStringBase2)} \u2192{" "}
-                    {sizeDisplayName(totalASize + stats.delta, bytesStringBase2)}
-                  </Text>
-                </Stack>
+              <Group justify="space-between" align="center" gap="md" wrap="wrap">
+                <Text
+                  ff="monospace"
+                  fz="xl"
+                  fw={500}
+                  c={stats.delta > 0 ? "green.6" : stats.delta < 0 ? "red.6" : undefined}
+                >
+                  {stats.errors > 0 ? "\u2265 " : ""}
+                  {signedSize(stats.delta, bytesStringBase2)}
+                </Text>
                 <Stack gap={6} align="flex-end">
                   {(["added", "removed", "modified"] as DiffStatus[]).map((key) => {
                     const count = countFor(stats, key);
