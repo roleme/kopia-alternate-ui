@@ -96,6 +96,27 @@ function SnapshotHistory() {
             </Title>
           </Group>
           <Group>
+            {selectedRecords.length === 2 && (
+              <Button
+                size="xs"
+                leftSection={<IconArrowsDiff size={16} />}
+                onClick={() => {
+                  const [older, newer] = [...selectedRecords].sort(
+                    (x, y) => new Date(x.startTime).getTime() - new Date(y.startTime).getTime()
+                  );
+                  const params = new URLSearchParams({
+                    host: sourceInfo.host ?? "",
+                    userName: sourceInfo.userName ?? "",
+                    path: sourceInfo.path ?? "",
+                    a: older.rootID,
+                    b: newer.rootID
+                  });
+                  navigate(`/snapshots/compare?${params.toString()}`);
+                }}
+              >
+                <Trans>Compare Selected</Trans> (2)
+              </Button>
+            )}
             {selectedRecords.length > 0 && (
               <Button
                 size="xs"

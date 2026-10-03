@@ -38,9 +38,17 @@ import type { Snapshot, Snapshots, SourceInfo } from "../core/types";
 import sizeDisplayName from "../utils/formatSize";
 import { walkTrees, type WalkProgress, type WalkResult } from "./compareWalk";
 import { entrySize as entrySizeOf, isDirectoryEntry, type DiffNode, type DiffStatus, type DiffStats } from "./diffTree";
+import { compactDiff, diffLines, looksLikeText, type DiffLine } from "./lineDiff";
 
 type Filter = "all" | DiffStatus;
 type SortMode = "delta" | "path" | "status";
+
+type ContentDiffState =
+  | { state: "loading" }
+  | { state: "binary" }
+  | { state: "too-large" }
+  | { state: "error" }
+  | { state: "text"; lines: DiffLine[]; added: number; removed: number };
 
 const STATUS_ORDER: Record<DiffStatus, number> = {
   added: 0,
@@ -166,8 +174,6 @@ function SnapshotComparePage() {
   const paramB = searchParams.get("b");
 
   const [snapshots, setSnapshots] = useState<Snapshot[]>([]);
-  const [rootA, setRootA] = useState<string | null>(paramA);
-  const [rootB, setRootB] = useState<string | null>(paramB);
   const [result, setResult] = useState<WalkResult>();
   const [progress, setProgress] = useState<WalkProgress>();
   const [walkError, setWalkError] = useState<string>();
@@ -176,18 +182,13 @@ function SnapshotComparePage() {
   const [sort, setSort] = useState<SortMode>("delta");
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const [details, setDetails] = useState<Set<string>>(new Set());
+  const [contentDiffs, setContentDiffs] = useState<Record<string, ContentDiffState>>({});
   const runIdRef = useRef(0);
 
   const { error, execute, loading, loadingKey } = useApiRequest({
     action: () => kopiaService.getSnapshot(sourceInfo),
     onReturn(resp: Snapshots) {
       setSnapshots(resp.snapshots ?? []);
-      if (!paramB && resp.snapshots?.length) {
-        setRootB((current) => current ?? resp.snapshots[0].rootID);
-      }
-      if (!paramA && resp.snapshots?.length > 1) {
-        setRootA((current) => current ?? resp.snapshots[1].rootID);
-      }
     }
   });
 
@@ -210,7 +211,7 @@ function SnapshotComparePage() {
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: need-to-fix-later
   useEffect(() => {
-    if (!rootA || !rootB || rootA === rootB) {
+    if (!paramA || !paramB || paramA === paramB) {
       setResult(undefined);
       setProgress(undefined);
       runIdRef.current++;
@@ -223,9 +224,10 @@ function SnapshotComparePage() {
     setWalkError(undefined);
     setExpanded(new Set());
     setDetails(new Set());
+    setContentDiffs({});
     (async () => {
       try {
-        const [manifestA, manifestB] = await Promise.all([fetchManifest(rootA), fetchManifest(rootB)]);
+        const [manifestA, manifestB] = await Promise.all([fetchManifest(paramA), fetchManifest(paramB)]);
         const walk = await walkTrees(manifestA, manifestB, fetchManifest, {
           concurrency: 6,
           onProgress: (p) => {
@@ -240,23 +242,57 @@ function SnapshotComparePage() {
         }
       }
     })();
-  }, [rootA, rootB]);
+  }, [paramA, paramB]);
 
   const snapshotById = useMemo(() => new Map(snapshots.map((s) => [s.rootID, s])), [snapshots]);
-  const snapshotA = rootA ? snapshotById.get(rootA) : undefined;
+  const snapshotA = paramA ? snapshotById.get(paramA) : undefined;
+  const snapshotB = paramB ? snapshotById.get(paramB) : undefined;
 
-  const options = useMemo(
-    () =>
-      snapshots.map((s) => ({
-        value: s.rootID,
-        label: `${new Date(s.startTime).toLocaleString()} · ${sizeDisplayName(s.summary.size, bytesStringBase2)}`
-      })),
-    [snapshots, bytesStringBase2]
-  );
+  const pairLabel = (snap: Snapshot) =>
+    `${new Date(snap.startTime).toLocaleString()} · ${sizeDisplayName(snap.summary.size, bytesStringBase2)}`;
+
+  const loadContentDiff = async (node: DiffNode) => {
+    if (!node.a || !node.b) return;
+    const maxBytes = 2 * 1024 * 1024;
+    if ((node.a.size ?? 0) > maxBytes || (node.b.size ?? 0) > maxBytes) {
+      setContentDiffs((prev) => ({ ...prev, [node.id]: { state: "too-large" } }));
+      return;
+    }
+    setContentDiffs((prev) => ({ ...prev, [node.id]: { state: "loading" } }));
+    try {
+      const [bufA, bufB] = await Promise.all([
+        kopiaService.getObjectBuffer(node.a.obj),
+        kopiaService.getObjectBuffer(node.b.obj)
+      ]);
+      if (bufA.isError || !bufA.data || bufB.isError || !bufB.data) {
+        setContentDiffs((prev) => ({ ...prev, [node.id]: { state: "error" } }));
+        return;
+      }
+      const textA = looksLikeText(bufA.data);
+      const textB = looksLikeText(bufB.data);
+      if (textA === null || textB === null) {
+        setContentDiffs((prev) => ({ ...prev, [node.id]: { state: "binary" } }));
+        return;
+      }
+      const lines = diffLines(textA, textB);
+      if (lines === null) {
+        setContentDiffs((prev) => ({ ...prev, [node.id]: { state: "too-large" } }));
+        return;
+      }
+      const added = lines.filter((l) => l.type === "add").length;
+      const removed = lines.filter((l) => l.type === "del").length;
+      setContentDiffs((prev) => ({
+        ...prev,
+        [node.id]: { state: "text", lines: compactDiff(lines), added, removed }
+      }));
+    } catch {
+      setContentDiffs((prev) => ({ ...prev, [node.id]: { state: "error" } }));
+    }
+  };
 
   const stats = result?.stats;
   const totalASize = snapshotA?.summary?.size ?? 0;
-  const walking = !result && !walkError && Boolean(rootA && rootB && rootA !== rootB);
+  const walking = !result && !walkError && Boolean(paramA && paramB && paramA !== paramB);
   const narrow = filter !== "all" || query.trim() !== "";
 
   const visibleRoots = useMemo(() => {
@@ -286,6 +322,90 @@ function SnapshotComparePage() {
         return next;
       });
     }
+  };
+
+  const renderContentDiff = (node: DiffNode): ReactNode => {
+    const current = contentDiffs[node.id];
+    if (!current) {
+      return (
+        <Button variant="subtle" size="compact-xs" onClick={() => loadContentDiff(node)}>
+          {t`Show content diff`}
+        </Button>
+      );
+    }
+    if (current.state === "loading") {
+      return (
+        <Button variant="subtle" size="compact-xs" loading>
+          {t`Show content diff`}
+        </Button>
+      );
+    }
+    if (current.state === "binary") {
+      return (
+        <Text fz="xs" c="dimmed">
+          {t`Not a text file — content diff is not available.`}
+        </Text>
+      );
+    }
+    if (current.state === "too-large") {
+      return (
+        <Text fz="xs" c="dimmed">
+          {t`File is too large to diff in the browser.`}
+        </Text>
+      );
+    }
+    if (current.state === "error") {
+      return (
+        <Text fz="xs" c="red.6">
+          {t`Content could not be loaded.`}
+        </Text>
+      );
+    }
+    if (current.added === 0 && current.removed === 0) {
+      return (
+        <Text fz="xs" c="dimmed">
+          {t`Text is identical — only metadata differs.`}
+        </Text>
+      );
+    }
+    return (
+      <Stack gap={0} mt={4}>
+        <Text fz="xs" c="dimmed" mb={2}>
+          {t`+${current.added} −${current.removed} lines`}
+        </Text>
+        <Paper withBorder radius="sm" style={{ maxHeight: 260, overflowY: "auto" }}>
+          {current.lines.map((line, idx) => (
+            <Group
+              key={idx}
+              gap="xs"
+              wrap="nowrap"
+              px={6}
+              style={{
+                background:
+                  line.type === "add"
+                    ? "var(--mantine-color-green-light)"
+                    : line.type === "del"
+                      ? "var(--mantine-color-red-light)"
+                      : undefined,
+                minHeight: 20
+              }}
+            >
+              <Text
+                ff="monospace"
+                fz="xs"
+                w={10}
+                c={line.type === "add" ? "green.6" : line.type === "del" ? "red.6" : "dimmed"}
+              >
+                {line.type === "add" ? "+" : line.type === "del" ? "−" : ""}
+              </Text>
+              <Text ff="monospace" fz="xs" style={{ whiteSpace: "pre-wrap", wordBreak: "break-all" }}>
+                {line.text || " "}
+              </Text>
+            </Group>
+          ))}
+        </Paper>
+      </Stack>
+    );
   };
 
   const renderNode = (node: DiffNode, depth: number): ReactNode => {
@@ -391,7 +511,7 @@ function SnapshotComparePage() {
                     {t`In A`}
                   </Text>
                   <Code fz="xs" style={{ whiteSpace: "nowrap" }}>
-                    {sizeDisplayName(entrySizeOf(node.a), bytesStringBase2)} · {node.a.obj}
+                    {sizeDisplayName(entrySizeOf(node.a), bytesStringBase2)} · {new Date(node.a.mtime).toLocaleString()}
                   </Code>
                 </Group>
               )}
@@ -401,8 +521,24 @@ function SnapshotComparePage() {
                     {t`In B`}
                   </Text>
                   <Code fz="xs" style={{ whiteSpace: "nowrap" }}>
-                    {sizeDisplayName(entrySizeOf(node.b), bytesStringBase2)} · {node.b.obj}
+                    {sizeDisplayName(entrySizeOf(node.b), bytesStringBase2)} · {new Date(node.b.mtime).toLocaleString()}
                   </Code>
+                </Group>
+              )}
+              {(node.a || node.b) && (
+                <Group gap="xs" wrap="nowrap">
+                  <Text fz="xs" c="dimmed" w={70}>
+                    {t`Objects`}
+                  </Text>
+                  <Text
+                    fz="xs"
+                    ff="monospace"
+                    c="dimmed"
+                    truncate="end"
+                    title={`${node.a?.obj ?? "—"} → ${node.b?.obj ?? "—"}`}
+                  >
+                    {node.a?.obj ?? "—"} → {node.b?.obj ?? "—"}
+                  </Text>
                 </Group>
               )}
               {node.b && !isDirectoryEntry(node.b) && (node.status === "added" || node.status === "modified") && (
@@ -419,6 +555,12 @@ function SnapshotComparePage() {
                   </Group>
                 </Anchor>
               )}
+              {node.status === "modified" &&
+                !node.isDir &&
+                node.a &&
+                node.b &&
+                !node.typeChanged &&
+                renderContentDiff(node)}
             </Stack>
           </Paper>
         )}
@@ -455,33 +597,45 @@ function SnapshotComparePage() {
           {sourceInfo.path}
         </Text>
 
-        <Group gap="md">
-          <Select
-            label="A"
-            description={t`Older snapshot`}
-            data={options}
-            value={rootA}
-            onChange={setRootA}
-            allowDeselect={false}
-            style={{ flex: 1 }}
-          />
-          <Select
-            label="B"
-            description={t`Newer snapshot`}
-            data={options}
-            value={rootB}
-            onChange={setRootB}
-            allowDeselect={false}
-            style={{ flex: 1 }}
-          />
+        <Group gap="lg" align="flex-start" wrap="nowrap">
+          {snapshotA && (
+            <Stack gap={0}>
+              <Text fz="xs" c="dimmed">
+                {t`Snapshot A (older)`}
+              </Text>
+              <Text ff="monospace" fz="sm">
+                {pairLabel(snapshotA)}
+              </Text>
+            </Stack>
+          )}
+          {snapshotA && snapshotB && (
+            <Text c="dimmed" mt="lg">
+              →
+            </Text>
+          )}
+          {snapshotB && (
+            <Stack gap={0}>
+              <Text fz="xs" c="dimmed">
+                {t`Snapshot B (newer)`}
+              </Text>
+              <Text ff="monospace" fz="sm">
+                {pairLabel(snapshotB)}
+              </Text>
+            </Stack>
+          )}
         </Group>
 
         <ErrorAlert error={error} />
         {walkError && <ErrorAlert error={{ message: walkError } as never} />}
 
-        {rootA && rootB && rootA === rootB && (
+        {(!paramA || !paramB) && (
           <Alert color="blue" variant="light">
-            {t`Pick two different snapshots to compare — A and B currently point at the same one.`}
+            {t`No snapshot pair selected — go back to the snapshot list, tick two snapshots and press Compare.`}
+          </Alert>
+        )}
+        {paramA && paramB && paramA === paramB && (
+          <Alert color="blue" variant="light">
+            {t`Pick two different snapshots — A and B currently point at the same one.`}
           </Alert>
         )}
 
