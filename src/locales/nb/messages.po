@@ -1933,17 +1933,9 @@ msgstr "SMTP Brukernavn"
 msgid "Snapshot"
 msgstr "Øyeblikksbilde"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:603
-msgid "Snapshot A (older)"
-msgstr ""
-
 #: src/policies/modals/PolicyModal/PolicyModal.tsx:227
 msgid "Snapshot Actions"
 msgstr "Handlinger"
-
-#: src/snapshot-compare/SnapshotComparePage.tsx:618
-msgid "Snapshot B (newer)"
-msgstr ""
 
 #: src/policies/modals/PolicyModal/constants.ts:130
 #: src/policies/modals/PolicyModal/tabs/SchedulingTab.tsx:60

@@ -596,33 +596,33 @@ function SnapshotComparePage() {
           {sourceInfo.path}
         </Text>
 
-        <Group gap="lg" align="flex-start" wrap="nowrap">
-          {snapshotA && (
-            <Stack gap={0}>
-              <Text fz="xs" c="dimmed">
-                {t`Snapshot A (older)`}
-              </Text>
-              <Text ff="monospace" fz="sm">
+        {(snapshotA || snapshotB) && (
+          <Group gap="sm" wrap="nowrap">
+            {snapshotA && (
+              <Text ff="monospace" fz="sm" truncate="end" maw={520}>
+                <Text component="span" inherit c="dimmed">
+                  A ·{" "}
+                </Text>
                 {pairLabel(snapshotA)}
+                {snapshotA.description && ` · ${snapshotA.description}`}
               </Text>
-            </Stack>
-          )}
-          {snapshotA && snapshotB && (
-            <Text c="dimmed" mt="lg">
-              →
-            </Text>
-          )}
-          {snapshotB && (
-            <Stack gap={0}>
-              <Text fz="xs" c="dimmed">
-                {t`Snapshot B (newer)`}
+            )}
+            {snapshotA && snapshotB && (
+              <Text c="dimmed" fz="sm">
+                →
               </Text>
-              <Text ff="monospace" fz="sm">
+            )}
+            {snapshotB && (
+              <Text ff="monospace" fz="sm" truncate="end" maw={520}>
+                <Text component="span" inherit c="dimmed">
+                  B ·{" "}
+                </Text>
                 {pairLabel(snapshotB)}
+                {snapshotB.description && ` · ${snapshotB.description}`}
               </Text>
-            </Stack>
-          )}
-        </Group>
+            )}
+          </Group>
+        )}
 
         <ErrorAlert error={error} />
         {walkError && <ErrorAlert error={{ message: walkError } as never} />}
