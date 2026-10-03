@@ -2,7 +2,15 @@ import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { ActionIcon, Anchor, Badge, Button, Code, Container, Group, Stack, Text, Title, Tooltip } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
-import { IconArrowLeft, IconClick, IconFileDatabase, IconFileText, IconPin, IconTrash } from "@tabler/icons-react";
+import {
+  IconArrowLeft,
+  IconClick,
+  IconFileDatabase,
+  IconFileText,
+  IconPin,
+  IconTrash,
+  IconArrowsDiff
+} from "@tabler/icons-react";
 import sortBy from "lodash.sortby";
 import type { DataTableSortStatus } from "mantine-datatable";
 import { useEffect, useMemo, useState } from "react";
@@ -226,6 +234,27 @@ function SnapshotHistory() {
               textAlign: "right",
               render: (item) => (
                 <Group gap={4} justify="right" wrap="nowrap">
+                  <Tooltip label={t`Compare with previous`}>
+                    <ActionIcon
+                      variant="subtle"
+                      color="blue.5"
+                      disabled={visibleData.length < 2}
+                      onClick={() => {
+                        const index = visibleData.findIndex((s) => s.rootID === item.rootID);
+                        const older = visibleData[index + 1];
+                        const params = new URLSearchParams({
+                          host: sourceInfo.host ?? "",
+                          userName: sourceInfo.userName ?? "",
+                          path: sourceInfo.path ?? "",
+                          b: item.rootID
+                        });
+                        if (older) params.set("a", older.rootID);
+                        navigate(`/snapshots/compare?${params.toString()}`);
+                      }}
+                    >
+                      <IconArrowsDiff size={18} />
+                    </ActionIcon>
+                  </Tooltip>
                   <Tooltip label={t`Update description`}>
                     <ActionIcon
                       variant="subtle"
