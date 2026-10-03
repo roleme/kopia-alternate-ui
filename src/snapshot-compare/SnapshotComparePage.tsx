@@ -507,7 +507,7 @@ function SnapshotComparePage() {
               {node.a && (
                 <Group gap="xs" wrap="nowrap">
                   <Text fz="xs" c="dimmed" w={70}>
-                    {t`In A`}
+                    {t`Before`}
                   </Text>
                   <Code fz="xs" style={{ whiteSpace: "nowrap" }}>
                     {sizeDisplayName(entrySizeOf(node.a), bytesStringBase2)} · {new Date(node.a.mtime).toLocaleString()}
@@ -517,7 +517,7 @@ function SnapshotComparePage() {
               {node.b && (
                 <Group gap="xs" wrap="nowrap">
                   <Text fz="xs" c="dimmed" w={70}>
-                    {t`In B`}
+                    {t`After`}
                   </Text>
                   <Code fz="xs" style={{ whiteSpace: "nowrap" }}>
                     {sizeDisplayName(entrySizeOf(node.b), bytesStringBase2)} · {new Date(node.b.mtime).toLocaleString()}
@@ -550,7 +550,7 @@ function SnapshotComparePage() {
                 >
                   <Group gap={4} wrap="nowrap">
                     <IconDownload size={13} />
-                    <span>{t`Download from B`}</span>
+                    <span>{t`Download newer version`}</span>
                   </Group>
                 </Anchor>
               )}
@@ -600,9 +600,6 @@ function SnapshotComparePage() {
           <Group gap="sm" wrap="nowrap">
             {snapshotA && (
               <Text ff="monospace" fz="sm" truncate="end" maw={520}>
-                <Text component="span" inherit c="dimmed">
-                  A ·{" "}
-                </Text>
                 {pairLabel(snapshotA)}
                 {snapshotA.description && ` · ${snapshotA.description}`}
               </Text>
@@ -614,9 +611,6 @@ function SnapshotComparePage() {
             )}
             {snapshotB && (
               <Text ff="monospace" fz="sm" truncate="end" maw={520}>
-                <Text component="span" inherit c="dimmed">
-                  B ·{" "}
-                </Text>
                 {pairLabel(snapshotB)}
                 {snapshotB.description && ` · ${snapshotB.description}`}
               </Text>
@@ -634,7 +628,7 @@ function SnapshotComparePage() {
         )}
         {paramA && paramB && paramA === paramB && (
           <Alert color="blue" variant="light">
-            {t`Pick two different snapshots — A and B currently point at the same one.`}
+            {t`Pick two different snapshots to compare.`}
           </Alert>
         )}
 
