@@ -13,11 +13,6 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#. placeholder {0}: sizeDisplayName(stats.bytesAdded, bytesStringBase2)
-#: src/snapshot-compare/SnapshotComparePage.tsx:658
-msgid "{0} added"
-msgstr ""
-
 #. placeholder {0}: node.oneSided.files
 #. placeholder {1}: node.oneSided.dirs
 #: src/snapshot-compare/SnapshotComparePage.tsx:454
@@ -25,13 +20,8 @@ msgid "{0} files, {1} dirs"
 msgstr ""
 
 #. placeholder {0}: stats.errors
-#: src/snapshot-compare/SnapshotComparePage.tsx:692
+#: src/snapshot-compare/SnapshotComparePage.tsx:710
 msgid "{0} folders could not be compared — object fetch failed. Results are partial; counts cover what was read."
-msgstr ""
-
-#. placeholder {0}: sizeDisplayName(stats.bytesRemoved, bytesStringBase2)
-#: src/snapshot-compare/SnapshotComparePage.tsx:659
-msgid "{0} removed"
 msgstr ""
 
 #: src/snapshot-history/components/SnapshotCountControl.tsx:23
@@ -139,7 +129,7 @@ msgstr ""
 msgid "Advanced Options"
 msgstr "Advanced Options"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:599
+#: src/snapshot-compare/SnapshotComparePage.tsx:604
 msgid "after"
 msgstr ""
 
@@ -297,7 +287,7 @@ msgstr "Canceling for"
 msgid "Change policy parameters"
 msgstr "Change policy parameters"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:729
+#: src/snapshot-compare/SnapshotComparePage.tsx:747
 msgid "Clear"
 msgstr ""
 
@@ -306,7 +296,7 @@ msgstr ""
 msgid "Close"
 msgstr "Close"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:714
+#: src/snapshot-compare/SnapshotComparePage.tsx:732
 msgid "Collapse all"
 msgstr ""
 
@@ -885,7 +875,7 @@ msgstr "Files that are smaller than the provided value will not be compressed"
 msgid "Files whose size exceeds the provided value will not be compressed"
 msgstr "Files whose size exceeds the provided value will not be compressed"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:698
+#: src/snapshot-compare/SnapshotComparePage.tsx:716
 msgid "Filter by path…"
 msgstr ""
 
@@ -1041,10 +1031,6 @@ msgstr "Ignore Well-Known Cache Directories"
 #: src/policies/modals/PolicyModal/tabs/SchedulingTab.tsx:101
 msgid "Immediately run any missed snapshots when kopia starts (only relevant for Time-of-day snapshots)"
 msgstr "Immediately run any missed snapshots when kopia starts (only relevant for Time-of-day snapshots)"
-
-#: src/snapshot-compare/SnapshotComparePage.tsx:661
-msgid "in modified"
-msgstr ""
 
 #: src/policies/modals/PolicyModal/components/InheritYesNoPolicyControl.tsx:38
 msgid "Inherit"
@@ -1350,7 +1336,7 @@ msgstr "Next snapshot"
 msgid "No"
 msgstr "No"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:738
+#: src/snapshot-compare/SnapshotComparePage.tsx:756
 msgid "No changed paths match the current filter."
 msgstr ""
 
@@ -1383,7 +1369,7 @@ msgstr "No policies found"
 msgid "No recepients defined"
 msgstr "No recepients defined"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:615
+#: src/snapshot-compare/SnapshotComparePage.tsx:625
 msgid "No snapshot pair selected — go back to the snapshot list, tick two snapshots and press Compare."
 msgstr ""
 
@@ -1511,7 +1497,7 @@ msgid "Owner"
 msgstr "Owner"
 
 #. placeholder {0}: stats.errors
-#: src/snapshot-compare/SnapshotComparePage.tsx:665
+#: src/snapshot-compare/SnapshotComparePage.tsx:702
 msgid "Partial — {0} folders could not be read; counts cover what was read."
 msgstr ""
 
@@ -1577,7 +1563,7 @@ msgstr "Per-Host Policies"
 msgid "Per-User Policies"
 msgstr "Per-User Policies"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:620
+#: src/snapshot-compare/SnapshotComparePage.tsx:630
 msgid "Pick two different snapshots to compare."
 msgstr ""
 
@@ -1648,7 +1634,7 @@ msgstr "Rclone Remote Path"
 msgid "Read-only mode prevents any changes to the repository"
 msgstr "Read-only mode prevents any changes to the repository"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:627
+#: src/snapshot-compare/SnapshotComparePage.tsx:637
 msgid "Reading changed folders"
 msgstr ""
 
@@ -1887,7 +1873,7 @@ msgstr "Show all snapshots by default"
 msgid "Show content diff"
 msgstr ""
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:721
+#: src/snapshot-compare/SnapshotComparePage.tsx:739
 msgid "Showing {visibleCount} of {totalCount} changed paths"
 msgstr ""
 
@@ -1987,11 +1973,11 @@ msgstr "Snapshots"
 msgid "Snapshots by date"
 msgstr "Snapshots by date"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:706
+#: src/snapshot-compare/SnapshotComparePage.tsx:724
 msgid "Sort: path"
 msgstr ""
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:705
+#: src/snapshot-compare/SnapshotComparePage.tsx:723
 msgid "Sort: size delta"
 msgstr ""
 
@@ -2089,7 +2075,7 @@ msgstr "The repository was successfully disconnected"
 msgid "The repository was synchronized successfully"
 msgstr "The repository was synchronized successfully"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:642
+#: src/snapshot-compare/SnapshotComparePage.tsx:652
 msgid "The selected snapshots are identical — nothing was added, removed or modified."
 msgstr ""
 

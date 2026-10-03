@@ -656,38 +656,30 @@ function SnapshotComparePage() {
         {stats && (stats.errors > 0 || stats.delta !== 0 || visibleRoots.length > 0) && (
           <>
             <Paper withBorder p="md" radius="md">
-              <Group justify="space-between" gap="md" wrap="nowrap" align="flex-start">
+              <Stack gap="xs">
                 <Stack gap={4} style={{ minWidth: 0 }}>
-                  <Text ff="monospace" fz="xl" fw={500}>
+                  <Text
+                    ff="monospace"
+                    fz="xl"
+                    fw={500}
+                    c={stats.delta > 0 ? "green.6" : stats.delta < 0 ? "red.6" : undefined}
+                  >
                     {stats.errors > 0 ? "≥ " : ""}
                     {signedSize(stats.delta, bytesStringBase2)}
                   </Text>
-                  <Group gap={6} wrap="wrap" fz="xs" c="dimmed">
-                    <Text fz="xs" c="dimmed" style={{ whiteSpace: "nowrap" }}>
-                      {sizeDisplayName(totalASize, bytesStringBase2)} →{" "}
-                      {sizeDisplayName(totalASize + stats.delta, bytesStringBase2)}
-                    </Text>
-                    <Text fz="xs" c="dimmed" style={{ whiteSpace: "nowrap" }}>
-                      {t`${sizeDisplayName(stats.bytesAdded, bytesStringBase2)} added`}
-                    </Text>
-                    <Text fz="xs" c="dimmed" style={{ whiteSpace: "nowrap" }}>
-                      {t`${sizeDisplayName(stats.bytesRemoved, bytesStringBase2)} removed`}
-                    </Text>
-                    {stats.modifiedDelta !== 0 && (
-                      <Text fz="xs" c="dimmed" style={{ whiteSpace: "nowrap" }}>
-                        {signedSize(stats.modifiedDelta, bytesStringBase2)} {t`in modified`}
-                      </Text>
-                    )}
-                  </Group>
-                  {stats.errors > 0 && (
-                    <Text fz="xs" c="yellow.6">
-                      {t`Partial — ${stats.errors} folders could not be read; counts cover what was read.`}
-                    </Text>
-                  )}
+                  <Text fz="xs" c="dimmed" style={{ whiteSpace: "nowrap" }}>
+                    {sizeDisplayName(totalASize, bytesStringBase2)} →{" "}
+                    {sizeDisplayName(totalASize + stats.delta, bytesStringBase2)}
+                  </Text>
                 </Stack>
-                <Pill.Group style={{ flexShrink: 0 }}>
+                <Pill.Group>
                   {(["added", "removed", "modified"] as DiffStatus[]).map((key) => {
                     const count = countFor(stats, key);
+                    if (count === 0) return null;
+                    const sizeText =
+                      key === "modified"
+                        ? signedSize(stats.modifiedDelta, bytesStringBase2)
+                        : sizeDisplayName(key === "added" ? stats.bytesAdded : stats.bytesRemoved, bytesStringBase2);
                     return (
                       <Pill
                         key={key}
@@ -698,12 +690,17 @@ function SnapshotComparePage() {
                           opacity: filter === "all" || filter === key ? 1 : 0.55
                         }}
                       >
-                        {`${STATUS_GLYPH[key]} ${count} ${pillLabel(key)}`}
+                        {`${STATUS_GLYPH[key]} ${count} ${pillLabel(key)} · ${sizeText}`}
                       </Pill>
                     );
                   })}
                 </Pill.Group>
-              </Group>
+                {stats.errors > 0 && (
+                  <Text fz="xs" c="yellow.6">
+                    {t`Partial — ${stats.errors} folders could not be read; counts cover what was read.`}
+                  </Text>
+                )}
+              </Stack>
             </Paper>
 
             {stats.errors > 0 && (
