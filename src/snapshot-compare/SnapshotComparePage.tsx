@@ -621,7 +621,7 @@ function SnapshotComparePage() {
 
         {(!paramA || !paramB) && (
           <Alert color="blue" variant="light">
-            {t`No snapshot pair selected — go back to the snapshot list, tick two snapshots and press Compare.`}
+            {t`No snapshot pair selected \u2014 open the snapshot list and use the compare action on a row.`}
           </Alert>
         )}
         {paramA && paramB && paramA === paramB && (

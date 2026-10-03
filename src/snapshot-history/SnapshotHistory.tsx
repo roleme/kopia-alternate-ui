@@ -55,6 +55,13 @@ function SnapshotHistory() {
     direction: "desc"
   });
 
+  const previousSnapshot = (current: Snapshot): Snapshot | undefined => {
+    const time = new Date(current.startTime).getTime();
+    return (data?.snapshots ?? [])
+      .filter((s) => new Date(s.startTime).getTime() < time)
+      .sort((a, b) => new Date(b.startTime).getTime() - new Date(a.startTime).getTime())[0];
+  };
+
   const visibleData = useMemo(() => {
     if (data?.snapshots === undefined) return [];
 
@@ -96,27 +103,6 @@ function SnapshotHistory() {
             </Title>
           </Group>
           <Group>
-            {selectedRecords.length === 2 && (
-              <Button
-                size="xs"
-                leftSection={<IconArrowsDiff size={16} />}
-                onClick={() => {
-                  const [older, newer] = [...selectedRecords].sort(
-                    (x, y) => new Date(x.startTime).getTime() - new Date(y.startTime).getTime()
-                  );
-                  const params = new URLSearchParams({
-                    host: sourceInfo.host ?? "",
-                    userName: sourceInfo.userName ?? "",
-                    path: sourceInfo.path ?? "",
-                    a: older.rootID,
-                    b: newer.rootID
-                  });
-                  navigate(`/snapshots/compare?${params.toString()}`);
-                }}
-              >
-                <Trans>Compare Selected</Trans> (2)
-              </Button>
-            )}
             {selectedRecords.length > 0 && (
               <Button
                 size="xs"
@@ -255,27 +241,27 @@ function SnapshotHistory() {
               textAlign: "right",
               render: (item) => (
                 <Group gap={4} justify="right" wrap="nowrap">
-                  <Tooltip label={t`Compare with previous`}>
-                    <ActionIcon
-                      variant="subtle"
-                      color="blue.5"
-                      disabled={visibleData.length < 2}
-                      onClick={() => {
-                        const index = visibleData.findIndex((s) => s.rootID === item.rootID);
-                        const older = visibleData[index + 1];
-                        const params = new URLSearchParams({
-                          host: sourceInfo.host ?? "",
-                          userName: sourceInfo.userName ?? "",
-                          path: sourceInfo.path ?? "",
-                          b: item.rootID
-                        });
-                        if (older) params.set("a", older.rootID);
-                        navigate(`/snapshots/compare?${params.toString()}`);
-                      }}
-                    >
-                      <IconArrowsDiff size={18} />
-                    </ActionIcon>
-                  </Tooltip>
+                  {previousSnapshot(item) && (
+                    <Tooltip label={t`Compare with previous`}>
+                      <ActionIcon
+                        variant="subtle"
+                        color="blue.5"
+                        onClick={() => {
+                          const older = previousSnapshot(item)!;
+                          const params = new URLSearchParams({
+                            host: sourceInfo.host ?? "",
+                            userName: sourceInfo.userName ?? "",
+                            path: sourceInfo.path ?? "",
+                            a: older.rootID,
+                            b: item.rootID
+                          });
+                          navigate(`/snapshots/compare?${params.toString()}`);
+                        }}
+                      >
+                        <IconArrowsDiff size={18} />
+                      </ActionIcon>
+                    </Tooltip>
+                  )}
                   <Tooltip label={t`Update description`}>
                     <ActionIcon
                       variant="subtle"
