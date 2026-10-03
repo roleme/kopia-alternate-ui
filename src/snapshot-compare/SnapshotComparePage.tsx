@@ -442,13 +442,6 @@ function SnapshotComparePage() {
   const renderNode = (node: DiffNode, depth: number): ReactNode => {
     const open = isOpen(node);
     const showDetail = !node.isDir && details.has(node.id);
-    const aggParts: string[] = [];
-    if (node.agg) {
-      if (node.agg.filesAdded) aggParts.push(`+${node.agg.filesAdded}`);
-      if (node.agg.filesRemoved) aggParts.push(`−${node.agg.filesRemoved}`);
-      if (node.agg.filesModified) aggParts.push(`±${node.agg.filesModified}`);
-      if (node.agg.errors) aggParts.push(`!${node.agg.errors}`);
-    }
     const delta = nodeDelta(node);
     return (
       <Box key={node.id}>
@@ -500,21 +493,6 @@ function SnapshotComparePage() {
               </Text>
             )}
           </Text>
-          {node.isDir && node.agg && aggParts.length > 0 && (
-            <Text
-              ff="monospace"
-              fz="xs"
-              c="dimmed"
-              style={{
-                flexShrink: 0,
-                minWidth: 64,
-                textAlign: "right",
-                opacity: filter === "all" || node.status === filter ? 1 : 0.45
-              }}
-            >
-              {aggParts.join(" ")}
-            </Text>
-          )}
           {node.isDir && node.oneSided && (
             <Text ff="monospace" fz="xs" c="dimmed" style={{ flexShrink: 0 }}>
               {t`${node.oneSided.files} files, ${node.oneSided.dirs} dirs`}
