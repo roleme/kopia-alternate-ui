@@ -672,7 +672,7 @@ function SnapshotComparePage() {
                     {sizeDisplayName(totalASize + stats.delta, bytesStringBase2)}
                   </Text>
                 </Stack>
-                <Pill.Group gap="xs" style={{ justifyContent: "flex-end" }}>
+                <Stack gap={6} align="flex-end">
                   {(["added", "removed", "modified"] as DiffStatus[]).map((key) => {
                     const count = countFor(stats, key);
                     if (count === 0) return null;
@@ -698,14 +698,14 @@ function SnapshotComparePage() {
                           opacity: filter === "all" || filter === key ? 1 : 0.55
                         }}
                       >
-                        {`${STATUS_GLYPH[key]} ${count} ${pillLabel(key)} \u00b7 `}
+                        {`${count} ${pillLabel(key)} \u00b7 `}
                         <Text component="span" inherit ff="monospace" c={color}>
                           {signedSize(value, bytesStringBase2)}
                         </Text>
                       </Pill>
                     );
                   })}
-                </Pill.Group>
+                </Stack>
               </Group>
               {stats.errors > 0 && (
                 <Text fz="xs" c="yellow.6" mt="xs">
