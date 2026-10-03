@@ -22,7 +22,6 @@ import {
   IconArrowLeft,
   IconCheck,
   IconChevronRight,
-  IconCircleArrowDown,
   IconDownload,
   IconExclamationCircle,
   IconFile,
@@ -713,26 +712,9 @@ function SnapshotComparePage() {
 
             {stats.errors > 0 && (
               <Alert color="yellow" icon={<IconExclamationCircle size={16} />} variant="light">
-                {t`${stats.errors} folders could not be compared — object fetch failed. Results are partial; the deletion warning is suppressed until every folder is readable.`}
+                {t`${stats.errors} folders could not be compared — object fetch failed. Results are partial; counts cover what was read.`}
               </Alert>
             )}
-            {stats.errors === 0 &&
-              stats.bytesRemoved > 0 &&
-              totalASize > 0 &&
-              stats.bytesRemoved / totalASize > 0.2 && (
-                <Alert
-                  color="yellow"
-                  icon={<IconCircleArrowDown size={16} />}
-                  variant="light"
-                  title={t`Heavy deletion between these snapshots`}
-                >
-                  {t`${sizeDisplayName(stats.bytesRemoved, bytesStringBase2)} across ${
-                    stats.filesRemoved
-                  } files was removed (${Math.round(
-                    (stats.bytesRemoved / totalASize) * 100
-                  )}% of snapshot A). Confirm this is expected before pruning; sudden mass deletion can be a ransomware signal.`}
-                </Alert>
-              )}
 
             <Group gap="sm">
               <TextInput
