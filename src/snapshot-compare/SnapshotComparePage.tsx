@@ -19,6 +19,7 @@ import {
   Title
 } from "@mantine/core";
 import { IconArrowLeft, IconCheck, IconChevronRight, IconExclamationCircle, IconFolderOpen } from "@tabler/icons-react";
+import dayjs from "dayjs";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 import { useAppContext } from "../core/context/AppContext";
@@ -227,8 +228,9 @@ function SnapshotComparePage() {
   const snapshotA = paramA ? snapshotById.get(paramA) : undefined;
   const snapshotB = paramB ? snapshotById.get(paramB) : undefined;
 
-  const pairLabel = (snap: Snapshot) =>
-    `${new Date(snap.startTime).toLocaleString()} · ${sizeDisplayName(snap.summary.size, bytesStringBase2)}`;
+  const pairTime = (snap: Snapshot) => dayjs(snap.startTime).format("YYYY-MM-DD HH:mm");
+  const pairEpoch = (snap: Snapshot) => `epoch ${dayjs(snap.startTime).unix()}`;
+  const pairLabel = (snap: Snapshot) => `${pairTime(snap)} · ${sizeDisplayName(snap.summary.size, bytesStringBase2)}`;
 
   const loadContentDiff = async (node: DiffNode) => {
     if (!node.a || !node.b) return;
@@ -577,7 +579,7 @@ function SnapshotComparePage() {
                   ff="monospace"
                   fz="sm"
                   truncate="end"
-                  title={`${pairLabel(snapshotA)}${snapshotA.description ? ` · ${snapshotA.description}` : ""}`}
+                  title={`${pairLabel(snapshotA)}${snapshotA.description ? ` · ${snapshotA.description}` : ""} · ${pairEpoch(snapshotA)}`}
                 >
                   {pairLabel(snapshotA)}
                   {snapshotA.description && ` · ${snapshotA.description}`}
@@ -593,7 +595,7 @@ function SnapshotComparePage() {
                   ff="monospace"
                   fz="sm"
                   truncate="end"
-                  title={`${pairLabel(snapshotB)}${snapshotB.description ? ` · ${snapshotB.description}` : ""}`}
+                  title={`${pairLabel(snapshotB)}${snapshotB.description ? ` · ${snapshotB.description}` : ""} · ${pairEpoch(snapshotB)}`}
                 >
                   {pairLabel(snapshotB)}
                   {snapshotB.description && ` · ${snapshotB.description}`}
