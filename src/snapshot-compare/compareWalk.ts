@@ -1,5 +1,12 @@
 import type { DirManifest } from "../core/types";
-import { compareEntries, emptyStats, finalizeAggregates, type DiffNode, type DiffStats } from "./diffTree";
+import {
+  compareEntries,
+  emptyStats,
+  finalizeAggregates,
+  pruneUnchanged,
+  type DiffNode,
+  type DiffStats
+} from "./diffTree";
 
 export type WalkProgress = {
   /** Differing folders whose entries have been read so far. */
@@ -38,7 +45,7 @@ export async function walkTrees(
 ): Promise<WalkResult> {
   const concurrency = options.concurrency ?? 6;
   const stats = emptyStats();
-  const roots = compareEntries(rootA.entries, rootB.entries, "", stats);
+  let roots = compareEntries(rootA.entries, rootB.entries, "", stats);
 
   const queue: DiffNode[] = roots.filter((n) => n.isDir && !n.fetched && n.status === "modified");
   let done = 0;
@@ -82,6 +89,7 @@ export async function walkTrees(
   await Promise.all(workers);
 
   if (cancelled()) throw new DOMException("walk cancelled", "AbortError");
+  roots = pruneUnchanged(roots);
   finalizeAggregates(roots);
   return { roots, stats };
 }

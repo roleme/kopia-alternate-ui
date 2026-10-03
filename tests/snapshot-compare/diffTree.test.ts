@@ -54,6 +54,21 @@ describe("compareEntries", () => {
     expect(stats.delta).toBe(0);
   });
 
+  it("ignores mtime-only changes on files with identical content", () => {
+    const { nodes, stats } = walk(
+      [file("wal", "o1", 10, { mtime: "2026-01-01T00:00:00Z" })],
+      [file("wal", "o1", 10, { mtime: "2026-02-01T00:00:00Z" })]
+    );
+    expect(nodes).toHaveLength(0);
+    expect(stats.filesModified).toBe(0);
+  });
+
+  it("ignores directories whose own metadata changed but whose object ID is equal", () => {
+    const a = dir("d", "d1", { size: 5, files: 1 });
+    const { nodes } = walk([a], [{ ...a, mtime: "2026-03-01T00:00:00Z" }]);
+    expect(nodes).toHaveLength(0);
+  });
+
   it("counts added and removed files with signed deltas", () => {
     const { nodes, stats } = walk(
       [file("kept", "o1", 10), file("gone", "o2", 30)],

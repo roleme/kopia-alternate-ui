@@ -1,5 +1,4 @@
 import { t } from "@lingui/core/macro";
-import type { MantineColor } from "@mantine/core";
 import {
   ActionIcon,
   Alert,
@@ -43,20 +42,6 @@ type ContentDiffState =
   | { state: "too-large" }
   | { state: "error" }
   | { state: "text"; lines: DiffLine[]; added: number; removed: number };
-
-const STATUS_COLOR: Record<DiffStatus, MantineColor> = {
-  added: "green.6",
-  removed: "red.6",
-  modified: "blue.6",
-  error: "yellow.6"
-};
-
-const STATUS_GLYPH: Record<DiffStatus, string> = {
-  added: "+",
-  removed: "−",
-  modified: "±",
-  error: "!"
-};
 
 function nodeDelta(node: DiffNode): number {
   return node.agg ? node.agg.delta : node.delta;
@@ -160,7 +145,9 @@ function SnapshotComparePage() {
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState<SortMode>("delta");
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
+  const [collapsed, setCollapsed] = useState<Set<string>>(new Set());
   const [details, setDetails] = useState<Set<string>>(new Set());
+  const [hiddenDiffs, setHiddenDiffs] = useState<Set<string>>(new Set());
   const [contentDiffs, setContentDiffs] = useState<Record<string, ContentDiffState>>({});
   const [retryTick, setRetryTick] = useState(0);
   const runIdRef = useRef(0);
@@ -203,7 +190,9 @@ function SnapshotComparePage() {
     setProgress(undefined);
     setWalkError(undefined);
     setExpanded(new Set());
+    setCollapsed(new Set());
     setDetails(new Set());
+    setHiddenDiffs(new Set());
     setContentDiffs({});
     (async () => {
       try {
@@ -286,22 +275,52 @@ function SnapshotComparePage() {
   );
   const totalCount = useMemo(() => (result ? countNodes(result.roots) : 0), [result]);
 
-  const toggle = (id: string, isDir: boolean) => {
-    if (isDir) {
+  const flip = (prev: Set<string>, id: string) => {
+    const next = new Set(prev);
+    if (next.has(id)) next.delete(id);
+    else next.add(id);
+    return next;
+  };
+
+  const isOpen = (node: DiffNode) =>
+    expanded.has(node.id) || (narrow && node.status === "modified" && !collapsed.has(node.id));
+
+  const toggle = (node: DiffNode) => {
+    if (!node.isDir) {
+      setDetails((prev) => flip(prev, node.id));
+      return;
+    }
+    if (isOpen(node)) {
       setExpanded((prev) => {
         const next = new Set(prev);
-        if (next.has(id)) next.delete(id);
-        else next.add(id);
+        next.delete(node.id);
         return next;
       });
+      setCollapsed((prev) => new Set(prev).add(node.id));
     } else {
-      setDetails((prev) => {
+      setExpanded((prev) => new Set(prev).add(node.id));
+      setCollapsed((prev) => {
         const next = new Set(prev);
-        if (next.has(id)) next.delete(id);
-        else next.add(id);
+        next.delete(node.id);
         return next;
       });
     }
+  };
+
+  const collapseAll = () => {
+    const dirs: string[] = [];
+    const collect = (nodes: DiffNode[]) => {
+      for (const node of nodes) {
+        if (node.isDir && node.children) {
+          dirs.push(node.id);
+          collect(node.children);
+        }
+      }
+    };
+    collect(result?.roots ?? []);
+    setExpanded(new Set());
+    setCollapsed(new Set(dirs));
+    setDetails(new Set());
   };
 
   const renderContentDiff = (node: DiffNode): ReactNode => {
@@ -365,48 +384,63 @@ function SnapshotComparePage() {
         </Text>
       );
     }
+    const hidden = hiddenDiffs.has(node.id);
     return (
       <Stack gap={0} mt={4}>
-        <Text fz="xs" c="dimmed" mb={2}>
-          {t`+${current.added} −${current.removed} lines`}
-        </Text>
-        <Paper withBorder radius="sm" style={{ maxHeight: 260, overflowY: "auto" }}>
-          {current.lines.map((line, idx) => (
-            <Group
-              key={idx}
-              gap="xs"
-              wrap="nowrap"
-              px={6}
-              style={{
-                background:
-                  line.type === "add"
-                    ? "var(--mantine-color-green-light)"
-                    : line.type === "del"
-                      ? "var(--mantine-color-red-light)"
-                      : undefined,
-                minHeight: 20
-              }}
-            >
-              <Text
-                ff="monospace"
-                fz="xs"
-                w={10}
-                c={line.type === "add" ? "green.6" : line.type === "del" ? "red.6" : "dimmed"}
+        <Group
+          gap={4}
+          wrap="nowrap"
+          mb={2}
+          style={{ cursor: "pointer" }}
+          onClick={() => setHiddenDiffs((prev) => flip(prev, node.id))}
+        >
+          <IconChevronRight
+            size={12}
+            style={{ transform: hidden ? "none" : "rotate(90deg)", transition: "transform 120ms ease", flexShrink: 0 }}
+          />
+          <Text fz="xs" c="dimmed">
+            {t`+${current.added} −${current.removed} lines`}
+          </Text>
+        </Group>
+        {!hidden && (
+          <Paper withBorder radius="sm" style={{ maxHeight: 260, overflowY: "auto" }}>
+            {current.lines.map((line, idx) => (
+              <Group
+                key={idx}
+                gap="xs"
+                wrap="nowrap"
+                px={6}
+                style={{
+                  background:
+                    line.type === "add"
+                      ? "var(--mantine-color-green-light)"
+                      : line.type === "del"
+                        ? "var(--mantine-color-red-light)"
+                        : undefined,
+                  minHeight: 20
+                }}
               >
-                {line.type === "add" ? "+" : line.type === "del" ? "−" : ""}
-              </Text>
-              <Text ff="monospace" fz="xs" style={{ whiteSpace: "pre-wrap", wordBreak: "break-all" }}>
-                {line.text || " "}
-              </Text>
-            </Group>
-          ))}
-        </Paper>
+                <Text
+                  ff="monospace"
+                  fz="xs"
+                  w={10}
+                  c={line.type === "add" ? "green.6" : line.type === "del" ? "red.6" : "dimmed"}
+                >
+                  {line.type === "add" ? "+" : line.type === "del" ? "−" : ""}
+                </Text>
+                <Text ff="monospace" fz="xs" style={{ whiteSpace: "pre-wrap", wordBreak: "break-all" }}>
+                  {line.text || " "}
+                </Text>
+              </Group>
+            ))}
+          </Paper>
+        )}
       </Stack>
     );
   };
 
   const renderNode = (node: DiffNode, depth: number): ReactNode => {
-    const open = expanded.has(node.id) || (narrow && node.status === "modified");
+    const open = isOpen(node);
     const showDetail = !node.isDir && details.has(node.id);
     const aggParts: string[] = [];
     if (node.agg) {
@@ -433,22 +467,19 @@ function SnapshotComparePage() {
             borderRadius: 4,
             background: open || showDetail ? "var(--mantine-color-gray-1)" : undefined
           }}
-          onClick={() => toggle(node.id, node.isDir)}
+          onClick={() => toggle(node)}
           onKeyDown={(e) => {
             if (e.key === "Enter" || e.key === " ") {
               e.preventDefault();
-              toggle(node.id, node.isDir);
+              toggle(node);
             }
           }}
         >
-          <Text ff="monospace" fw={700} fz="sm" c={STATUS_COLOR[node.status]} style={{ width: 14, flexShrink: 0 }}>
-            {STATUS_GLYPH[node.status]}
-          </Text>
-          {node.isDir && node.status !== "error" ? (
+          {node.status !== "error" ? (
             <IconChevronRight
               size={13}
               style={{
-                transform: open ? "rotate(90deg)" : "none",
+                transform: open || showDetail ? "rotate(90deg)" : "none",
                 transition: "transform 120ms ease",
                 flexShrink: 0
               }}
@@ -748,8 +779,8 @@ function SnapshotComparePage() {
                 onChange={(v) => setSort((v as SortMode) ?? "delta")}
                 w={180}
               />
-              {expanded.size > 0 && (
-                <Button variant="subtle" size="xs" ml="auto" onClick={() => setExpanded(new Set())}>
+              {(expanded.size > 0 || details.size > 0 || narrow) && (
+                <Button variant="subtle" size="xs" ml="auto" onClick={collapseAll}>
                   {t`Collapse all`}
                 </Button>
               )}
