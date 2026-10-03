@@ -26,14 +26,8 @@ msgid "{0} files, {1} dirs"
 msgstr ""
 
 #. placeholder {0}: stats.errors
-#: src/snapshot-compare/SnapshotComparePage.tsx:683
+#: src/snapshot-compare/SnapshotComparePage.tsx:680
 msgid "{0} folders could not be compared — object fetch failed. Results are partial; counts cover what was read."
-msgstr ""
-
-#. placeholder {0}: stats.skippedDirs
-#. placeholder {1}: stats.skippedFiles.toLocaleString()
-#: src/snapshot-compare/SnapshotComparePage.tsx:652
-msgid "{0} identical subtrees ({1} files) resolved by content ID, never fetched"
 msgstr ""
 
 #: src/snapshot-history/components/SnapshotCountControl.tsx:23
@@ -291,7 +285,7 @@ msgstr "Canceling for"
 msgid "Change policy parameters"
 msgstr "Change policy parameters"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:720
+#: src/snapshot-compare/SnapshotComparePage.tsx:717
 msgid "Clear"
 msgstr ""
 
@@ -300,7 +294,7 @@ msgstr ""
 msgid "Close"
 msgstr "Close"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:705
+#: src/snapshot-compare/SnapshotComparePage.tsx:702
 msgid "Collapse all"
 msgstr ""
 
@@ -879,7 +873,7 @@ msgstr "Files that are smaller than the provided value will not be compressed"
 msgid "Files whose size exceeds the provided value will not be compressed"
 msgstr "Files whose size exceeds the provided value will not be compressed"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:689
+#: src/snapshot-compare/SnapshotComparePage.tsx:686
 msgid "Filter by path…"
 msgstr ""
 
@@ -1344,7 +1338,7 @@ msgstr "Next snapshot"
 msgid "No"
 msgstr "No"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:728
+#: src/snapshot-compare/SnapshotComparePage.tsx:725
 msgid "No changed paths match the current filter."
 msgstr ""
 
@@ -1505,7 +1499,7 @@ msgid "Owner"
 msgstr "Owner"
 
 #. placeholder {0}: stats.errors
-#: src/snapshot-compare/SnapshotComparePage.tsx:656
+#: src/snapshot-compare/SnapshotComparePage.tsx:653
 msgid "Partial — {0} folders could not be read; counts cover what was read."
 msgstr ""
 
@@ -1881,7 +1875,7 @@ msgstr "Show all snapshots by default"
 msgid "Show content diff"
 msgstr ""
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:712
+#: src/snapshot-compare/SnapshotComparePage.tsx:709
 msgid "Showing {visibleCount} of {totalCount} changed paths"
 msgstr ""
 
@@ -1981,11 +1975,11 @@ msgstr "Snapshots"
 msgid "Snapshots by date"
 msgstr "Snapshots by date"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:697
+#: src/snapshot-compare/SnapshotComparePage.tsx:694
 msgid "Sort: path"
 msgstr ""
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:696
+#: src/snapshot-compare/SnapshotComparePage.tsx:693
 msgid "Sort: size delta"
 msgstr ""
 

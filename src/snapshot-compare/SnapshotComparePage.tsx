@@ -24,8 +24,7 @@ import {
   IconChevronRight,
   IconDownload,
   IconExclamationCircle,
-  IconFile,
-  IconFolder
+  IconFolderOpen
 } from "@tabler/icons-react";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useNavigate, useSearchParams } from "react-router";
@@ -33,6 +32,8 @@ import { useAppContext } from "../core/context/AppContext";
 import { useServerInstanceContext } from "../core/context/ServerInstanceContext";
 import { ErrorAlert } from "../core/ErrorAlert/ErrorAlert";
 import useApiRequest from "../core/hooks/useApiRequest";
+import IconWrapper from "../core/IconWrapper";
+import { getFileIcon } from "../snapshot-directory/fileIcons";
 import type { Snapshot, Snapshots, SourceInfo } from "../core/types";
 import sizeDisplayName from "../utils/formatSize";
 import { walkTrees, type WalkProgress, type WalkResult } from "./compareWalk";
@@ -430,9 +431,9 @@ function SnapshotComparePage() {
             <Box w={13} style={{ flexShrink: 0 }} />
           )}
           {node.isDir ? (
-            <IconFolder size={14} style={{ color: "var(--mantine-color-dimmed)", flexShrink: 0 }} />
+            <IconWrapper icon={IconFolderOpen} color="yellow" size={16} />
           ) : (
-            <IconFile size={14} style={{ color: "var(--mantine-color-dimmed)", flexShrink: 0 }} />
+            <IconWrapper icon={getFileIcon(node.name)} color="blue" size={16} />
           )}
           <Text ff="monospace" fz="sm" style={{ flex: 1, minWidth: 0 }} truncate="end">
             {node.name}
@@ -647,9 +648,6 @@ function SnapshotComparePage() {
                     )} removed`}`}
                     {stats.modifiedDelta !== 0 &&
                       `, ${signedSize(stats.modifiedDelta, bytesStringBase2)} ${t`in modified`}`}
-                  </Text>
-                  <Text fz="xs" c="dimmed">
-                    {t`${stats.skippedDirs} identical subtrees (${stats.skippedFiles.toLocaleString()} files) resolved by content ID, never fetched`}
                   </Text>
                   {stats.errors > 0 && (
                     <Text fz="xs" c="yellow.6">
