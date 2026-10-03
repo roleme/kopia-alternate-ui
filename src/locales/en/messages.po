@@ -15,13 +15,13 @@ msgstr ""
 
 #. placeholder {0}: node.oneSided.files
 #. placeholder {1}: node.oneSided.dirs
-#: src/snapshot-compare/SnapshotComparePage.tsx:453
+#: src/snapshot-compare/SnapshotComparePage.tsx:470
 msgid "{0} files, {1} dirs"
 msgstr ""
 
 #. placeholder {0}: stats.errors
-#: src/snapshot-compare/SnapshotComparePage.tsx:686
-msgid "{0} folders could not be compared — object fetch failed. Results are partial; counts cover what was read."
+#: src/snapshot-compare/SnapshotComparePage.tsx:704
+msgid "{0} folders could not be read"
 msgstr ""
 
 #: src/snapshot-history/components/SnapshotCountControl.tsx:23
@@ -64,14 +64,18 @@ msgstr "# of monthly snapshots"
 msgid "# of weekly snapshots"
 msgstr "# of weekly snapshots"
 
+#: src/snapshot-compare/SnapshotComparePage.tsx:743
+msgid "+ added · − removed · ± modified · ! unread folder"
+msgstr ""
+
 #. placeholder {0}: current.added
 #. placeholder {1}: current.removed
-#: src/snapshot-compare/SnapshotComparePage.tsx:358
+#: src/snapshot-compare/SnapshotComparePage.tsx:352
 msgid "+{0} −{1} lines"
 msgstr ""
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:685
-msgid "1 folder could not be compared — object fetch failed. Results are partial; counts cover what was read."
+#: src/snapshot-compare/SnapshotComparePage.tsx:704
+msgid "1 folder could not be read"
 msgstr ""
 
 #: src/snapshots/SnapshotsPage.tsx:147
@@ -120,11 +124,11 @@ msgstr "Active"
 msgid "Add"
 msgstr "Add"
 
-#: src/snapshot-history/SnapshotHistory.tsx:279
+#: src/snapshot-history/SnapshotHistory.tsx:280
 msgid "Add pin to prevent snapshot deletion"
 msgstr "Add pin to prevent snapshot deletion"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:134
+#: src/snapshot-compare/SnapshotComparePage.tsx:127
 msgid "added"
 msgstr ""
 
@@ -133,11 +137,11 @@ msgstr ""
 msgid "Advanced Options"
 msgstr "Advanced Options"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:573
+#: src/snapshot-compare/SnapshotComparePage.tsx:590
 msgid "after"
 msgstr ""
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:505
+#: src/snapshot-compare/SnapshotComparePage.tsx:522
 msgid "After"
 msgstr ""
 
@@ -208,11 +212,11 @@ msgstr "Back"
 msgid "Backblaze B2"
 msgstr "Backblaze B2"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:557
+#: src/snapshot-compare/SnapshotComparePage.tsx:574
 msgid "before"
 msgstr ""
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:495
+#: src/snapshot-compare/SnapshotComparePage.tsx:512
 msgid "Before"
 msgstr ""
 
@@ -291,7 +295,7 @@ msgstr "Canceling for"
 msgid "Change policy parameters"
 msgstr "Change policy parameters"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:723
+#: src/snapshot-compare/SnapshotComparePage.tsx:756
 msgid "Clear"
 msgstr ""
 
@@ -300,7 +304,7 @@ msgstr ""
 msgid "Close"
 msgstr "Close"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:708
+#: src/snapshot-compare/SnapshotComparePage.tsx:737
 msgid "Collapse all"
 msgstr ""
 
@@ -318,12 +322,13 @@ msgstr "Command Mode - After"
 msgid "Command Mode - Before"
 msgstr "Command Mode - Before"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:539
+#: src/snapshot-compare/SnapshotComparePage.tsx:556
 msgid "Compare snapshots"
 msgstr ""
 
 #: src/snapshot-history/SnapshotHistory.tsx:245
-msgid "Compare with previous"
+#: src/snapshot-history/SnapshotHistory.tsx:249
+msgid "Compare with previous snapshot"
 msgstr ""
 
 #: src/policies/modals/PolicyModal/PolicyModal.tsx:215
@@ -392,7 +397,7 @@ msgstr "Connected to"
 msgid "Container"
 msgstr "Container"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:344
+#: src/snapshot-compare/SnapshotComparePage.tsx:338
 msgid "Content could not be loaded."
 msgstr ""
 
@@ -400,7 +405,7 @@ msgstr ""
 msgid "Continue on Errors"
 msgstr "Continue on Errors"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:472
+#: src/snapshot-compare/SnapshotComparePage.tsx:489
 msgid "couldn't read"
 msgstr ""
 
@@ -807,7 +812,7 @@ msgstr "Error Correction Overhead"
 msgid "Error Handling"
 msgstr "Error Handling"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:140
+#: src/snapshot-compare/SnapshotComparePage.tsx:133
 msgid "errors"
 msgstr ""
 
@@ -848,7 +853,7 @@ msgstr "Failed to find policy"
 msgid "File Ignored"
 msgstr "File Ignored"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:337
+#: src/snapshot-compare/SnapshotComparePage.tsx:331
 msgid "File is too large to diff in the browser."
 msgstr ""
 
@@ -871,7 +876,7 @@ msgstr "Files that are smaller than the provided value will not be compressed"
 msgid "Files whose size exceeds the provided value will not be compressed"
 msgstr "Files whose size exceeds the provided value will not be compressed"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:692
+#: src/snapshot-compare/SnapshotComparePage.tsx:721
 msgid "Filter by path…"
 msgstr ""
 
@@ -1169,6 +1174,10 @@ msgstr "Login to {instanceName}"
 msgid "Logs"
 msgstr "Logs"
 
+#: src/snapshot-compare/SnapshotComparePage.tsx:650
+msgid "Lower bound — some folders could not be read"
+msgstr ""
+
 #: src/preferences/modals/EmailModal.tsx:233
 msgid "Mail From"
 msgstr "Mail From"
@@ -1249,7 +1258,7 @@ msgstr "Minimum Severity"
 msgid "Minimum severity required to use this notification profile"
 msgstr "Minimum severity required to use this notification profile"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:138
+#: src/snapshot-compare/SnapshotComparePage.tsx:131
 msgid "modified"
 msgstr ""
 
@@ -1332,7 +1341,7 @@ msgstr "Next snapshot"
 msgid "No"
 msgstr "No"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:732
+#: src/snapshot-compare/SnapshotComparePage.tsx:765
 msgid "No changed paths match the current filter."
 msgstr ""
 
@@ -1365,7 +1374,7 @@ msgstr "No policies found"
 msgid "No recepients defined"
 msgstr "No recepients defined"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:594
+#: src/snapshot-compare/SnapshotComparePage.tsx:611
 msgid "No snapshot pair selected — open the snapshot list and use the compare action on a row."
 msgstr ""
 
@@ -1382,7 +1391,7 @@ msgstr "No snapshots taken"
 msgid "None"
 msgstr "None"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:330
+#: src/snapshot-compare/SnapshotComparePage.tsx:324
 msgid "Not a text file — content diff is not available."
 msgstr ""
 
@@ -1489,12 +1498,12 @@ msgid "Owner"
 msgstr "Owner"
 
 #. placeholder {0}: stats.errors
-#: src/snapshot-compare/SnapshotComparePage.tsx:677
-msgid "Partial — {0} folders could not be read; counts cover what was read."
+#: src/snapshot-compare/SnapshotComparePage.tsx:694
+msgid "Partial — {0} folders could not be read"
 msgstr ""
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:676
-msgid "Partial — 1 folder could not be read; counts cover what was read."
+#: src/snapshot-compare/SnapshotComparePage.tsx:693
+msgid "Partial — 1 folder could not be read"
 msgstr ""
 
 #: src/core/context/LoginModal.tsx:66
@@ -1559,7 +1568,7 @@ msgstr "Per-Host Policies"
 msgid "Per-User Policies"
 msgstr "Per-User Policies"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:599
+#: src/snapshot-compare/SnapshotComparePage.tsx:616
 msgid "Pick two different snapshots to compare."
 msgstr ""
 
@@ -1630,7 +1639,7 @@ msgstr "Rclone Remote Path"
 msgid "Read-only mode prevents any changes to the repository"
 msgstr "Read-only mode prevents any changes to the repository"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:606
+#: src/snapshot-compare/SnapshotComparePage.tsx:623
 msgid "Reading changed folders"
 msgstr ""
 
@@ -1655,7 +1664,7 @@ msgstr "Refresh"
 msgid "Remote"
 msgstr "Remote"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:136
+#: src/snapshot-compare/SnapshotComparePage.tsx:129
 msgid "removed"
 msgstr ""
 
@@ -1709,9 +1718,17 @@ msgstr "Restore File Permissions"
 msgid "Restore files and directories"
 msgstr "Restore files and directories"
 
+#: src/snapshot-compare/SnapshotComparePage.tsx:707
+msgid "Results are partial — counts cover what was read."
+msgstr ""
+
 #: src/snapshot-history/SnapshotHistory.tsx:190
 msgid "Retention"
 msgstr "Retention"
+
+#: src/snapshot-compare/SnapshotComparePage.tsx:713
+msgid "Retry"
+msgstr ""
 
 #: src/snapshot-history/SnapshotHistory.tsx:171
 msgid "Root"
@@ -1864,12 +1881,12 @@ msgstr "Show {totalLength} individual snapshots"
 msgid "Show all snapshots by default"
 msgstr "Show all snapshots by default"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:316
-#: src/snapshot-compare/SnapshotComparePage.tsx:323
+#: src/snapshot-compare/SnapshotComparePage.tsx:310
+#: src/snapshot-compare/SnapshotComparePage.tsx:317
 msgid "Show content diff"
 msgstr ""
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:715
+#: src/snapshot-compare/SnapshotComparePage.tsx:748
 msgid "Showing {visibleCount} of {totalCount} changed paths"
 msgstr ""
 
@@ -1953,7 +1970,7 @@ msgstr "Snapshot schedules using UNIX crontab syntax:"
 msgid "Snapshot unmounted"
 msgstr "Snapshot unmounted"
 
-#: src/snapshot-history/SnapshotHistory.tsx:327
+#: src/snapshot-history/SnapshotHistory.tsx:328
 msgid "Snapshot(s) deleted"
 msgstr "Snapshot(s) deleted"
 
@@ -1969,11 +1986,11 @@ msgstr "Snapshots"
 msgid "Snapshots by date"
 msgstr "Snapshots by date"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:700
+#: src/snapshot-compare/SnapshotComparePage.tsx:729
 msgid "Sort: path"
 msgstr ""
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:699
+#: src/snapshot-compare/SnapshotComparePage.tsx:728
 msgid "Sort: size delta"
 msgstr ""
 
@@ -2055,7 +2072,7 @@ msgstr "Tasks"
 msgid "Test notification sent"
 msgstr "Test notification sent"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:351
+#: src/snapshot-compare/SnapshotComparePage.tsx:345
 msgid "Text is identical — only metadata differs."
 msgstr ""
 
@@ -2071,11 +2088,11 @@ msgstr "The repository was successfully disconnected"
 msgid "The repository was synchronized successfully"
 msgstr "The repository was synchronized successfully"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:621
+#: src/snapshot-compare/SnapshotComparePage.tsx:638
 msgid "The selected snapshots are identical — nothing was added, removed or modified."
 msgstr ""
 
-#: src/snapshot-history/SnapshotHistory.tsx:328
+#: src/snapshot-history/SnapshotHistory.tsx:329
 msgid "The snapshot(s) was delete successfully"
 msgstr "The snapshot(s) was delete successfully"
 
@@ -2156,7 +2173,7 @@ msgstr "Treat unrecognized/unsupported directory entries as non-fatal errors."
 msgid "Trusted server certificate fingerprint (SHA256)"
 msgstr "Trusted server certificate fingerprint (SHA256)"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:442
+#: src/snapshot-compare/SnapshotComparePage.tsx:449
 msgid "type changed"
 msgstr ""
 
@@ -2180,7 +2197,7 @@ msgid "Update"
 msgstr "Update"
 
 #: src/snapshot-history/modals/UpdateDescriptionModal.tsx:50
-#: src/snapshot-history/SnapshotHistory.tsx:265
+#: src/snapshot-history/SnapshotHistory.tsx:266
 msgid "Update description"
 msgstr "Update description"
 

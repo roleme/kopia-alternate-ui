@@ -242,10 +242,11 @@ function SnapshotHistory() {
               render: (item) => (
                 <Group gap={4} justify="right" wrap="nowrap">
                   {previousSnapshot(item) && (
-                    <Tooltip label={t`Compare with previous`}>
+                    <Tooltip label={t`Compare with previous snapshot`}>
                       <ActionIcon
                         variant="subtle"
                         color="blue.5"
+                        aria-label={t`Compare with previous snapshot`}
                         onClick={() => {
                           const older = previousSnapshot(item)!;
                           const params = new URLSearchParams({

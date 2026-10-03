@@ -10,7 +10,7 @@ import {
   Container,
   Group,
   Paper,
-  Pill,
+  Chip,
   Progress,
   Select,
   Stack,
@@ -161,6 +161,7 @@ function SnapshotComparePage() {
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const [details, setDetails] = useState<Set<string>>(new Set());
   const [contentDiffs, setContentDiffs] = useState<Record<string, ContentDiffState>>({});
+  const [retryTick, setRetryTick] = useState(0);
   const runIdRef = useRef(0);
 
   const { error, execute } = useApiRequest({
@@ -220,7 +221,7 @@ function SnapshotComparePage() {
         }
       }
     })();
-  }, [paramA, paramB]);
+  }, [paramA, paramB, retryTick]);
 
   const snapshotById = useMemo(() => new Map(snapshots.map((s) => [s.rootID, s])), [snapshots]);
   const snapshotA = paramA ? snapshotById.get(paramA) : undefined;
@@ -405,8 +406,21 @@ function SnapshotComparePage() {
           px="xs"
           py={6}
           ml={depth * 22}
-          style={{ cursor: "pointer", borderRadius: 4 }}
+          role="button"
+          tabIndex={0}
+          aria-expanded={node.isDir ? open : showDetail}
+          style={{
+            cursor: "pointer",
+            borderRadius: 4,
+            background: open || showDetail ? "var(--mantine-color-gray-1)" : undefined
+          }}
           onClick={() => toggle(node.id, node.isDir)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              toggle(node.id, node.isDir);
+            }
+          }}
         >
           <Text ff="monospace" fw={700} fz="sm" c={STATUS_COLOR[node.status]} style={{ width: 14, flexShrink: 0 }}>
             {STATUS_GLYPH[node.status]}
@@ -437,7 +451,17 @@ function SnapshotComparePage() {
             )}
           </Text>
           {node.isDir && node.agg && aggParts.length > 0 && (
-            <Text ff="monospace" fz="xs" c="dimmed" style={{ flexShrink: 0 }}>
+            <Text
+              ff="monospace"
+              fz="xs"
+              c="dimmed"
+              style={{
+                flexShrink: 0,
+                minWidth: 64,
+                textAlign: "right",
+                opacity: filter === "all" || node.status === filter ? 1 : 0.45
+              }}
+            >
               {aggParts.join(" ")}
             </Text>
           )}
@@ -463,7 +487,7 @@ function SnapshotComparePage() {
           >
             {node.isDir && node.status === "error"
               ? t`couldn't read`
-              : node.isDir && !node.agg
+              : node.isDir && !node.agg && !node.oneSided
                 ? "…"
                 : signedSize(delta, bytesStringBase2)}
           </Text>
@@ -488,7 +512,7 @@ function SnapshotComparePage() {
                     {t`Before`}
                   </Text>
                   <Code fz="xs" style={{ whiteSpace: "nowrap" }}>
-                    {sizeDisplayName(entrySizeOf(node.a), bytesStringBase2)} · {new Date(node.a.mtime).toLocaleString()}
+                    {sizeDisplayName(entrySizeOf(node.a), bytesStringBase2)}
                   </Code>
                 </Group>
               )}
@@ -498,7 +522,7 @@ function SnapshotComparePage() {
                     {t`After`}
                   </Text>
                   <Code fz="xs" style={{ whiteSpace: "nowrap" }}>
-                    {sizeDisplayName(entrySizeOf(node.b), bytesStringBase2)} · {new Date(node.b.mtime).toLocaleString()}
+                    {sizeDisplayName(entrySizeOf(node.b), bytesStringBase2)}
                   </Code>
                 </Group>
               )}
@@ -623,6 +647,7 @@ function SnapshotComparePage() {
                   ff="monospace"
                   fz="xl"
                   fw={500}
+                  title={stats.errors > 0 ? t`Lower bound \u2014 some folders could not be read` : undefined}
                   c={stats.delta > 0 ? "green.6" : stats.delta < 0 ? "red.6" : undefined}
                 >
                   {stats.errors > 0 ? "\u2265 " : ""}
@@ -645,20 +670,12 @@ function SnapshotComparePage() {
                           ? "red.6"
                           : "dimmed";
                     return (
-                      <Pill
-                        key={key}
-                        onClick={() => setFilter(filter === key ? "all" : key)}
-                        style={{
-                          cursor: "pointer",
-                          fontWeight: filter === key ? 700 : 400,
-                          opacity: filter === "all" || filter === key ? 1 : 0.55
-                        }}
-                      >
+                      <Chip key={key} value={key} size="xs" onChange={(checked) => setFilter(checked ? key : "all")}>
                         {`${count} ${pillLabel(key)} \u00b7 `}
                         <Text component="span" inherit ff="monospace" c={color}>
                           {signedSize(value, bytesStringBase2)}
                         </Text>
-                      </Pill>
+                      </Chip>
                     );
                   })}
                 </Stack>
@@ -666,17 +683,31 @@ function SnapshotComparePage() {
               {stats.errors > 0 && (
                 <Text fz="xs" c="yellow.6" mt="xs">
                   {stats.errors === 1
-                    ? t`Partial \u2014 1 folder could not be read; counts cover what was read.`
-                    : t`Partial \u2014 ${stats.errors} folders could not be read; counts cover what was read.`}
+                    ? t`Partial \u2014 1 folder could not be read`
+                    : t`Partial \u2014 ${stats.errors} folders could not be read`}
                 </Text>
               )}
             </Paper>
 
             {stats.errors > 0 && (
-              <Alert color="yellow" icon={<IconExclamationCircle size={16} />} variant="light">
-                {stats.errors === 1
-                  ? t`1 folder could not be compared \u2014 object fetch failed. Results are partial; counts cover what was read.`
-                  : t`${stats.errors} folders could not be compared \u2014 object fetch failed. Results are partial; counts cover what was read.`}
+              <Alert
+                color="yellow"
+                icon={<IconExclamationCircle size={16} />}
+                variant="light"
+                title={
+                  stats.errors === 1 ? t`1 folder could not be read` : t`${stats.errors} folders could not be read`
+                }
+              >
+                <Group gap="xs">
+                  <span>{t`Results are partial \u2014 counts cover what was read.`}</span>
+                  <Anchor
+                    fz="sm"
+                    onClick={() => setRetryTick((n) => n + 1)}
+                    style={{ cursor: "pointer", whiteSpace: "nowrap" }}
+                  >
+                    {t`Retry`}
+                  </Anchor>
+                </Group>
               </Alert>
             )}
 
@@ -703,6 +734,10 @@ function SnapshotComparePage() {
               )}
             </Group>
 
+            <Text fz="xs" c="dimmed">
+              {t`+ added \u00b7 \u2212 removed \u00b7 \u00b1 modified \u00b7 ! unread folder`}
+            </Text>
+
             {narrow && (
               <Text fz="xs" c="dimmed">
                 {t`Showing ${visibleCount} of ${totalCount} changed paths`}{" "}
@@ -718,7 +753,7 @@ function SnapshotComparePage() {
               </Text>
             )}
 
-            <style>{`.cmp-row:hover{background:var(--mantine-color-gray-1)}`}</style>
+            <style>{`.cmp-row:hover{background:var(--mantine-color-gray-1)}.cmp-row:focus-visible{outline:2px solid var(--mantine-color-blue-4);outline-offset:-2px}`}</style>
             <Paper withBorder radius="md" style={{ maxHeight: 480, overflowY: "auto" }} p="xs">
               {visibleRoots.length === 0 ? (
                 <Text c="dimmed" ta="center" py="xl">
