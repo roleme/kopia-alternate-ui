@@ -64,10 +64,6 @@ msgstr "# av månedlige øyeblikksbilder"
 msgid "# of weekly snapshots"
 msgstr "# av ukentlige øyeblikksbilder"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:759
-msgid "+ added · − removed · ± modified · ! unread folder"
-msgstr ""
-
 #. placeholder {0}: current.added
 #. placeholder {1}: current.removed
 #: src/snapshot-compare/SnapshotComparePage.tsx:371
@@ -291,7 +287,7 @@ msgstr "Avbryter for"
 msgid "Change policy parameters"
 msgstr "Endre policy parametere"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:772
+#: src/snapshot-compare/SnapshotComparePage.tsx:768
 msgid "Clear"
 msgstr ""
 
@@ -1337,7 +1333,7 @@ msgstr "Neste øyeblikksbilde"
 msgid "No"
 msgstr "Nei"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:781
+#: src/snapshot-compare/SnapshotComparePage.tsx:777
 msgid "No changed paths match the current filter."
 msgstr ""
 
@@ -1882,7 +1878,7 @@ msgstr "Vis alle øyeblikksbilder som standard"
 msgid "Show content diff"
 msgstr ""
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:764
+#: src/snapshot-compare/SnapshotComparePage.tsx:760
 msgid "Showing {visibleCount} of {totalCount} changed paths"
 msgstr ""
 
