@@ -100,6 +100,17 @@ function keepMatching(nodes: DiffNode[], filter: Filter, query: string): DiffNod
   return (nodes ?? []).filter((n) => matchesFilter(n, filter, query));
 }
 
+/** Counts rendered rows under a filter: ancestors of matches render, their
+ * non-matching children do not — the tree prunes at every level. */
+function countDisplayed(nodes: DiffNode[], filter: Filter, query: string): number {
+  let total = 0;
+  for (const node of keepMatching(nodes, filter, query)) {
+    total += 1;
+    if (node.children) total += countDisplayed(node.children, filter, query);
+  }
+  return total;
+}
+
 function sortNodes(nodes: DiffNode[], sort: SortMode): DiffNode[] {
   const sorted = [...nodes];
   if (sort === "path") {
@@ -258,7 +269,10 @@ function SnapshotComparePage() {
     return keepMatching(result.roots, filter, query.trim().toLowerCase());
   }, [result, filter, query]);
 
-  const visibleCount = useMemo(() => countNodes(visibleRoots), [visibleRoots]);
+  const visibleCount = useMemo(
+    () => (result ? countDisplayed(result.roots, filter, query.trim().toLowerCase()) : 0),
+    [result, filter, query]
+  );
   const totalCount = useMemo(() => (result ? countNodes(result.roots) : 0), [result]);
 
   const toggle = (id: string, isDir: boolean) => {
