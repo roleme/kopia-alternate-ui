@@ -40,7 +40,7 @@ import { entrySize as entrySizeOf, isDirectoryEntry, type DiffNode, type DiffSta
 import { compactDiff, diffLines, looksLikeText, type DiffLine } from "./lineDiff";
 
 type Filter = "all" | DiffStatus;
-type SortMode = "delta" | "path" | "status";
+type SortMode = "delta" | "path";
 
 type ContentDiffState =
   | { state: "loading" }
@@ -48,13 +48,6 @@ type ContentDiffState =
   | { state: "too-large" }
   | { state: "error" }
   | { state: "text"; lines: DiffLine[]; added: number; removed: number };
-
-const STATUS_ORDER: Record<DiffStatus, number> = {
-  added: 0,
-  removed: 1,
-  modified: 2,
-  error: 3
-};
 
 const STATUS_COLOR: Record<DiffStatus, MantineColor> = {
   added: "green.6",
@@ -114,10 +107,9 @@ function sortNodes(nodes: DiffNode[], sort: SortMode): DiffNode[] {
   const sorted = [...nodes];
   if (sort === "path") {
     sorted.sort((a, b) => a.path.localeCompare(b.path));
-  } else if (sort === "status") {
-    sorted.sort((a, b) => STATUS_ORDER[a.status] - STATUS_ORDER[b.status] || a.path.localeCompare(b.path));
   } else {
-    sorted.sort((a, b) => Math.abs(nodeDelta(b)) - Math.abs(nodeDelta(a)) || a.path.localeCompare(b.path));
+    // signed: growth first, shrinkage last (+8, +7, 0, -6, -8)
+    sorted.sort((a, b) => nodeDelta(b) - nodeDelta(a) || a.path.localeCompare(b.path));
   }
   return sorted;
 }
@@ -702,8 +694,7 @@ function SnapshotComparePage() {
               <Select
                 data={[
                   { value: "delta", label: t`Sort: size delta` },
-                  { value: "path", label: t`Sort: path` },
-                  { value: "status", label: t`Sort: status` }
+                  { value: "path", label: t`Sort: path` }
                 ]}
                 value={sort}
                 onChange={(v) => setSort((v as SortMode) ?? "delta")}
