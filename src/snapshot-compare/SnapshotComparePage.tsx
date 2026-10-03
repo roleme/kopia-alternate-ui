@@ -407,10 +407,11 @@ function SnapshotComparePage() {
     return (
       <Box key={node.id}>
         <Group
+          className="cmp-row"
           gap="xs"
           wrap="nowrap"
           px="xs"
-          py={4}
+          py={6}
           ml={depth * 22}
           style={{ cursor: "pointer", borderRadius: 4 }}
           onClick={() => toggle(node.id, node.isDir)}
@@ -562,36 +563,58 @@ function SnapshotComparePage() {
   return (
     <Container fluid>
       <Stack>
-        <Group>
+        <Group gap="sm" wrap="nowrap">
           <ActionIcon variant="subtle" onClick={() => navigate(-1)}>
             <IconArrowLeft size={24} />
           </ActionIcon>
           <Title order={1}>{t`Compare snapshots`}</Title>
+          <Text
+            c="dimmed"
+            ff="monospace"
+            fz="sm"
+            truncate="end"
+            style={{ flex: 1, minWidth: 0, paddingTop: 6 }}
+            title={sourceInfo.path}
+          >
+            {sourceInfo.path}
+          </Text>
         </Group>
-        <Text c="dimmed" ff="monospace" fz="sm">
-          {sourceInfo.path}
-        </Text>
 
         {(snapshotA || snapshotB) && (
-          <Group gap="sm" wrap="nowrap">
+          <Stack gap={2} miw={0}>
             {snapshotA && (
-              <Text ff="monospace" fz="sm" truncate="end" maw={520}>
-                {pairLabel(snapshotA)}
-                {snapshotA.description && ` · ${snapshotA.description}`}
-              </Text>
-            )}
-            {snapshotA && snapshotB && (
-              <Text c="dimmed" fz="sm">
-                →
-              </Text>
+              <Group gap="sm" wrap="nowrap">
+                <Text fz="xs" c="dimmed" w={52} style={{ flexShrink: 0 }}>
+                  {t`before`}
+                </Text>
+                <Text
+                  ff="monospace"
+                  fz="sm"
+                  truncate="end"
+                  title={`${pairLabel(snapshotA)}${snapshotA.description ? ` · ${snapshotA.description}` : ""}`}
+                >
+                  {pairLabel(snapshotA)}
+                  {snapshotA.description && ` · ${snapshotA.description}`}
+                </Text>
+              </Group>
             )}
             {snapshotB && (
-              <Text ff="monospace" fz="sm" truncate="end" maw={520}>
-                {pairLabel(snapshotB)}
-                {snapshotB.description && ` · ${snapshotB.description}`}
-              </Text>
+              <Group gap="sm" wrap="nowrap">
+                <Text fz="xs" c="dimmed" w={52} style={{ flexShrink: 0 }}>
+                  {t`after`}
+                </Text>
+                <Text
+                  ff="monospace"
+                  fz="sm"
+                  truncate="end"
+                  title={`${pairLabel(snapshotB)}${snapshotB.description ? ` · ${snapshotB.description}` : ""}`}
+                >
+                  {pairLabel(snapshotB)}
+                  {snapshotB.description && ` · ${snapshotB.description}`}
+                </Text>
+              </Group>
             )}
-          </Group>
+          </Stack>
         )}
 
         <ErrorAlert error={error} />
@@ -639,16 +662,23 @@ function SnapshotComparePage() {
                     {stats.errors > 0 ? "≥ " : ""}
                     {signedSize(stats.delta, bytesStringBase2)}
                   </Text>
-                  <Text fz="xs" c="dimmed">
-                    {sizeDisplayName(totalASize, bytesStringBase2)} →{" "}
-                    {sizeDisplayName(totalASize + stats.delta, bytesStringBase2)}
-                    {` · ${t`${sizeDisplayName(stats.bytesAdded, bytesStringBase2)} added, ${sizeDisplayName(
-                      stats.bytesRemoved,
-                      bytesStringBase2
-                    )} removed`}`}
-                    {stats.modifiedDelta !== 0 &&
-                      `, ${signedSize(stats.modifiedDelta, bytesStringBase2)} ${t`in modified`}`}
-                  </Text>
+                  <Group gap={6} wrap="wrap" fz="xs" c="dimmed">
+                    <Text fz="xs" c="dimmed" style={{ whiteSpace: "nowrap" }}>
+                      {sizeDisplayName(totalASize, bytesStringBase2)} →{" "}
+                      {sizeDisplayName(totalASize + stats.delta, bytesStringBase2)}
+                    </Text>
+                    <Text fz="xs" c="dimmed" style={{ whiteSpace: "nowrap" }}>
+                      {t`${sizeDisplayName(stats.bytesAdded, bytesStringBase2)} added`}
+                    </Text>
+                    <Text fz="xs" c="dimmed" style={{ whiteSpace: "nowrap" }}>
+                      {t`${sizeDisplayName(stats.bytesRemoved, bytesStringBase2)} removed`}
+                    </Text>
+                    {stats.modifiedDelta !== 0 && (
+                      <Text fz="xs" c="dimmed" style={{ whiteSpace: "nowrap" }}>
+                        {signedSize(stats.modifiedDelta, bytesStringBase2)} {t`in modified`}
+                      </Text>
+                    )}
+                  </Group>
                   {stats.errors > 0 && (
                     <Text fz="xs" c="yellow.6">
                       {t`Partial — ${stats.errors} folders could not be read; counts cover what was read.`}
@@ -699,7 +729,7 @@ function SnapshotComparePage() {
                 w={180}
               />
               {expanded.size > 0 && (
-                <Button variant="subtle" size="xs" onClick={() => setExpanded(new Set())}>
+                <Button variant="subtle" size="xs" ml="auto" onClick={() => setExpanded(new Set())}>
                   {t`Collapse all`}
                 </Button>
               )}
@@ -720,6 +750,7 @@ function SnapshotComparePage() {
               </Text>
             )}
 
+            <style>{`.cmp-row:hover{background:var(--mantine-color-gray-1)}`}</style>
             <Paper withBorder radius="md" style={{ maxHeight: 480, overflowY: "auto" }} p="xs">
               {visibleRoots.length === 0 ? (
                 <Text c="dimmed" ta="center" py="xl">
