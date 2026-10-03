@@ -70,13 +70,18 @@ export function emptyStats(): DiffStats {
   };
 }
 
+/** Kopia serializes entry types as single letters: d/f/s. */
+export function isDirectoryEntry(entry: DirEntry): boolean {
+  return entry.type === "d";
+}
+
 export function entrySize(entry: DirEntry): number {
-  if (entry.type === "dir") return entry.summ?.size ?? 0;
+  if (isDirectoryEntry(entry)) return entry.summ?.size ?? 0;
   return entry.size ?? 0;
 }
 
 export function entryFiles(entry: DirEntry): number {
-  if (entry.type === "dir") return entry.summ?.files ?? 0;
+  if (isDirectoryEntry(entry)) return entry.summ?.files ?? 0;
   return 1;
 }
 
@@ -201,7 +206,7 @@ export function compareEntries(
       // subtrees; only metadata could have changed (and for dirs we treat
       // that as identical too — the entry carries no dir metadata worth
       // surfacing).
-      if (a.type === "dir") {
+      if (isDirectoryEntry(a)) {
         stats.skippedDirs += 1;
         stats.skippedFiles += entryFiles(a);
       } else {
@@ -227,7 +232,7 @@ export function compareEntries(
     }
 
     if (a && b) {
-      const bothDirs = a.type === "dir" && b.type === "dir";
+      const bothDirs = isDirectoryEntry(a) && isDirectoryEntry(b);
       if (bothDirs) {
         nodes.push({
           id,
@@ -263,7 +268,7 @@ export function compareEntries(
     }
 
     if (b) {
-      if (b.type === "dir") {
+      if (isDirectoryEntry(b)) {
         stats.dirsAdded += 1;
         stats.bytesAdded += entrySize(b);
         stats.delta += entrySize(b);
@@ -288,7 +293,7 @@ export function compareEntries(
     }
 
     if (a) {
-      if (a.type === "dir") {
+      if (isDirectoryEntry(a)) {
         stats.dirsRemoved += 1;
         stats.bytesRemoved += entrySize(a);
         stats.delta -= entrySize(a);

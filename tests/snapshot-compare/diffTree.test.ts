@@ -9,13 +9,13 @@ import {
 } from "../../src/snapshot-compare/diffTree";
 
 function file(name: string, obj: string, size: number, extra?: Partial<DirEntry>): DirEntry {
-  return { name, type: "file", mode: "0644", mtime: "2026-01-01T00:00:00Z", obj, size, ...extra };
+  return { name, type: "f", mode: "0644", mtime: "2026-01-01T00:00:00Z", obj, size, ...extra };
 }
 
 function dir(name: string, obj: string, summ?: { size: number; files: number; dirs?: number }): DirEntry {
   return {
     name,
-    type: "dir",
+    type: "d",
     mode: "0700",
     mtime: "2026-01-01T00:00:00Z",
     obj,

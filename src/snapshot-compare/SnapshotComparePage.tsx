@@ -34,10 +34,10 @@ import { useAppContext } from "../core/context/AppContext";
 import { useServerInstanceContext } from "../core/context/ServerInstanceContext";
 import { ErrorAlert } from "../core/ErrorAlert/ErrorAlert";
 import useApiRequest from "../core/hooks/useApiRequest";
-import type { DirEntry, Snapshot, Snapshots, SourceInfo } from "../core/types";
+import type { Snapshot, Snapshots, SourceInfo } from "../core/types";
 import sizeDisplayName from "../utils/formatSize";
 import { walkTrees, type WalkProgress, type WalkResult } from "./compareWalk";
-import type { DiffNode, DiffStatus, DiffStats } from "./diffTree";
+import { entrySize as entrySizeOf, isDirectoryEntry, type DiffNode, type DiffStatus, type DiffStats } from "./diffTree";
 
 type Filter = "all" | DiffStatus;
 type SortMode = "delta" | "path" | "status";
@@ -68,11 +68,6 @@ const STATUS_GLYPH: Record<DiffStatus, string> = {
 
 function nodeDelta(node: DiffNode): number {
   return node.agg ? node.agg.delta : node.delta;
-}
-
-function entrySizeOf(entry: DirEntry): number {
-  if (entry.type === "dir") return entry.summ?.size ?? 0;
-  return entry.size ?? 0;
 }
 
 function signedSize(value: number, base2: boolean): string {
@@ -410,7 +405,7 @@ function SnapshotComparePage() {
                   </Code>
                 </Group>
               )}
-              {node.b && node.b.type !== "dir" && (node.status === "added" || node.status === "modified") && (
+              {node.b && !isDirectoryEntry(node.b) && (node.status === "added" || node.status === "modified") && (
                 <Anchor
                   href={kopiaService.objectUrl(node.b.obj, node.b.name)}
                   fz="xs"
