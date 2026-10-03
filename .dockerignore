@@ -1,7 +1,0 @@
-.env
-node_modules
-.vscode
-*.md
-.dev
-dist
-coverage
