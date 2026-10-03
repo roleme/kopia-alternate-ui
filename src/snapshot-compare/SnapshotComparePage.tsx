@@ -755,10 +755,6 @@ function SnapshotComparePage() {
               )}
             </Group>
 
-            <Text fz="xs" c="dimmed">
-              {t`+ added \u00b7 \u2212 removed \u00b7 \u00b1 modified \u00b7 ! unread folder`}
-            </Text>
-
             {narrow && (
               <Text fz="xs" c="dimmed">
                 {t`Showing ${visibleCount} of ${totalCount} changed paths`}{" "}

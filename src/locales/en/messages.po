@@ -64,10 +64,6 @@ msgstr "# of monthly snapshots"
 msgid "# of weekly snapshots"
 msgstr "# of weekly snapshots"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:759
-msgid "+ added · − removed · ± modified · ! unread folder"
-msgstr ""
-
 #. placeholder {0}: current.added
 #. placeholder {1}: current.removed
 #: src/snapshot-compare/SnapshotComparePage.tsx:371
@@ -291,7 +287,7 @@ msgstr "Canceling for"
 msgid "Change policy parameters"
 msgstr "Change policy parameters"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:772
+#: src/snapshot-compare/SnapshotComparePage.tsx:768
 msgid "Clear"
 msgstr ""
 
@@ -1337,7 +1333,7 @@ msgstr "Next snapshot"
 msgid "No"
 msgstr "No"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:781
+#: src/snapshot-compare/SnapshotComparePage.tsx:777
 msgid "No changed paths match the current filter."
 msgstr ""
 
@@ -1882,7 +1878,7 @@ msgstr "Show all snapshots by default"
 msgid "Show content diff"
 msgstr ""
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:764
+#: src/snapshot-compare/SnapshotComparePage.tsx:760
 msgid "Showing {visibleCount} of {totalCount} changed paths"
 msgstr ""
 
