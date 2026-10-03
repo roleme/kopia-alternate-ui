@@ -656,7 +656,7 @@ function SnapshotComparePage() {
         {stats && (stats.errors > 0 || stats.delta !== 0 || visibleRoots.length > 0) && (
           <>
             <Paper withBorder p="md" radius="md">
-              <Stack gap="xs">
+              <Group justify="space-between" align="flex-start" gap="md" wrap="wrap">
                 <Stack gap={4} style={{ minWidth: 0 }}>
                   <Text
                     ff="monospace"
@@ -664,22 +664,30 @@ function SnapshotComparePage() {
                     fw={500}
                     c={stats.delta > 0 ? "green.6" : stats.delta < 0 ? "red.6" : undefined}
                   >
-                    {stats.errors > 0 ? "≥ " : ""}
+                    {stats.errors > 0 ? "\u2265 " : ""}
                     {signedSize(stats.delta, bytesStringBase2)}
                   </Text>
                   <Text fz="xs" c="dimmed" style={{ whiteSpace: "nowrap" }}>
-                    {sizeDisplayName(totalASize, bytesStringBase2)} →{" "}
+                    {sizeDisplayName(totalASize, bytesStringBase2)} \u2192{" "}
                     {sizeDisplayName(totalASize + stats.delta, bytesStringBase2)}
                   </Text>
                 </Stack>
-                <Pill.Group>
+                <Pill.Group gap="xs" style={{ justifyContent: "flex-end" }}>
                   {(["added", "removed", "modified"] as DiffStatus[]).map((key) => {
                     const count = countFor(stats, key);
                     if (count === 0) return null;
-                    const sizeText =
-                      key === "modified"
-                        ? signedSize(stats.modifiedDelta, bytesStringBase2)
-                        : sizeDisplayName(key === "added" ? stats.bytesAdded : stats.bytesRemoved, bytesStringBase2);
+                    const value =
+                      key === "added"
+                        ? stats.bytesAdded
+                        : key === "removed"
+                          ? -stats.bytesRemoved
+                          : stats.modifiedDelta;
+                    const color =
+                      key === "added" || (key === "modified" && value > 0)
+                        ? "green.6"
+                        : key === "removed" || (key === "modified" && value < 0)
+                          ? "red.6"
+                          : "dimmed";
                     return (
                       <Pill
                         key={key}
@@ -690,17 +698,20 @@ function SnapshotComparePage() {
                           opacity: filter === "all" || filter === key ? 1 : 0.55
                         }}
                       >
-                        {`${STATUS_GLYPH[key]} ${count} ${pillLabel(key)} · ${sizeText}`}
+                        {`${STATUS_GLYPH[key]} ${count} ${pillLabel(key)} \u00b7 `}
+                        <Text component="span" inherit ff="monospace" c={color}>
+                          {signedSize(value, bytesStringBase2)}
+                        </Text>
                       </Pill>
                     );
                   })}
                 </Pill.Group>
-                {stats.errors > 0 && (
-                  <Text fz="xs" c="yellow.6">
-                    {t`Partial — ${stats.errors} folders could not be read; counts cover what was read.`}
-                  </Text>
-                )}
-              </Stack>
+              </Group>
+              {stats.errors > 0 && (
+                <Text fz="xs" c="yellow.6" mt="xs">
+                  {t`Partial \u2014 ${stats.errors} folders could not be read; counts cover what was read.`}
+                </Text>
+              )}
             </Paper>
 
             {stats.errors > 0 && (

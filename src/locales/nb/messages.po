@@ -20,7 +20,7 @@ msgid "{0} files, {1} dirs"
 msgstr ""
 
 #. placeholder {0}: stats.errors
-#: src/snapshot-compare/SnapshotComparePage.tsx:710
+#: src/snapshot-compare/SnapshotComparePage.tsx:719
 msgid "{0} folders could not be compared — object fetch failed. Results are partial; counts cover what was read."
 msgstr ""
 
@@ -287,7 +287,7 @@ msgstr "Avbryter for"
 msgid "Change policy parameters"
 msgstr "Endre policy parametere"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:747
+#: src/snapshot-compare/SnapshotComparePage.tsx:756
 msgid "Clear"
 msgstr ""
 
@@ -296,7 +296,7 @@ msgstr ""
 msgid "Close"
 msgstr "Lukk"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:732
+#: src/snapshot-compare/SnapshotComparePage.tsx:741
 msgid "Collapse all"
 msgstr ""
 
@@ -875,7 +875,7 @@ msgstr "Filer som er mindre enn den angitte verdien vil ikke bli komprimert"
 msgid "Files whose size exceeds the provided value will not be compressed"
 msgstr "Filer med en størrelse som overstiger den angitte verdien, vil ikke bli komprimert"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:716
+#: src/snapshot-compare/SnapshotComparePage.tsx:725
 msgid "Filter by path…"
 msgstr ""
 
@@ -1336,7 +1336,7 @@ msgstr "Neste øyeblikksbilde"
 msgid "No"
 msgstr "Nei"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:756
+#: src/snapshot-compare/SnapshotComparePage.tsx:765
 msgid "No changed paths match the current filter."
 msgstr ""
 
@@ -1497,7 +1497,7 @@ msgid "Owner"
 msgstr "Eier"
 
 #. placeholder {0}: stats.errors
-#: src/snapshot-compare/SnapshotComparePage.tsx:702
+#: src/snapshot-compare/SnapshotComparePage.tsx:712
 msgid "Partial — {0} folders could not be read; counts cover what was read."
 msgstr ""
 
@@ -1873,7 +1873,7 @@ msgstr "Vis alle øyeblikksbilder som standard"
 msgid "Show content diff"
 msgstr ""
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:739
+#: src/snapshot-compare/SnapshotComparePage.tsx:748
 msgid "Showing {visibleCount} of {totalCount} changed paths"
 msgstr ""
 
@@ -1973,11 +1973,11 @@ msgstr "Øyeblikksbilder"
 msgid "Snapshots by date"
 msgstr "Øyeblikksbilder per dato"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:724
+#: src/snapshot-compare/SnapshotComparePage.tsx:733
 msgid "Sort: path"
 msgstr ""
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:723
+#: src/snapshot-compare/SnapshotComparePage.tsx:732
 msgid "Sort: size delta"
 msgstr ""
 
