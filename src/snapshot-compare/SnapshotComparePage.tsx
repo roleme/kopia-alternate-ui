@@ -702,14 +702,18 @@ function SnapshotComparePage() {
               </Group>
               {stats.errors > 0 && (
                 <Text fz="xs" c="yellow.6" mt="xs">
-                  {t`Partial \u2014 ${stats.errors} folders could not be read; counts cover what was read.`}
+                  {stats.errors === 1
+                    ? t`Partial \u2014 1 folder could not be read; counts cover what was read.`
+                    : t`Partial \u2014 ${stats.errors} folders could not be read; counts cover what was read.`}
                 </Text>
               )}
             </Paper>
 
             {stats.errors > 0 && (
               <Alert color="yellow" icon={<IconExclamationCircle size={16} />} variant="light">
-                {t`${stats.errors} folders could not be compared — object fetch failed. Results are partial; counts cover what was read.`}
+                {stats.errors === 1
+                  ? t`1 folder could not be compared \u2014 object fetch failed. Results are partial; counts cover what was read.`
+                  : t`${stats.errors} folders could not be compared \u2014 object fetch failed. Results are partial; counts cover what was read.`}
               </Alert>
             )}
 
