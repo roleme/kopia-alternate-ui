@@ -18,14 +18,7 @@ import {
   TextInput,
   Title
 } from "@mantine/core";
-import {
-  IconArrowLeft,
-  IconCheck,
-  IconChevronRight,
-  IconDownload,
-  IconExclamationCircle,
-  IconFolderOpen
-} from "@tabler/icons-react";
+import { IconArrowLeft, IconCheck, IconChevronRight, IconExclamationCircle, IconFolderOpen } from "@tabler/icons-react";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 import { useAppContext } from "../core/context/AppContext";
@@ -37,7 +30,7 @@ import { getFileIcon } from "../snapshot-directory/fileIcons";
 import type { Snapshot, Snapshots, SourceInfo } from "../core/types";
 import sizeDisplayName from "../utils/formatSize";
 import { walkTrees, type WalkProgress, type WalkResult } from "./compareWalk";
-import { entrySize as entrySizeOf, isDirectoryEntry, type DiffNode, type DiffStatus, type DiffStats } from "./diffTree";
+import { entrySize as entrySizeOf, type DiffNode, type DiffStatus, type DiffStats } from "./diffTree";
 import { compactDiff, diffLines, looksLikeText, type DiffLine } from "./lineDiff";
 
 type Filter = "all" | DiffStatus;
@@ -508,36 +501,6 @@ function SnapshotComparePage() {
                     {sizeDisplayName(entrySizeOf(node.b), bytesStringBase2)} · {new Date(node.b.mtime).toLocaleString()}
                   </Code>
                 </Group>
-              )}
-              {(node.a || node.b) && (
-                <Group gap="xs" wrap="nowrap">
-                  <Text fz="xs" c="dimmed" w={70}>
-                    {t`Objects`}
-                  </Text>
-                  <Text
-                    fz="xs"
-                    ff="monospace"
-                    c="dimmed"
-                    truncate="end"
-                    title={`${node.a?.obj ?? "—"} → ${node.b?.obj ?? "—"}`}
-                  >
-                    {node.a?.obj ?? "—"} → {node.b?.obj ?? "—"}
-                  </Text>
-                </Group>
-              )}
-              {node.b && !isDirectoryEntry(node.b) && (node.status === "added" || node.status === "modified") && (
-                <Anchor
-                  href={kopiaService.objectUrl(node.b.obj, node.b.name)}
-                  fz="xs"
-                  td="none"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <Group gap={4} wrap="nowrap">
-                    <IconDownload size={13} />
-                    <span>{t`Download newer version`}</span>
-                  </Group>
-                </Anchor>
               )}
               {node.status === "modified" &&
                 !node.isDir &&
