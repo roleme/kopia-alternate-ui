@@ -497,37 +497,39 @@ function SnapshotComparePage() {
         {showDetail && (
           <Paper withBorder ml={depth * 22 + 30} mb={4} p="xs" radius="sm">
             <Stack gap={2}>
-              {node.metaChanges &&
-                node.metaChanges?.map((change) => (
-                  <Group key={change.field} gap="xs" wrap="nowrap">
-                    <Text fz="xs" c="dimmed" w={70}>
-                      {change.field}
+              {(() => {
+                const rows = [
+                  {
+                    label: "size",
+                    av: node.a ? sizeDisplayName(entrySizeOf(node.a), bytesStringBase2) : undefined,
+                    bv: node.b ? sizeDisplayName(entrySizeOf(node.b), bytesStringBase2) : undefined
+                  },
+                  { label: "mode", av: node.a?.mode, bv: node.b?.mode },
+                  {
+                    label: "date",
+                    av: node.a ? dayjs(node.a.mtime).format("YYYY-MM-DD HH:mm") : undefined,
+                    bv: node.b ? dayjs(node.b.mtime).format("YYYY-MM-DD HH:mm") : undefined
+                  }
+                ];
+                const both = node.a !== undefined && node.b !== undefined;
+                return rows.map((r) => (
+                  <Group key={r.label} gap="xs" wrap="nowrap">
+                    <Text fz="xs" c="dimmed" w={70} style={{ flexShrink: 0 }}>
+                      {r.label}
                     </Text>
-                    <Code fz="xs" style={{ whiteSpace: "nowrap" }}>
-                      {change.from} → {change.to}
+                    <Code
+                      fz="xs"
+                      style={{
+                        whiteSpace: "nowrap",
+                        color: both && r.av === r.bv ? "var(--mantine-color-dimmed)" : undefined,
+                        fontWeight: both && r.av !== r.bv ? 600 : undefined
+                      }}
+                    >
+                      {both ? `${r.av} → ${r.bv}` : (r.av ?? r.bv)}
                     </Code>
                   </Group>
-                ))}
-              {node.a && (
-                <Group gap="xs" wrap="nowrap">
-                  <Text fz="xs" c="dimmed" w={70}>
-                    {t`Before`}
-                  </Text>
-                  <Code fz="xs" style={{ whiteSpace: "nowrap" }}>
-                    {sizeDisplayName(entrySizeOf(node.a), bytesStringBase2)}
-                  </Code>
-                </Group>
-              )}
-              {node.b && (
-                <Group gap="xs" wrap="nowrap">
-                  <Text fz="xs" c="dimmed" w={70}>
-                    {t`After`}
-                  </Text>
-                  <Code fz="xs" style={{ whiteSpace: "nowrap" }}>
-                    {sizeDisplayName(entrySizeOf(node.b), bytesStringBase2)}
-                  </Code>
-                </Group>
-              )}
+                ));
+              })()}
               {node.status === "modified" &&
                 !node.isDir &&
                 node.a &&
