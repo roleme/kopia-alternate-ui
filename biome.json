@@ -13,7 +13,7 @@
 	"linter": {
 		"enabled": true,
 		"rules": { "recommended": false },
-		"includes": ["**", "!dist", "!.dev", "!docker"]
+		"includes": ["**", "!dist", "!.dev"]
 	},
 	"javascript": { "formatter": { "quoteStyle": "double", "trailingCommas": "none" } },
 	"overrides": [
