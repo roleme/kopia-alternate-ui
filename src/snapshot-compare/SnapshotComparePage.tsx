@@ -184,7 +184,7 @@ function SnapshotComparePage() {
   const [contentDiffs, setContentDiffs] = useState<Record<string, ContentDiffState>>({});
   const runIdRef = useRef(0);
 
-  const { error, execute, loading, loadingKey } = useApiRequest({
+  const { error, execute } = useApiRequest({
     action: () => kopiaService.getSnapshot(sourceInfo),
     onReturn(resp: Snapshots) {
       setSnapshots(resp.snapshots ?? []);
@@ -577,20 +577,11 @@ function SnapshotComparePage() {
   return (
     <Container fluid>
       <Stack>
-        <Group justify="space-between">
-          <Group>
-            <ActionIcon variant="subtle" onClick={() => navigate(-1)}>
-              <IconArrowLeft size={24} />
-            </ActionIcon>
-            <Title order={1}>{t`Compare snapshots`}</Title>
-          </Group>
-          <Button
-            loading={loading && loadingKey === "refresh"}
-            onClick={() => execute(undefined, "refresh")}
-            variant="light"
-          >
-            {t`Refresh`}
-          </Button>
+        <Group>
+          <ActionIcon variant="subtle" onClick={() => navigate(-1)}>
+            <IconArrowLeft size={24} />
+          </ActionIcon>
+          <Title order={1}>{t`Compare snapshots`}</Title>
         </Group>
         <Text c="dimmed" ff="monospace" fz="sm">
           {sourceInfo.path}
