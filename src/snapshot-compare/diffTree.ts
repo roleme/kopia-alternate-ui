@@ -3,7 +3,7 @@ import type { DirEntry } from "../core/types";
 export type DiffStatus = "added" | "removed" | "modified" | "error";
 
 export type MetaChange = {
-  field: "mode" | "mtime";
+  field: "mode";
   from: string;
   to: string;
 };
@@ -86,7 +86,6 @@ export function entryFiles(entry: DirEntry): number {
 function metaDiffs(a: DirEntry, b: DirEntry): MetaChange[] {
   const changes: MetaChange[] = [];
   if (a.mode !== b.mode) changes.push({ field: "mode", from: a.mode, to: b.mode });
-  if (a.mtime !== b.mtime) changes.push({ field: "mtime", from: a.mtime, to: b.mtime });
   return changes;
 }
 
@@ -187,18 +186,13 @@ export function compareEntries(
   const names = new Set([...byNameA.keys(), ...byNameB.keys()]);
 
   const nodes: DiffNode[] = [];
-  let i = 0;
   for (const name of [...names].sort()) {
-    const id = `n${i++}`;
     const a = byNameA.get(name);
     const b = byNameB.get(name);
     const path = parentPath ? `${parentPath}/${name}` : name;
+    const id = path;
 
     if (a && b && a.obj === b.obj) {
-      // Identical content. Directories with equal object IDs are identical
-      // subtrees; only metadata could have changed (and for dirs we treat
-      // that as identical too — the entry carries no dir metadata worth
-      // surfacing).
       if (isDirectoryEntry(a)) {
         stats.skippedDirs += 1;
         stats.skippedFiles += entryFiles(a);
@@ -310,6 +304,14 @@ export function compareEntries(
     }
   }
   return nodes;
+}
+
+export function pruneUnchanged(nodes: DiffNode[]): DiffNode[] {
+  return nodes.filter((node) => {
+    if (!node.isDir || node.status !== "modified" || !node.fetched || !node.children) return true;
+    node.children = pruneUnchanged(node.children);
+    return node.children.length > 0;
+  });
 }
 
 /** Fills in directory aggregates bottom-up once the walk has finished. */
