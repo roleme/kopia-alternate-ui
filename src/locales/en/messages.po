@@ -169,7 +169,7 @@ msgstr "Amazon S3 or Compatible Storage"
 msgid "Annual"
 msgstr "Annual"
 
-#: src/preferences/PreferencesPage.tsx:21
+#: src/preferences/PreferencesPage.tsx:20
 msgid "Appearance"
 msgstr "Appearance"
 
@@ -287,6 +287,10 @@ msgstr ""
 #: src/snapshots/modals/NewSnapshotModal.tsx:122
 msgid "Change policy parameters"
 msgstr "Change policy parameters"
+
+#: src/preferences/AppearanceSection.tsx:153
+msgid "Charts at the top of the snapshot history page. Applies immediately and is stored in this browser only."
+msgstr ""
 
 #: src/snapshot-compare/SnapshotComparePage.tsx:898
 msgid "Clear"
@@ -613,10 +617,6 @@ msgstr "Do you want to delete the selected snapshot?"
 msgid "Download"
 msgstr "Download"
 
-#: src/preferences/StatisticsSection.tsx:12
-msgid "Due to this being a local feature and not a feature in Kopia, these settings are only stored in the local browser. This means that switching browsers or instances you will have to re-apply the settings."
-msgstr "Due to this being a local feature and not a feature in Kopia, these settings are only stored in the local browser. This means that switching browsers or instances you will have to re-apply the settings."
-
 #: src/tasks/TaskDetailsPage.tsx:87
 msgid "Duration"
 msgstr "Duration"
@@ -668,10 +668,6 @@ msgstr "Effective"
 #: src/preferences/NotificationsSection.tsx:84
 msgid "Email"
 msgstr "Email"
-
-#: src/preferences/StatisticsSection.tsx:18
-msgid "Enable snapshot statistics"
-msgstr "Enable snapshot statistics"
 
 #: src/repo/CreateRepoSection.tsx:142
 msgid "Encryption"
@@ -1410,7 +1406,7 @@ msgstr "Not defined"
 msgid "Notification Format"
 msgstr "Notification Format"
 
-#: src/preferences/PreferencesPage.tsx:27
+#: src/preferences/PreferencesPage.tsx:26
 msgid "Notifications"
 msgstr "Notifications"
 
@@ -1592,7 +1588,7 @@ msgid "Port number (e.g., 22)"
 msgstr "Port number (e.g., 22)"
 
 #: src/core/Header/Header.tsx:101
-#: src/preferences/PreferencesPage.tsx:14
+#: src/preferences/PreferencesPage.tsx:13
 msgid "Preferences"
 msgstr "Preferences"
 
@@ -1759,7 +1755,7 @@ msgstr "SAS Token"
 #: src/policies/modals/PolicyListModal/PolicyListModal.tsx:116
 #: src/policies/modals/PolicyModal/PolicyModal.tsx:265
 #: src/policies/modals/PolicyTodModal/PolicyTodModal.tsx:127
-#: src/preferences/AppearanceSection.tsx:153
+#: src/preferences/AppearanceSection.tsx:159
 #: src/preferences/modals/EmailModal.tsx:303
 #: src/preferences/modals/PushoverModal.tsx:155
 #: src/preferences/modals/WebhookModal.tsx:231
@@ -1858,10 +1854,6 @@ msgstr "SERVERS"
 msgid "Session token"
 msgstr "Session token"
 
-#: src/preferences/StatisticsSection.tsx:11
-msgid "Settings stored locally"
-msgstr "Settings stored locally"
-
 #: src/repo/sections/SFTPServerRepo.tsx:146
 msgid "SFTP Server"
 msgstr "SFTP Server"
@@ -1881,6 +1873,10 @@ msgstr "Show all snapshots by default"
 #: src/snapshot-compare/SnapshotComparePage.tsx:433
 #: src/snapshot-compare/SnapshotComparePage.tsx:440
 msgid "Show content diff"
+msgstr ""
+
+#: src/preferences/AppearanceSection.tsx:152
+msgid "Show snapshot statistics"
 msgstr ""
 
 #: src/snapshot-compare/SnapshotComparePage.tsx:890
@@ -2029,10 +2025,6 @@ msgstr "Start Time"
 #: src/tasks/TaskDetailsPage.tsx:61
 msgid "Started"
 msgstr "Started"
-
-#: src/preferences/PreferencesPage.tsx:30
-msgid "Statistics"
-msgstr "Statistics"
 
 #: src/core/Header/Header.tsx:87
 #: src/tasks/TasksPage.tsx:203
@@ -2288,10 +2280,6 @@ msgstr "Weekly"
 #: src/snapshot-directory/modals/RestoreModal.tsx:177
 msgid "When a restore error occurs, attempt to continue instead of failing fast"
 msgstr "When a restore error occurs, attempt to continue instead of failing fast"
-
-#: src/preferences/StatisticsSection.tsx:19
-msgid "When enabled, will show snapshot statistics"
-msgstr "When enabled, will show snapshot statistics"
 
 #: src/policies/modals/PolicyModal/tabs/FilesTab.tsx:41
 msgid "When set, ignore rules from the parent directory are ignored"
