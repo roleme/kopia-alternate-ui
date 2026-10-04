@@ -258,7 +258,7 @@ msgstr "Cache Miss"
 
 #: src/policies/modals/CreatePolicyModal/CreatePolicyModal.tsx:126
 #: src/policies/modals/PolicyListModal/PolicyListModal.tsx:113
-#: src/policies/modals/PolicyModal/PolicyModal.tsx:261
+#: src/policies/modals/PolicyModal/PolicyModal.tsx:264
 #: src/policies/modals/PolicyTodModal/PolicyTodModal.tsx:124
 #: src/preferences/modals/EmailModal.tsx:300
 #: src/preferences/modals/PushoverModal.tsx:152
@@ -342,7 +342,7 @@ msgstr ""
 msgid "Compare with previous snapshot"
 msgstr ""
 
-#: src/policies/modals/PolicyModal/PolicyModal.tsx:216
+#: src/policies/modals/PolicyModal/PolicyModal.tsx:219
 msgid "Compression"
 msgstr "Compression"
 
@@ -835,7 +835,7 @@ msgstr "Error Correction Algorithm"
 msgid "Error Correction Overhead"
 msgstr "Error Correction Overhead"
 
-#: src/policies/modals/PolicyModal/PolicyModal.tsx:213
+#: src/policies/modals/PolicyModal/PolicyModal.tsx:216
 msgid "Error Handling"
 msgstr "Error Handling"
 
@@ -884,7 +884,7 @@ msgstr "File Ignored"
 msgid "File Snapshotted"
 msgstr "File Snapshotted"
 
-#: src/policies/modals/PolicyModal/PolicyModal.tsx:207
+#: src/policies/modals/PolicyModal/PolicyModal.tsx:210
 #: src/snapshot-directory/SnapshotDirectory.tsx:229
 #: src/snapshot-history/components/SnapshotHistoryStats.tsx:101
 #: src/snapshot-history/SnapshotHistory.tsx:242
@@ -916,7 +916,7 @@ msgstr "Finished in"
 msgid "First run <0/>"
 msgstr ""
 
-#: src/policies/modals/PolicyModal/PolicyModal.tsx:231
+#: src/policies/modals/PolicyModal/PolicyModal.tsx:234
 msgid "Folder Actions"
 msgstr "Folder Actions"
 
@@ -1193,7 +1193,7 @@ msgstr "Log verbosity when a file, symbolic link, etc. is ignored"
 msgid "Log verbosity when a file, symbolic link, etc. is snapshotted"
 msgstr "Log verbosity when a file, symbolic link, etc. is snapshotted"
 
-#: src/policies/modals/PolicyModal/PolicyModal.tsx:234
+#: src/policies/modals/PolicyModal/PolicyModal.tsx:237
 msgid "Logging"
 msgstr "Logging"
 
@@ -1498,7 +1498,7 @@ msgstr "Only one of Path to known_hosts File or Known Hosts Data must be set"
 msgid "Open in large edit"
 msgstr "Open in large edit"
 
-#: src/policies/modals/PolicyModal/PolicyModal.tsx:237
+#: src/policies/modals/PolicyModal/PolicyModal.tsx:240
 msgid "Other"
 msgstr "Other"
 
@@ -1807,7 +1807,7 @@ msgid "SAS Token"
 msgstr "SAS Token"
 
 #: src/policies/modals/PolicyListModal/PolicyListModal.tsx:116
-#: src/policies/modals/PolicyModal/PolicyModal.tsx:266
+#: src/policies/modals/PolicyModal/PolicyModal.tsx:269
 #: src/policies/modals/PolicyTodModal/PolicyTodModal.tsx:127
 #: src/preferences/AppearanceSection.tsx:159
 #: src/preferences/modals/EmailModal.tsx:303
@@ -1824,7 +1824,7 @@ msgstr "Save"
 msgid "Scan only one filesystem"
 msgstr "Scan only one filesystem"
 
-#: src/policies/modals/PolicyModal/PolicyModal.tsx:219
+#: src/policies/modals/PolicyModal/PolicyModal.tsx:222
 msgid "Scheduling"
 msgstr "Scheduling"
 
@@ -1984,7 +1984,7 @@ msgstr "SMTP Username"
 msgid "Snapshot"
 msgstr "Snapshot"
 
-#: src/policies/modals/PolicyModal/PolicyModal.tsx:228
+#: src/policies/modals/PolicyModal/PolicyModal.tsx:231
 msgid "Snapshot Actions"
 msgstr "Snapshot Actions"
 
@@ -2009,7 +2009,7 @@ msgstr "Snapshot now"
 msgid "Snapshot Now"
 msgstr "Snapshot Now"
 
-#: src/policies/modals/PolicyModal/PolicyModal.tsx:204
+#: src/policies/modals/PolicyModal/PolicyModal.tsx:207
 msgid "Snapshot Retention"
 msgstr "Snapshot Retention"
 
@@ -2270,7 +2270,7 @@ msgstr "Update items"
 msgid "Updated"
 msgstr "Updated"
 
-#: src/policies/modals/PolicyModal/PolicyModal.tsx:222
+#: src/policies/modals/PolicyModal/PolicyModal.tsx:225
 msgid "Upload"
 msgstr "Upload"
 

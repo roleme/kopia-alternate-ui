@@ -36,7 +36,8 @@ import SchedulingTab from "./tabs/SchedulingTab";
 import SnapshotActionsTab from "./tabs/SnapshotActionsTab";
 import SnapshotRetentionTab from "./tabs/SnapshotRetentionTab";
 import UploadTab from "./tabs/UploadTab";
-import type { PolicyForm } from "./types";
+import type { PolicyForm, PolicyFormActions } from "./types";
+import { nextActionTimeout } from "./utils/actionTimeout";
 import deleteUnusedProps from "./utils/deleteUnusedProps";
 import { mergePolicy } from "./utils/mergePolicy";
 import { transformPolicy } from "./utils/transformPolicy";
@@ -83,8 +84,10 @@ export default function PolicyModal({
         timeout: undefined
       });
     } else {
-      if (form.values.actions?.afterFolder?.timeout === undefined) {
-        form.setFieldValue(`actions.${key}.timeout`, 300);
+      const current = form.getValues().actions?.[key as keyof PolicyFormActions]?.timeout;
+      const next = nextActionTimeout(value, current);
+      if (next !== current) {
+        form.setFieldValue(`actions.${key}.timeout`, next);
       }
     }
   }
