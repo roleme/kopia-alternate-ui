@@ -31,11 +31,18 @@ import { getFileIcon } from "../snapshot-directory/fileIcons";
 import type { Snapshot, Snapshots, SourceInfo } from "../core/types";
 import sizeDisplayName from "../utils/formatSize";
 import { walkTrees, type WalkProgress, type WalkResult } from "./compareWalk";
-import { entrySize as entrySizeOf, type DiffNode, type DiffStatus, type DiffStats } from "./diffTree";
-import { compactDiff, diffLines, looksLikeText, type DiffLine } from "./lineDiff";
+import {
+  compareEntries,
+  emptyStats,
+  entrySize as entrySizeOf,
+  type DiffNode,
+  type DiffStatus,
+  type DiffStats
+} from "./diffTree";
+import { compactDiff, diffLines, looksLikeText, sniffsAsText, type DiffLine } from "./lineDiff";
 
 type Filter = "all" | DiffStatus;
-type SortMode = "delta" | "path";
+type SortMode = "delta" | "type" | "path";
 
 type ContentDiffState =
   | { state: "loading" }
@@ -45,9 +52,6 @@ type ContentDiffState =
   | { state: "text"; lines: DiffLine[]; added: number; removed: number };
 
 const MAX_DIFF_BYTES = 2 * 1024 * 1024;
-
-const BINARY_NAME =
-  /\.(db|sqlite3?|bin|gz|tgz|zip|7z|rar|bz2|xz|zst|lz4|jpe?g|png|gif|webp|heic|heif|avif|ico|mp3|m4a|flac|mp4|mov|mkv|avi|webm|pdf|iso|img|so|dll|dylib|exe|jar|class|woff2?|ttf|otf|parquet)(-wal|-shm|-journal)?$/i;
 
 const STATUS_COLOR: Record<DiffStatus, MantineColor> = {
   added: "green.6",
@@ -117,10 +121,19 @@ function countDisplayed(nodes: DiffNode[], filter: Filter, query: string): numbe
   return total;
 }
 
+const TYPE_ORDER: Record<DiffStatus, number> = { added: 0, modified: 1, removed: 2, error: 3 };
+
 function sortNodes(nodes: DiffNode[], sort: SortMode): DiffNode[] {
   const sorted = [...nodes];
   if (sort === "path") {
     sorted.sort((a, b) => a.path.localeCompare(b.path));
+  } else if (sort === "type") {
+    sorted.sort(
+      (a, b) =>
+        TYPE_ORDER[a.status] - TYPE_ORDER[b.status] ||
+        Math.abs(nodeDelta(b)) - Math.abs(nodeDelta(a)) ||
+        a.path.localeCompare(b.path)
+    );
   } else {
     // signed: growth first, shrinkage last (+8, +7, 0, -6, -8)
     sorted.sort((a, b) => nodeDelta(b) - nodeDelta(a) || a.path.localeCompare(b.path));
@@ -181,6 +194,9 @@ function SnapshotComparePage() {
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const [collapsed, setCollapsed] = useState<Set<string>>(new Set());
   const [details, setDetails] = useState<Set<string>>(new Set());
+  const [sniffs, setSniffs] = useState<Record<string, "text" | "binary">>({});
+  const sniffing = useRef<Set<string>>(new Set());
+  const [lazyChildren, setLazyChildren] = useState<Record<string, DiffNode[] | "loading" | "error">>({});
   const [hiddenDiffs, setHiddenDiffs] = useState<Set<string>>(new Set());
   const [contentDiffs, setContentDiffs] = useState<Record<string, ContentDiffState>>({});
   const [retryTick, setRetryTick] = useState(0);
@@ -225,6 +241,9 @@ function SnapshotComparePage() {
     setWalkError(undefined);
     setExpanded(new Set());
     setCollapsed(new Set());
+    setSniffs({});
+    sniffing.current.clear();
+    setLazyChildren({});
     setDetails(new Set());
     setHiddenDiffs(new Set());
     setContentDiffs({});
@@ -318,6 +337,54 @@ function SnapshotComparePage() {
   const isOpen = (node: DiffNode) =>
     expanded.has(node.id) || (narrow && node.status === "modified" && !collapsed.has(node.id));
 
+  useEffect(() => {
+    if (!result) return;
+    const visit = (nodes: DiffNode[]) => {
+      for (const node of nodes) {
+        const { a, b } = node;
+        if (
+          !node.isDir &&
+          node.status === "modified" &&
+          a &&
+          b &&
+          a.obj !== b.obj &&
+          !node.typeChanged &&
+          !sniffing.current.has(node.id)
+        ) {
+          sniffing.current.add(node.id);
+          void (async () => {
+            const [headA, headB] = await Promise.all([
+              kopiaService.getObjectHead(a.obj, 512),
+              kopiaService.getObjectHead(b.obj, 512)
+            ]);
+            const text =
+              !headA.isError && headA.data && !headB.isError && headB.data
+                ? sniffsAsText(headA.data) && sniffsAsText(headB.data)
+                : false;
+            setSniffs((prev) => ({ ...prev, [node.id]: text ? "text" : "binary" }));
+          })();
+        }
+        if (node.isDir && node.children && isOpen(node)) visit(node.children);
+      }
+    };
+    visit(result.roots);
+  });
+
+  const loadOneSided = async (node: DiffNode) => {
+    const entry = node.a ?? node.b;
+    if (!entry) return;
+    setLazyChildren((prev) => ({ ...prev, [node.id]: "loading" }));
+    const resp = await kopiaService.getObjects(entry.obj);
+    if (resp.isError || !resp.data) {
+      setLazyChildren((prev) => ({ ...prev, [node.id]: "error" }));
+      return;
+    }
+    const entries = resp.data.entries ?? [];
+    const added = node.status === "added";
+    const children = compareEntries(added ? [] : entries, added ? entries : [], node.path, emptyStats());
+    setLazyChildren((prev) => ({ ...prev, [node.id]: children }));
+  };
+
   const toggle = (node: DiffNode) => {
     if (!node.isDir) {
       setDetails((prev) => flip(prev, node.id));
@@ -337,6 +404,7 @@ function SnapshotComparePage() {
         next.delete(node.id);
         return next;
       });
+      if (node.oneSided && !node.children && !lazyChildren[node.id]) void loadOneSided(node);
     }
   };
 
@@ -372,20 +440,6 @@ function SnapshotComparePage() {
         </Button>
       );
     }
-    if (current.state === "binary") {
-      return (
-        <Text fz="xs" c="dimmed">
-          {t`Not a text file — content diff is not available.`}
-        </Text>
-      );
-    }
-    if (current.state === "too-large") {
-      return (
-        <Text fz="xs" c="dimmed">
-          {t`File is too large to diff in the browser.`}
-        </Text>
-      );
-    }
     if (current.state === "error") {
       return (
         <Text fz="xs" c="red.6">
@@ -393,13 +447,7 @@ function SnapshotComparePage() {
         </Text>
       );
     }
-    if (current.added === 0 && current.removed === 0) {
-      return (
-        <Text fz="xs" c="dimmed">
-          {t`No line changes.`}
-        </Text>
-      );
-    }
+    if (current.state !== "text") return null;
     const hidden = hiddenDiffs.has(node.id);
     return (
       <Stack gap={0} mt={4}>
@@ -477,11 +525,17 @@ function SnapshotComparePage() {
       const format = sameMinute ? "YYYY-MM-DD HH:mm:ss" : minutes;
       rows.push({ label: "date", content: change(dayjs(a.mtime).format(format), dayjs(b.mtime).format(format)) });
     }
+    const loaded = contentDiffs[node.id];
+    const nothingToShow =
+      loaded?.state === "binary" ||
+      loaded?.state === "too-large" ||
+      (loaded?.state === "text" && loaded.added === 0 && loaded.removed === 0);
     const diffable =
+      sniffs[node.id] === "text" &&
+      !nothingToShow &&
       !node.typeChanged &&
       a.obj !== b.obj &&
       !(sizeA === 0 && sizeB === 0) &&
-      !BINARY_NAME.test(node.name) &&
       sizeA <= MAX_DIFF_BYTES &&
       sizeB <= MAX_DIFF_BYTES;
     if (diffable) rows.push({ label: "content", content: renderContentDiff(node) });
@@ -500,6 +554,12 @@ function SnapshotComparePage() {
       ))}
     </Stack>
   );
+
+  const childrenOf = (node: DiffNode): DiffNode[] | undefined => {
+    if (node.children) return node.children;
+    const lazy = lazyChildren[node.id];
+    return Array.isArray(lazy) ? lazy : undefined;
+  };
 
   const renderNode = (node: DiffNode, depth: number): ReactNode => {
     const open = isOpen(node);
@@ -603,12 +663,22 @@ function SnapshotComparePage() {
             {renderChanges(rows)}
           </Paper>
         )}
-        {node.isDir && open && node.children && (
+        {node.isDir && open && childrenOf(node) && (
           <Box>
-            {sortNodes(keepMatching(node.children, filter, query.trim().toLowerCase()), sort).map((child) =>
+            {sortNodes(keepMatching(childrenOf(node) ?? [], filter, query.trim().toLowerCase()), sort).map((child) =>
               renderNode(child, depth + 1)
             )}
           </Box>
+        )}
+        {node.isDir && open && lazyChildren[node.id] === "loading" && (
+          <Text fz="xs" c="dimmed" ml={(depth + 1) * 22 + 44} py={4}>
+            {t`Loading…`}
+          </Text>
+        )}
+        {node.isDir && open && lazyChildren[node.id] === "error" && (
+          <Text fz="xs" c="yellow.6" ml={(depth + 1) * 22 + 44} py={4}>
+            {t`couldn't read`}
+          </Text>
         )}
       </Box>
     );
@@ -784,11 +854,12 @@ function SnapshotComparePage() {
               <Select
                 data={[
                   { value: "delta", label: t`Sort: size delta` },
+                  { value: "type", label: t`Sort: added, modified, removed` },
                   { value: "path", label: t`Sort: path` }
                 ]}
                 value={sort}
                 onChange={(v) => setSort((v as SortMode) ?? "delta")}
-                w={180}
+                w={250}
               />
               {(expanded.size > 0 || details.size > 0 || narrow) && (
                 <Button variant="subtle" size="xs" ml="auto" onClick={collapseAll}>
