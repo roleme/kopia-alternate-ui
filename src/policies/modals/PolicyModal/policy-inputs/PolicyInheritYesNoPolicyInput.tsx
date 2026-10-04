@@ -28,6 +28,8 @@ export default function PolicyInheritYesNoPolicyInput({
       <PolicyAccordionControl
         title={title}
         description={description}
+        formKey={formKey}
+        definedValue={inputProps.value}
         isConfigured={inputProps.value !== undefined && inputProps.value !== ""}
       />
       <AccordionPanel>

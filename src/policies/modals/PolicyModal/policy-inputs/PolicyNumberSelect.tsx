@@ -35,6 +35,9 @@ export default function PolicyNumberSelect({
       <PolicyAccordionControl
         title={title}
         description={description}
+        formKey={formKey}
+        definedValue={inputProps.value}
+        optionData={data}
         isConfigured={inputProps.value !== undefined && inputProps.value !== ""}
       />
       <AccordionPanel>

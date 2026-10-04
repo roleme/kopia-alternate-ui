@@ -73,6 +73,9 @@ export default function PolicyCompressionInput({
       <PolicyAccordionControl
         title={title}
         description={description}
+        formKey={formKey}
+        definedValue={inputProps.value}
+        optionData={algorithmOptions}
         isConfigured={inputProps.value !== undefined && inputProps.value !== "" && inputProps.value !== "none"}
       />
       <AccordionPanel>

@@ -258,7 +258,7 @@ msgstr "Hurtigbufferbom"
 
 #: src/policies/modals/CreatePolicyModal/CreatePolicyModal.tsx:126
 #: src/policies/modals/PolicyListModal/PolicyListModal.tsx:113
-#: src/policies/modals/PolicyModal/PolicyModal.tsx:260
+#: src/policies/modals/PolicyModal/PolicyModal.tsx:261
 #: src/policies/modals/PolicyTodModal/PolicyTodModal.tsx:124
 #: src/preferences/modals/EmailModal.tsx:300
 #: src/preferences/modals/PushoverModal.tsx:152
@@ -342,7 +342,7 @@ msgstr ""
 msgid "Compare with previous snapshot"
 msgstr ""
 
-#: src/policies/modals/PolicyModal/PolicyModal.tsx:215
+#: src/policies/modals/PolicyModal/PolicyModal.tsx:216
 msgid "Compression"
 msgstr "Kompresjon"
 
@@ -371,7 +371,7 @@ msgstr "Konfigurerer oppbevaringsstedet"
 msgid "Configure the selected provider"
 msgstr "Konfigurer den valgte tilbyderen"
 
-#: src/policies/modals/PolicyModal/components/PolicyAccordionControl.tsx:22
+#: src/policies/modals/PolicyModal/components/PolicyAccordionControl.tsx:36
 msgid "Configured"
 msgstr "Konfigurert"
 
@@ -489,19 +489,23 @@ msgstr "Daglig"
 msgid "Dark"
 msgstr "Mørkt"
 
+#: src/policies/modals/PolicyModal/components/EffectiveValue.tsx:13
+msgid "default"
+msgstr ""
+
 #: src/preferences/AppearanceSection.tsx:112
 msgid "Default page size"
 msgstr "Standard side størrelse"
 
-#: src/policies/modals/PolicyModal/policy-inputs/PolicyCompressionInput.tsx:81
-#: src/policies/modals/PolicyModal/policy-inputs/PolicyInheritYesNoPolicyInput.tsx:37
-#: src/policies/modals/PolicyModal/policy-inputs/PolicyLogDetailsInput.tsx:51
-#: src/policies/modals/PolicyModal/policy-inputs/PolicyNumberInput.tsx:38
-#: src/policies/modals/PolicyModal/policy-inputs/PolicyNumberSelect.tsx:43
-#: src/policies/modals/PolicyModal/policy-inputs/PolicySelect.tsx:37
-#: src/policies/modals/PolicyModal/policy-inputs/PolicyTextInput.tsx:40
-#: src/policies/modals/PolicyModal/policy-inputs/PolicyTextListInput.tsx:64
-#: src/policies/modals/PolicyModal/policy-inputs/PolicyTimeOfDayInput.tsx:45
+#: src/policies/modals/PolicyModal/policy-inputs/PolicyCompressionInput.tsx:84
+#: src/policies/modals/PolicyModal/policy-inputs/PolicyInheritYesNoPolicyInput.tsx:39
+#: src/policies/modals/PolicyModal/policy-inputs/PolicyLogDetailsInput.tsx:54
+#: src/policies/modals/PolicyModal/policy-inputs/PolicyNumberInput.tsx:40
+#: src/policies/modals/PolicyModal/policy-inputs/PolicyNumberSelect.tsx:46
+#: src/policies/modals/PolicyModal/policy-inputs/PolicySelect.tsx:44
+#: src/policies/modals/PolicyModal/policy-inputs/PolicyTextInput.tsx:42
+#: src/policies/modals/PolicyModal/policy-inputs/PolicyTextListInput.tsx:67
+#: src/policies/modals/PolicyModal/policy-inputs/PolicyTimeOfDayInput.tsx:47
 #: src/policies/PoliciesPage.tsx:203
 msgid "Defined"
 msgstr "Definert"
@@ -658,8 +662,8 @@ msgstr "Rediger e-post notifikasjon"
 msgid "Edit existing policy"
 msgstr "Rediger eksisterende strategi"
 
-#: src/policies/modals/PolicyModal/policy-inputs/PolicyTextListInput.tsx:86
-#: src/policies/modals/PolicyModal/policy-inputs/PolicyTimeOfDayInput.tsx:67
+#: src/policies/modals/PolicyModal/policy-inputs/PolicyTextListInput.tsx:89
+#: src/policies/modals/PolicyModal/policy-inputs/PolicyTimeOfDayInput.tsx:69
 msgid "Edit items"
 msgstr "Rediger elementer"
 
@@ -672,15 +676,15 @@ msgid "Edit script"
 msgstr "Rediger skript"
 
 #: src/policies/modals/PolicyModal/components/PolicyEffectiveLabel.tsx:16
-#: src/policies/modals/PolicyModal/policy-inputs/PolicyCompressionInput.tsx:91
-#: src/policies/modals/PolicyModal/policy-inputs/PolicyInheritYesNoPolicyInput.tsx:46
-#: src/policies/modals/PolicyModal/policy-inputs/PolicyLogDetailsInput.tsx:59
-#: src/policies/modals/PolicyModal/policy-inputs/PolicyNumberInput.tsx:41
-#: src/policies/modals/PolicyModal/policy-inputs/PolicyNumberSelect.tsx:51
-#: src/policies/modals/PolicyModal/policy-inputs/PolicySelect.tsx:40
-#: src/policies/modals/PolicyModal/policy-inputs/PolicyTextInput.tsx:43
-#: src/policies/modals/PolicyModal/policy-inputs/PolicyTextListInput.tsx:94
-#: src/policies/modals/PolicyModal/policy-inputs/PolicyTimeOfDayInput.tsx:75
+#: src/policies/modals/PolicyModal/policy-inputs/PolicyCompressionInput.tsx:94
+#: src/policies/modals/PolicyModal/policy-inputs/PolicyInheritYesNoPolicyInput.tsx:48
+#: src/policies/modals/PolicyModal/policy-inputs/PolicyLogDetailsInput.tsx:62
+#: src/policies/modals/PolicyModal/policy-inputs/PolicyNumberInput.tsx:43
+#: src/policies/modals/PolicyModal/policy-inputs/PolicyNumberSelect.tsx:54
+#: src/policies/modals/PolicyModal/policy-inputs/PolicySelect.tsx:47
+#: src/policies/modals/PolicyModal/policy-inputs/PolicyTextInput.tsx:45
+#: src/policies/modals/PolicyModal/policy-inputs/PolicyTextListInput.tsx:97
+#: src/policies/modals/PolicyModal/policy-inputs/PolicyTimeOfDayInput.tsx:77
 msgid "Effective"
 msgstr "Effektiv"
 
@@ -830,7 +834,7 @@ msgstr "Feilkorrigeringsalgoritme"
 msgid "Error Correction Overhead"
 msgstr "Feilretting Overhead"
 
-#: src/policies/modals/PolicyModal/PolicyModal.tsx:212
+#: src/policies/modals/PolicyModal/PolicyModal.tsx:213
 msgid "Error Handling"
 msgstr "Feilhåndtering"
 
@@ -879,7 +883,7 @@ msgstr "Fil irgnorert"
 msgid "File Snapshotted"
 msgstr "Fil øyeblikksbilde"
 
-#: src/policies/modals/PolicyModal/PolicyModal.tsx:206
+#: src/policies/modals/PolicyModal/PolicyModal.tsx:207
 #: src/snapshot-directory/SnapshotDirectory.tsx:229
 #: src/snapshot-history/components/SnapshotHistoryStats.tsx:101
 #: src/snapshot-history/SnapshotHistory.tsx:242
@@ -911,7 +915,7 @@ msgstr "Fullført på"
 msgid "First run <0/>"
 msgstr ""
 
-#: src/policies/modals/PolicyModal/PolicyModal.tsx:230
+#: src/policies/modals/PolicyModal/PolicyModal.tsx:231
 msgid "Folder Actions"
 msgstr "Mappehandlinger"
 
@@ -1059,6 +1063,10 @@ msgstr "Kjør eventuelle tapte øyeblikksbilder umiddelbart når kopia starter (
 msgid "Inherit"
 msgstr "Arve"
 
+#: src/policies/modals/PolicyModal/components/EffectiveValue.tsx:11
+msgid "inherited"
+msgstr ""
+
 #: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:170
 msgid "Internal Compression"
 msgstr "Intern kompresjon"
@@ -1184,7 +1192,7 @@ msgstr "Logg detaljnivå når en fil, symbolsk lenke osv. ignoreres"
 msgid "Log verbosity when a file, symbolic link, etc. is snapshotted"
 msgstr "Logg detaljnivå når en fil, symbolsk lenke osv. blir tatt øyeblikksbilde av"
 
-#: src/policies/modals/PolicyModal/PolicyModal.tsx:233
+#: src/policies/modals/PolicyModal/PolicyModal.tsx:234
 msgid "Logging"
 msgstr "Logging"
 
@@ -1367,6 +1375,7 @@ msgid "Next"
 msgstr "Neste"
 
 #: src/policies/modals/PolicyModal/components/InheritYesNoPolicyControl.tsx:60
+#: src/policies/modals/PolicyModal/components/useEffectiveField.ts:13
 #: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:172
 msgid "No"
 msgstr "Nei"
@@ -1421,14 +1430,14 @@ msgstr "Ingen øyeblikksbilder tatt"
 msgid "None"
 msgstr "Ingen"
 
-#: src/policies/modals/PolicyModal/components/PolicyAccordionControl.tsx:29
+#: src/policies/modals/PolicyModal/components/PolicyAccordionControl.tsx:44
 msgid "Not configured"
 msgstr "Ikke konfigurerert"
 
-#: src/policies/modals/PolicyModal/policy-inputs/PolicyTextListInput.tsx:74
-#: src/policies/modals/PolicyModal/policy-inputs/PolicyTextListInput.tsx:107
-#: src/policies/modals/PolicyModal/policy-inputs/PolicyTimeOfDayInput.tsx:55
-#: src/policies/modals/PolicyModal/policy-inputs/PolicyTimeOfDayInput.tsx:88
+#: src/policies/modals/PolicyModal/policy-inputs/PolicyTextListInput.tsx:77
+#: src/policies/modals/PolicyModal/policy-inputs/PolicyTextListInput.tsx:110
+#: src/policies/modals/PolicyModal/policy-inputs/PolicyTimeOfDayInput.tsx:57
+#: src/policies/modals/PolicyModal/policy-inputs/PolicyTimeOfDayInput.tsx:90
 msgid "Not defined"
 msgstr "Ikke definert"
 
@@ -1488,7 +1497,7 @@ msgstr "Kun en av Sti til known_hosts-filen eller Kjente vertsdata kan være def
 msgid "Open in large edit"
 msgstr "Åpne i stort vindu"
 
-#: src/policies/modals/PolicyModal/PolicyModal.tsx:236
+#: src/policies/modals/PolicyModal/PolicyModal.tsx:237
 msgid "Other"
 msgstr "Annet"
 
@@ -1797,7 +1806,7 @@ msgid "SAS Token"
 msgstr "SAS Token"
 
 #: src/policies/modals/PolicyListModal/PolicyListModal.tsx:116
-#: src/policies/modals/PolicyModal/PolicyModal.tsx:265
+#: src/policies/modals/PolicyModal/PolicyModal.tsx:266
 #: src/policies/modals/PolicyTodModal/PolicyTodModal.tsx:127
 #: src/preferences/AppearanceSection.tsx:159
 #: src/preferences/modals/EmailModal.tsx:303
@@ -1814,7 +1823,7 @@ msgstr "Lagre"
 msgid "Scan only one filesystem"
 msgstr "Skann bare ett filsystem"
 
-#: src/policies/modals/PolicyModal/PolicyModal.tsx:218
+#: src/policies/modals/PolicyModal/PolicyModal.tsx:219
 msgid "Scheduling"
 msgstr "Planlegging"
 
@@ -1847,7 +1856,7 @@ msgstr "Søk etter oppgaver"
 msgid "Secret Access Key"
 msgstr "Hemmelig tilgangsnøkkel"
 
-#: src/policies/modals/PolicyModal/policy-inputs/PolicyCompressionInput.tsx:83
+#: src/policies/modals/PolicyModal/policy-inputs/PolicyCompressionInput.tsx:86
 msgid "Select compression algorithm"
 msgstr "Velg komprimeringsalgoritme"
 
@@ -1897,6 +1906,10 @@ msgstr "SERVERE"
 #: src/repo/sections/AmazonS3Repo.tsx:121
 msgid "Session token"
 msgstr "Økttoken"
+
+#: src/policies/modals/PolicyModal/components/EffectiveValue.tsx:9
+msgid "set here"
+msgstr ""
 
 #: src/repo/sections/SFTPServerRepo.tsx:146
 msgid "SFTP Server"
@@ -1970,7 +1983,7 @@ msgstr "SMTP Brukernavn"
 msgid "Snapshot"
 msgstr "Øyeblikksbilde"
 
-#: src/policies/modals/PolicyModal/PolicyModal.tsx:227
+#: src/policies/modals/PolicyModal/PolicyModal.tsx:228
 msgid "Snapshot Actions"
 msgstr "Handlinger"
 
@@ -1995,7 +2008,7 @@ msgstr "Ta øyeblikksbilde"
 msgid "Snapshot Now"
 msgstr "Øyeblikksbilde nå"
 
-#: src/policies/modals/PolicyModal/PolicyModal.tsx:203
+#: src/policies/modals/PolicyModal/PolicyModal.tsx:204
 msgid "Snapshot Retention"
 msgstr "Oppbevaring"
 
@@ -2256,7 +2269,7 @@ msgstr "Oppdater oppføringer"
 msgid "Updated"
 msgstr "Oppdatert"
 
-#: src/policies/modals/PolicyModal/PolicyModal.tsx:221
+#: src/policies/modals/PolicyModal/PolicyModal.tsx:222
 msgid "Upload"
 msgstr "Opplasting"
 
@@ -2367,6 +2380,7 @@ msgid "Write Sparse Files"
 msgstr "Skriv sparsomme filer"
 
 #: src/policies/modals/PolicyModal/components/InheritYesNoPolicyControl.tsx:49
+#: src/policies/modals/PolicyModal/components/useEffectiveField.ts:12
 #: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:172
 msgid "Yes"
 msgstr "Ja"
