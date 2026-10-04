@@ -87,6 +87,8 @@ function SnapshotDirectory() {
     }
   }, [oid]);
 
+  const hasError = error !== undefined;
+
   const visibleItems = useMemo(() => {
     let items = [...(data?.entries || [])];
 
@@ -127,10 +129,16 @@ function SnapshotDirectory() {
               value={query}
               onChange={setQuery}
             />
-            <Button size="xs" color="green" leftSection={<IconFileDelta size={16} />} onClick={setShow.open}>
+            <Button
+              size="xs"
+              color="green"
+              leftSection={<IconFileDelta size={16} />}
+              onClick={setShow.open}
+              disabled={hasError}
+            >
               <Trans>Restore</Trans>
             </Button>
-            {oid && <MountButton mount={mount} rootID={oid} onMounted={(mnt) => setMount(mnt)} />}
+            {oid && <MountButton mount={mount} rootID={oid} onMounted={(mnt) => setMount(mnt)} disabled={hasError} />}
             <Button
               loading={loading && loadingKey === "refresh"}
               onClick={() => execute(undefined, "refresh")}
@@ -162,93 +170,95 @@ function SnapshotDirectory() {
             />
           </Alert>
         )}
-        <DataGrid
-          idAccessor={(snap: DirEntry) => `${snap.obj}-${snap.type}-${snap.name}`}
-          loading={loading && loadingKey === "loading"}
-          records={visibleItems}
-          noRecordsText={debouncedQuery !== "" ? t`No entires matching your search` : t`No entries in folder`}
-          noRecordsIcon={<IconWrapper icon={IconFolderOpen} size={48} />}
-          pageSize={tablePageSize}
-          columns={[
-            {
-              accessor: "name",
-              title: t`Name`,
-              sortable: true,
-              render: (item) =>
-                item.obj.startsWith("k") ? (
-                  <Group gap="5">
-                    <IconWrapper icon={IconFolderOpen} color="yellow" size={18} />
-                    <Anchor
-                      component={Link}
-                      to={`/snapshots/dir/${item.obj}`}
-                      state={{
-                        label: item.name,
-                        oid: item.obj,
-                        prevState: location.state
-                      }}
-                      td="none"
-                      fz="sm"
-                    >
-                      {item.name}
-                    </Anchor>
-                  </Group>
-                ) : (
-                  <Group gap="5">
-                    <IconWrapper icon={getFileIcon(item.name)} color="blue" size={18} />
-                    <Text fz="sm">{item.name}</Text>
-                  </Group>
-                )
-            },
-            {
-              accessor: "mtime",
-              sortable: true,
-              sortKey: "mtime",
-              title: t`Last Modification`,
-              render: (item) => <FormattedDate value={item.mtime} />
-            },
+        {!hasError && (
+          <DataGrid
+            idAccessor={(snap: DirEntry) => `${snap.obj}-${snap.type}-${snap.name}`}
+            loading={loading && loadingKey === "loading"}
+            records={visibleItems}
+            noRecordsText={debouncedQuery !== "" ? t`No entires matching your search` : t`No entries in folder`}
+            noRecordsIcon={<IconWrapper icon={IconFolderOpen} size={48} />}
+            pageSize={tablePageSize}
+            columns={[
+              {
+                accessor: "name",
+                title: t`Name`,
+                sortable: true,
+                render: (item) =>
+                  item.type === "d" ? (
+                    <Group gap="5">
+                      <IconWrapper icon={IconFolderOpen} color="yellow" size={18} />
+                      <Anchor
+                        component={Link}
+                        to={`/snapshots/dir/${item.obj}`}
+                        state={{
+                          label: item.name,
+                          oid: item.obj,
+                          prevState: location.state
+                        }}
+                        td="none"
+                        fz="sm"
+                      >
+                        {item.name}
+                      </Anchor>
+                    </Group>
+                  ) : (
+                    <Group gap="5">
+                      <IconWrapper icon={getFileIcon(item.name)} color="blue" size={18} />
+                      <Text fz="sm">{item.name}</Text>
+                    </Group>
+                  )
+              },
+              {
+                accessor: "mtime",
+                sortable: true,
+                sortKey: "mtime",
+                title: t`Last Modification`,
+                render: (item) => <FormattedDate value={item.mtime} />
+              },
 
-            {
-              accessor: "size",
-              title: t`Size`,
-              textAlign: "right",
-              render: (item) =>
-                sizeDisplayName(item.type === "d" ? item.summ?.size || 0 : item.size || 0, bytesStringBase2)
-            },
-            {
-              accessor: "summ.files",
-              sortable: true,
-              title: t`Files`,
-              textAlign: "center"
-            },
-            {
-              accessor: "summ.dirs",
-              sortable: true,
-              title: t`Dirs`,
-              textAlign: "center"
-            },
-            {
-              accessor: "actions",
-              title: <IconClick size={16} />,
-              width: "0%",
-              textAlign: "right",
-              render: (item) =>
-                !item.obj.startsWith("k") && (
-                  <Tooltip label={t`Download`}>
-                    <ActionIcon
-                      variant="subtle"
-                      color="blue.5"
-                      component="a"
-                      href={kopiaService.objectUrl(item.obj, item.name)}
-                    >
-                      <IconFileDownload size={18} />
-                    </ActionIcon>
-                  </Tooltip>
-                )
-            }
-          ]}
-          sortStatus={sortStatus}
-          onSortStatusChange={setSortStatus}
-        />
+              {
+                accessor: "size",
+                title: t`Size`,
+                textAlign: "right",
+                render: (item) =>
+                  sizeDisplayName(item.type === "d" ? item.summ?.size || 0 : item.size || 0, bytesStringBase2)
+              },
+              {
+                accessor: "summ.files",
+                sortable: true,
+                title: t`Files`,
+                textAlign: "center"
+              },
+              {
+                accessor: "summ.dirs",
+                sortable: true,
+                title: t`Dirs`,
+                textAlign: "center"
+              },
+              {
+                accessor: "actions",
+                title: <IconClick size={16} />,
+                width: "0%",
+                textAlign: "right",
+                render: (item) =>
+                  item.type !== "d" && (
+                    <Tooltip label={t`Download`}>
+                      <ActionIcon
+                        variant="subtle"
+                        color="blue.5"
+                        component="a"
+                        href={kopiaService.objectUrl(item.obj, item.name)}
+                      >
+                        <IconFileDownload size={18} />
+                      </ActionIcon>
+                    </Tooltip>
+                  )
+              }
+            ]}
+            sortStatus={sortStatus}
+            onSortStatusChange={setSortStatus}
+          />
+        )}
       </Stack>
       {show && oid && (
         <RestoreModal
