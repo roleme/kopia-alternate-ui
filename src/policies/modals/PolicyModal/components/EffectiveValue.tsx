@@ -27,9 +27,11 @@ export default function EffectiveValue({ summary, origin, compact }: Props) {
       visibleFrom={compact ? undefined : "sm"}
       hiddenFrom={compact ? "sm" : undefined}
     >
-      <Text ff="monospace" fz="xs" truncate title={summary}>
-        {summary}
-      </Text>
+      {summary !== undefined && (
+        <Text ff="monospace" fz="xs" truncate title={summary}>
+          {summary}
+        </Text>
+      )}
       <Badge variant="light" color="gray" size="xs" radius="sm" tt="none" fw={500} style={{ flexShrink: 0 }}>
         {originLabel(origin)}
       </Badge>

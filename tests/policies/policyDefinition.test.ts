@@ -5,6 +5,7 @@ import {
   findOptionLabel,
   formatValueSummary,
   getDefinitionAt,
+  getRowSummary,
   getValueAt,
   getValueOrigin,
   hasValue,
@@ -166,5 +167,22 @@ describe("findOptionLabel", () => {
   it("returns undefined when absent", () => {
     expect(findOptionLabel(data, "x")).toBeUndefined();
     expect(findOptionLabel(undefined, "x")).toBeUndefined();
+  });
+});
+
+describe("getRowSummary", () => {
+  it("shows the formatted value when asked", () => {
+    expect(getRowSummary([".a", ".b"], true, labels)).toBe(".a, .b");
+    expect(getRowSummary(8, true, labels)).toBe("8");
+  });
+
+  it("hides the value for rows that show only the tag", () => {
+    expect(getRowSummary([".a", ".b"], false, labels)).toBeUndefined();
+  });
+
+  it("uses an option label when one matches", () => {
+    expect(getRowSummary("essential", true, labels, [{ label: "Must Succeed", value: "essential" }])).toBe(
+      "Must Succeed"
+    );
   });
 });

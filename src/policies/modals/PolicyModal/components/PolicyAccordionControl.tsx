@@ -12,6 +12,7 @@ type Props = {
   formKey?: string;
   definedValue?: unknown;
   optionData?: unknown;
+  showValue?: boolean;
 };
 
 export default function PolicyAccordionControl({
@@ -20,9 +21,10 @@ export default function PolicyAccordionControl({
   isConfigured,
   formKey,
   definedValue,
-  optionData
+  optionData,
+  showValue
 }: Props) {
-  const field = useEffectiveField(formKey, definedValue, optionData);
+  const field = useEffectiveField(formKey, definedValue, optionData, showValue);
   return (
     <AccordionControl>
       <Stack gap={0}>

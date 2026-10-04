@@ -1,13 +1,13 @@
 import { t } from "@lingui/core/macro";
-import { describeField, findOptionLabel, formatValueSummary, type ValueOrigin } from "../utils/policyDefinition";
+import { describeField, getRowSummary, type ValueOrigin } from "../utils/policyDefinition";
 import { usePolicyResolved } from "./PolicyResolvedContext";
 
 export type EffectiveField = {
-  summary: string;
+  summary?: string;
   origin: ValueOrigin;
 };
 
-export function useEffectiveField(formKey?: string, definedValue?: unknown, optionData?: unknown) {
+export function useEffectiveField(formKey?: string, definedValue?: unknown, optionData?: unknown, showValue = true) {
   const ctx = usePolicyResolved();
   const yes = t`Yes`;
   const no = t`No`;
@@ -21,7 +21,7 @@ export function useEffectiveField(formKey?: string, definedValue?: unknown, opti
   });
   if (field === undefined) return undefined;
   return {
-    summary: findOptionLabel(optionData, field.value) ?? formatValueSummary(field.value, { yes, no }),
+    summary: getRowSummary(field.value, showValue, { yes, no }, optionData),
     origin: field.origin
   } satisfies EffectiveField;
 }

@@ -371,7 +371,7 @@ msgstr "Konfigurerer oppbevaringsstedet"
 msgid "Configure the selected provider"
 msgstr "Konfigurer den valgte tilbyderen"
 
-#: src/policies/modals/PolicyModal/components/PolicyAccordionControl.tsx:36
+#: src/policies/modals/PolicyModal/components/PolicyAccordionControl.tsx:38
 msgid "Configured"
 msgstr "Konfigurert"
 
@@ -472,7 +472,7 @@ msgid "Credentials JSON"
 msgstr "Legitimasjons-JSON"
 
 #: src/policies/modals/PolicyModal/constants.ts:141
-#: src/policies/modals/PolicyModal/tabs/SchedulingTab.tsx:82
+#: src/policies/modals/PolicyModal/tabs/SchedulingTab.tsx:83
 msgid "Cron Expressions"
 msgstr "Cron-uttrykk"
 
@@ -505,7 +505,7 @@ msgstr "Standard side størrelse"
 #: src/policies/modals/PolicyModal/policy-inputs/PolicySelect.tsx:44
 #: src/policies/modals/PolicyModal/policy-inputs/PolicyTextInput.tsx:55
 #: src/policies/modals/PolicyModal/policy-inputs/PolicyTextInput.tsx:65
-#: src/policies/modals/PolicyModal/policy-inputs/PolicyTextListInput.tsx:67
+#: src/policies/modals/PolicyModal/policy-inputs/PolicyTextListInput.tsx:70
 #: src/policies/modals/PolicyModal/policy-inputs/PolicyTimeOfDayInput.tsx:47
 #: src/policies/PoliciesPage.tsx:203
 msgid "Defined"
@@ -663,7 +663,7 @@ msgstr "Rediger e-post notifikasjon"
 msgid "Edit existing policy"
 msgstr "Rediger eksisterende strategi"
 
-#: src/policies/modals/PolicyModal/policy-inputs/PolicyTextListInput.tsx:89
+#: src/policies/modals/PolicyModal/policy-inputs/PolicyTextListInput.tsx:92
 #: src/policies/modals/PolicyModal/policy-inputs/PolicyTimeOfDayInput.tsx:69
 msgid "Edit items"
 msgstr "Rediger elementer"
@@ -684,7 +684,7 @@ msgstr "Rediger skript"
 #: src/policies/modals/PolicyModal/policy-inputs/PolicyNumberSelect.tsx:54
 #: src/policies/modals/PolicyModal/policy-inputs/PolicySelect.tsx:47
 #: src/policies/modals/PolicyModal/policy-inputs/PolicyTextInput.tsx:41
-#: src/policies/modals/PolicyModal/policy-inputs/PolicyTextListInput.tsx:97
+#: src/policies/modals/PolicyModal/policy-inputs/PolicyTextListInput.tsx:100
 #: src/policies/modals/PolicyModal/policy-inputs/PolicyTimeOfDayInput.tsx:77
 msgid "Effective"
 msgstr "Effektiv"
@@ -920,7 +920,7 @@ msgstr ""
 msgid "Folder Actions"
 msgstr "Mappehandlinger"
 
-#: src/policies/modals/PolicyModal/tabs/SchedulingTab.tsx:131
+#: src/policies/modals/PolicyModal/tabs/SchedulingTab.tsx:132
 msgid "From now"
 msgstr "Fra nå"
 
@@ -1056,7 +1056,7 @@ msgstr "Ignorer ukjente mapper"
 msgid "Ignore Well-Known Cache Directories"
 msgstr "Ignorer kjente hurtigbuffermapper"
 
-#: src/policies/modals/PolicyModal/tabs/SchedulingTab.tsx:101
+#: src/policies/modals/PolicyModal/tabs/SchedulingTab.tsx:102
 msgid "Immediately run any missed snapshots when kopia starts (only relevant for Time-of-day snapshots)"
 msgstr "Kjør eventuelle tapte øyeblikksbilder umiddelbart når kopia starter (kun relevant for klokkeslett-øyeblikksbilder)"
 
@@ -1238,7 +1238,7 @@ msgid "Manual"
 msgstr ""
 
 #: src/policies/modals/PolicyModal/constants.ts:140
-#: src/policies/modals/PolicyModal/tabs/SchedulingTab.tsx:109
+#: src/policies/modals/PolicyModal/tabs/SchedulingTab.tsx:110
 msgid "Manual Snapshots Only"
 msgstr "Kun manuelle øyeblikksbilder"
 
@@ -1431,12 +1431,12 @@ msgstr "Ingen øyeblikksbilder tatt"
 msgid "None"
 msgstr "Ingen"
 
-#: src/policies/modals/PolicyModal/components/PolicyAccordionControl.tsx:44
+#: src/policies/modals/PolicyModal/components/PolicyAccordionControl.tsx:46
 msgid "Not configured"
 msgstr "Ikke konfigurerert"
 
-#: src/policies/modals/PolicyModal/policy-inputs/PolicyTextListInput.tsx:77
-#: src/policies/modals/PolicyModal/policy-inputs/PolicyTextListInput.tsx:110
+#: src/policies/modals/PolicyModal/policy-inputs/PolicyTextListInput.tsx:80
+#: src/policies/modals/PolicyModal/policy-inputs/PolicyTextListInput.tsx:113
 #: src/policies/modals/PolicyModal/policy-inputs/PolicyTimeOfDayInput.tsx:57
 #: src/policies/modals/PolicyModal/policy-inputs/PolicyTimeOfDayInput.tsx:90
 msgid "Not defined"
@@ -1479,7 +1479,7 @@ msgstr "Komprimer kun utvidelser"
 msgid "Only compress files with the following file extensions (one extension per line)"
 msgstr "Komprimer kun filer med følgende filtyper (én filtype per linje)"
 
-#: src/policies/modals/PolicyModal/tabs/SchedulingTab.tsx:110
+#: src/policies/modals/PolicyModal/tabs/SchedulingTab.tsx:111
 msgid "Only create snapshots manually (disables scheduled snapshots)"
 msgstr "Lag bare øyeblikksbilder manuelt (deaktiverer planlagte øyeblikksbilder)"
 
@@ -1787,7 +1787,7 @@ msgid "Run asynchronously, ignore failures"
 msgstr "Kjør asynkront, ignorer feil"
 
 #: src/policies/modals/PolicyModal/constants.ts:142
-#: src/policies/modals/PolicyModal/tabs/SchedulingTab.tsx:100
+#: src/policies/modals/PolicyModal/tabs/SchedulingTab.tsx:101
 msgid "Run Missed Snapshots on Startup"
 msgstr "Kjør tapte øyeblikksbilder ved oppstart"
 
@@ -2013,7 +2013,7 @@ msgstr "Øyeblikksbilde nå"
 msgid "Snapshot Retention"
 msgstr "Oppbevaring"
 
-#: src/policies/modals/PolicyModal/tabs/SchedulingTab.tsx:83
+#: src/policies/modals/PolicyModal/tabs/SchedulingTab.tsx:84
 msgid "Snapshot schedules using UNIX crontab syntax:"
 msgstr "Øyeblikksbilde-planer ved bruk av UNIX crontab-syntaks:"
 
@@ -2198,11 +2198,11 @@ msgstr "Tidsavbrudd - Før"
 msgid "Timeout in seconds before Kopia kills the process"
 msgstr "Tidsavbrudd i sekunder før Kopia avslutter prosessen"
 
-#: src/policies/modals/PolicyModal/tabs/SchedulingTab.tsx:119
+#: src/policies/modals/PolicyModal/tabs/SchedulingTab.tsx:120
 msgid "Times of upcoming snapshots calculated based on policy parameters"
 msgstr "Tidspunkter for kommende øyeblikksbilder beregnet basert på strategi parametere"
 
-#: src/policies/modals/PolicyModal/tabs/SchedulingTab.tsx:128
+#: src/policies/modals/PolicyModal/tabs/SchedulingTab.tsx:129
 msgid "Timestamp"
 msgstr "Tidsstempel"
 
@@ -2252,7 +2252,7 @@ msgstr "Unikt navn for denne notifikasjons profilen"
 msgid "Unmount"
 msgstr "Demonter"
 
-#: src/policies/modals/PolicyModal/tabs/SchedulingTab.tsx:118
+#: src/policies/modals/PolicyModal/tabs/SchedulingTab.tsx:119
 msgid "Upcoming Snapshots"
 msgstr "Kommende Øyeblikksbilder"
 

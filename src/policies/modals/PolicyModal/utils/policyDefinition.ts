@@ -123,3 +123,8 @@ export function findOptionLabel(data: unknown, value: unknown): string | undefin
   }
   return undefined;
 }
+
+export function getRowSummary(value: unknown, showValue: boolean, labels: ValueLabels, optionData?: unknown) {
+  if (!showValue) return undefined;
+  return findOptionLabel(optionData, value) ?? formatValueSummary(value, labels);
+}
