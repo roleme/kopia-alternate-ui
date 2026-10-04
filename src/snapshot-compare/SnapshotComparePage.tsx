@@ -34,7 +34,6 @@ import { walkTrees, type WalkProgress, type WalkResult } from "./compareWalk";
 import {
   autoExpandIds,
   compareEntries,
-  emptyFolderChanges,
   emptyStats,
   entrySize as entrySizeOf,
   statusCount,
@@ -308,17 +307,6 @@ function SnapshotComparePage() {
     if (!result) return [];
     return keepMatching(result.roots, filter, query.trim().toLowerCase());
   }, [result, filter, query]);
-
-  const emptyChangeNote = useMemo(() => {
-    if (!result) return undefined;
-    const { added, removed } = emptyFolderChanges(result.roots);
-    const parts: string[] = [];
-    if (removed.length === 1) parts.push(t`empty folder removed: ${removed[0]}`);
-    else if (removed.length > 1) parts.push(t`${removed.length} empty folders removed`);
-    if (added.length === 1) parts.push(t`empty folder added: ${added[0]}`);
-    else if (added.length > 1) parts.push(t`${added.length} empty folders added`);
-    return parts.length > 0 ? parts.join(" \u00b7 ") : undefined;
-  }, [result]);
 
   const visibleCount = useMemo(
     () => (result ? countDisplayed(result.roots, filter, query.trim().toLowerCase()) : 0),
@@ -788,7 +776,7 @@ function SnapshotComparePage() {
               <Group justify="space-between" align="center" gap="md" wrap="wrap">
                 {stats.delta === 0 && stats.errors === 0 ? (
                   <Text fz="lg" c="dimmed">
-                    {emptyChangeNote ? `${t`No size change`} \u00b7 ${emptyChangeNote}` : t`No size change`}
+                    {t`No size change`}
                   </Text>
                 ) : (
                   <Text
