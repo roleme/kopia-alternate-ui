@@ -57,9 +57,10 @@ function SnapshotHistory() {
 
   const previousSnapshot = (current: Snapshot): Snapshot | undefined => {
     const time = new Date(current.startTime).getTime();
-    return (data?.snapshots ?? [])
+    const older = (data?.snapshots ?? [])
       .filter((s) => new Date(s.startTime).getTime() < time)
-      .sort((a, b) => new Date(b.startTime).getTime() - new Date(a.startTime).getTime())[0];
+      .sort((a, b) => new Date(b.startTime).getTime() - new Date(a.startTime).getTime());
+    return older.find((s) => s.rootID !== current.rootID) ?? older[0];
   };
 
   const visibleData = useMemo(() => {

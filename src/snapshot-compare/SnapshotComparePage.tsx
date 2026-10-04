@@ -805,8 +805,8 @@ function SnapshotComparePage() {
           </Alert>
         )}
         {paramA && paramB && paramA === paramB && (
-          <Alert color="blue" variant="light">
-            {t`Pick two different snapshots to compare.`}
+          <Alert color="green" icon={<IconCheck size={16} />} variant="light">
+            {t`These snapshots have identical content \u2014 nothing changed.`}
           </Alert>
         )}
 

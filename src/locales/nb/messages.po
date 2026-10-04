@@ -1562,10 +1562,6 @@ msgstr "Stategier per vert"
 msgid "Per-User Policies"
 msgstr "Strategier per bruker"
 
-#: src/snapshot-compare/SnapshotComparePage.tsx:809
-msgid "Pick two different snapshots to compare."
-msgstr ""
-
 #: src/snapshot-history/modals/PinSnapshotModal.tsx:66
 msgid "Pin Snapshot"
 msgstr "Fest Øyeblikksbilde"
@@ -2109,6 +2105,10 @@ msgstr "Oppgaven ble Kansellert"
 #: src/preferences/AppearanceSection.tsx:87
 msgid "Theme"
 msgstr "Tema"
+
+#: src/snapshot-compare/SnapshotComparePage.tsx:809
+msgid "These snapshots have identical content — nothing changed."
+msgstr ""
 
 #: src/policies/modals/PolicyModal/tabs/OtherTab.tsx:42
 msgid "This is the internal representation of a policy"
