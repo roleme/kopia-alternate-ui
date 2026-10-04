@@ -72,6 +72,20 @@ function signedSize(value: number, base2: boolean): string {
   return `${sign}${sizeDisplayName(Math.abs(value), base2)}`;
 }
 
+function sizePair(from: number, to: number, base2: boolean): [string, string] {
+  const base = base2 ? 1024 : 1000;
+  const prefixes = base2 ? ["", "Ki", "Mi", "Gi", "Ti"] : ["", "K", "M", "G", "T"];
+  const largest = Math.max(from, to);
+  let unit = 0;
+  while (unit < prefixes.length - 1 && largest / base ** (unit + 1) >= 1) unit += 1;
+  if (unit === 0) return [`${from} B`, `${to} B`];
+  const fmt = (value: number, decimals: number) => `${(value / base ** unit).toFixed(decimals)} ${prefixes[unit]}B`;
+  for (let decimals = 1; decimals <= 3; decimals++) {
+    if (fmt(from, decimals) !== fmt(to, decimals)) return [fmt(from, decimals), fmt(to, decimals)];
+  }
+  return [fmt(from, 3), fmt(to, 3)];
+}
+
 function countNodes(nodes: DiffNode[]): number {
   let total = 0;
   for (const node of nodes) {
@@ -453,9 +467,8 @@ function SnapshotComparePage() {
     const sizeA = entrySizeOf(a);
     const sizeB = entrySizeOf(b);
     if (sizeA !== sizeB) {
-      const from = sizeDisplayName(sizeA, bytesStringBase2);
-      const to = sizeDisplayName(sizeB, bytesStringBase2);
-      rows.push({ label: "size", content: from === to ? change(`${sizeA} B`, `${sizeB} B`) : change(from, to) });
+      const [from, to] = sizePair(sizeA, sizeB, bytesStringBase2);
+      rows.push({ label: "size", content: change(from, to) });
     }
     if (a.mode !== b.mode) rows.push({ label: "mode", content: change(a.mode, b.mode) });
     if (a.mtime !== b.mtime) {
