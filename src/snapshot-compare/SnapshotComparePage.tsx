@@ -8,6 +8,7 @@ import {
   Code,
   Container,
   Group,
+  type MantineColor,
   Paper,
   Chip,
   Progress,
@@ -19,7 +20,7 @@ import {
 } from "@mantine/core";
 import { IconArrowLeft, IconCheck, IconChevronRight, IconExclamationCircle, IconFolderOpen } from "@tabler/icons-react";
 import dayjs from "dayjs";
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { type KeyboardEvent, type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 import { useAppContext } from "../core/context/AppContext";
 import { useServerInstanceContext } from "../core/context/ServerInstanceContext";
@@ -30,11 +31,18 @@ import { getFileIcon } from "../snapshot-directory/fileIcons";
 import type { Snapshot, Snapshots, SourceInfo } from "../core/types";
 import sizeDisplayName from "../utils/formatSize";
 import { walkTrees, type WalkProgress, type WalkResult } from "./compareWalk";
-import { entrySize as entrySizeOf, type DiffNode, type DiffStatus, type DiffStats } from "./diffTree";
-import { compactDiff, diffLines, looksLikeText, type DiffLine } from "./lineDiff";
+import {
+  compareEntries,
+  emptyStats,
+  entrySize as entrySizeOf,
+  type DiffNode,
+  type DiffStatus,
+  type DiffStats
+} from "./diffTree";
+import { compactDiff, diffLines, looksLikeText, sniffsAsText, type DiffLine } from "./lineDiff";
 
 type Filter = "all" | DiffStatus;
-type SortMode = "delta" | "path";
+type SortMode = "delta" | "type" | "path";
 
 type ContentDiffState =
   | { state: "loading" }
@@ -42,6 +50,24 @@ type ContentDiffState =
   | { state: "too-large" }
   | { state: "error" }
   | { state: "text"; lines: DiffLine[]; added: number; removed: number };
+
+const MAX_DIFF_BYTES = 2 * 1024 * 1024;
+
+const STATUS_COLOR: Record<DiffStatus, MantineColor> = {
+  added: "green.6",
+  removed: "red.6",
+  modified: "blue.6",
+  touched: "gray.6",
+  error: "yellow.6"
+};
+
+const STATUS_GLYPH: Record<DiffStatus, string> = {
+  added: "+",
+  removed: "−",
+  modified: "±",
+  touched: "~",
+  error: "!"
+};
 
 function nodeDelta(node: DiffNode): number {
   return node.agg ? node.agg.delta : node.delta;
@@ -52,17 +78,23 @@ function signedSize(value: number, base2: boolean): string {
   return `${sign}${sizeDisplayName(Math.abs(value), base2)}`;
 }
 
-function countNodes(nodes: DiffNode[]): number {
-  let total = 0;
-  for (const node of nodes) {
-    total += 1;
-    if (node.children) total += countNodes(node.children);
+function sizePair(from: number, to: number, base2: boolean): [string, string] {
+  const base = base2 ? 1024 : 1000;
+  const prefixes = base2 ? ["", "Ki", "Mi", "Gi", "Ti"] : ["", "K", "M", "G", "T"];
+  const largest = Math.max(from, to);
+  let unit = 0;
+  while (unit < prefixes.length - 1 && largest / base ** (unit + 1) >= 1) unit += 1;
+  if (unit === 0) return [`${from} B`, `${to} B`];
+  const fmt = (value: number, decimals: number) => `${(value / base ** unit).toFixed(decimals)} ${prefixes[unit]}B`;
+  for (let decimals = 1; decimals <= 3; decimals++) {
+    if (fmt(from, decimals) !== fmt(to, decimals)) return [fmt(from, decimals), fmt(to, decimals)];
   }
-  return total;
+  return [fmt(from, 3), fmt(to, 3)];
 }
 
 function matchesFilter(node: DiffNode, filter: Filter, query: string): boolean {
-  if ((filter === "all" || node.status === filter) && node.path.toLowerCase().includes(query)) {
+  const shown = filter === "all" ? node.status !== "touched" : node.status === filter;
+  if (shown && node.path.toLowerCase().includes(query)) {
     return true;
   }
   return node.children?.some((c) => matchesFilter(c, filter, query)) ?? false;
@@ -83,10 +115,19 @@ function countDisplayed(nodes: DiffNode[], filter: Filter, query: string): numbe
   return total;
 }
 
+const TYPE_ORDER: Record<DiffStatus, number> = { added: 0, modified: 1, removed: 2, touched: 3, error: 4 };
+
 function sortNodes(nodes: DiffNode[], sort: SortMode): DiffNode[] {
   const sorted = [...nodes];
   if (sort === "path") {
     sorted.sort((a, b) => a.path.localeCompare(b.path));
+  } else if (sort === "type") {
+    sorted.sort(
+      (a, b) =>
+        TYPE_ORDER[a.status] - TYPE_ORDER[b.status] ||
+        Math.abs(nodeDelta(b)) - Math.abs(nodeDelta(a)) ||
+        a.path.localeCompare(b.path)
+    );
   } else {
     // signed: growth first, shrinkage last (+8, +7, 0, -6, -8)
     sorted.sort((a, b) => nodeDelta(b) - nodeDelta(a) || a.path.localeCompare(b.path));
@@ -102,6 +143,8 @@ function countFor(stats: DiffStats, status: DiffStatus): number {
       return stats.filesRemoved;
     case "modified":
       return stats.filesModified;
+    case "touched":
+      return stats.filesTouched;
     default:
       return stats.errors;
   }
@@ -115,6 +158,8 @@ function pillLabel(status: DiffStatus): string {
       return t`removed`;
     case "modified":
       return t`modified`;
+    case "touched":
+      return t`touched`;
     default:
       return t`errors`;
   }
@@ -147,6 +192,9 @@ function SnapshotComparePage() {
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const [collapsed, setCollapsed] = useState<Set<string>>(new Set());
   const [details, setDetails] = useState<Set<string>>(new Set());
+  const [sniffs, setSniffs] = useState<Record<string, "text" | "binary">>({});
+  const sniffing = useRef<Set<string>>(new Set());
+  const [lazyChildren, setLazyChildren] = useState<Record<string, DiffNode[] | "loading" | "error">>({});
   const [hiddenDiffs, setHiddenDiffs] = useState<Set<string>>(new Set());
   const [contentDiffs, setContentDiffs] = useState<Record<string, ContentDiffState>>({});
   const [retryTick, setRetryTick] = useState(0);
@@ -191,6 +239,9 @@ function SnapshotComparePage() {
     setWalkError(undefined);
     setExpanded(new Set());
     setCollapsed(new Set());
+    setSniffs({});
+    sniffing.current.clear();
+    setLazyChildren({});
     setDetails(new Set());
     setHiddenDiffs(new Set());
     setContentDiffs({});
@@ -223,8 +274,7 @@ function SnapshotComparePage() {
 
   const loadContentDiff = async (node: DiffNode) => {
     if (!node.a || !node.b) return;
-    const maxBytes = 2 * 1024 * 1024;
-    if ((node.a.size ?? 0) > maxBytes || (node.b.size ?? 0) > maxBytes) {
+    if ((node.a.size ?? 0) > MAX_DIFF_BYTES || (node.b.size ?? 0) > MAX_DIFF_BYTES) {
       setContentDiffs((prev) => ({ ...prev, [node.id]: { state: "too-large" } }));
       return;
     }
@@ -273,7 +323,10 @@ function SnapshotComparePage() {
     () => (result ? countDisplayed(result.roots, filter, query.trim().toLowerCase()) : 0),
     [result, filter, query]
   );
-  const totalCount = useMemo(() => (result ? countNodes(result.roots) : 0), [result]);
+  const totalCount = useMemo(
+    () => (result ? countDisplayed(result.roots, filter === "touched" ? "touched" : "all", "") : 0),
+    [result, filter]
+  );
 
   const flip = (prev: Set<string>, id: string) => {
     const next = new Set(prev);
@@ -283,7 +336,55 @@ function SnapshotComparePage() {
   };
 
   const isOpen = (node: DiffNode) =>
-    expanded.has(node.id) || (narrow && node.status === "modified" && !collapsed.has(node.id));
+    expanded.has(node.id) || (narrow && (node.status === "modified" || node.status === "touched") && !collapsed.has(node.id));
+
+  useEffect(() => {
+    if (!result) return;
+    const visit = (nodes: DiffNode[]) => {
+      for (const node of nodes) {
+        const { a, b } = node;
+        if (
+          !node.isDir &&
+          node.status === "modified" &&
+          a &&
+          b &&
+          a.obj !== b.obj &&
+          !node.typeChanged &&
+          !sniffing.current.has(node.id)
+        ) {
+          sniffing.current.add(node.id);
+          void (async () => {
+            const [headA, headB] = await Promise.all([
+              kopiaService.getObjectHead(a.obj, 512),
+              kopiaService.getObjectHead(b.obj, 512)
+            ]);
+            const text =
+              !headA.isError && headA.data && !headB.isError && headB.data
+                ? sniffsAsText(headA.data) && sniffsAsText(headB.data)
+                : false;
+            setSniffs((prev) => ({ ...prev, [node.id]: text ? "text" : "binary" }));
+          })();
+        }
+        if (node.isDir && childrenOf(node) && isOpen(node)) visit(childrenOf(node) ?? []);
+      }
+    };
+    visit(result.roots);
+  });
+
+  const loadOneSided = async (node: DiffNode) => {
+    const entry = node.a ?? node.b;
+    if (!entry) return;
+    setLazyChildren((prev) => ({ ...prev, [node.id]: "loading" }));
+    const resp = await kopiaService.getObjects(entry.obj);
+    if (resp.isError || !resp.data) {
+      setLazyChildren((prev) => ({ ...prev, [node.id]: "error" }));
+      return;
+    }
+    const entries = resp.data.entries ?? [];
+    const added = node.status === "added";
+    const children = compareEntries(added ? [] : entries, added ? entries : [], node.path, emptyStats());
+    setLazyChildren((prev) => ({ ...prev, [node.id]: children }));
+  };
 
   const toggle = (node: DiffNode) => {
     if (!node.isDir) {
@@ -304,6 +405,7 @@ function SnapshotComparePage() {
         next.delete(node.id);
         return next;
       });
+      if (node.oneSided && !node.children && !lazyChildren[node.id]) void loadOneSided(node);
     }
   };
 
@@ -324,23 +426,6 @@ function SnapshotComparePage() {
   };
 
   const renderContentDiff = (node: DiffNode): ReactNode => {
-    // Deterministic outcomes — no button, no fetch:
-    // equal object IDs prove identical content; two zero-size files are
-    // both empty. The error state is left for genuine fetch failures.
-    if (node.a && node.b && node.a.obj === node.b.obj) {
-      return (
-        <Text fz="xs" c="dimmed">
-          {t`Text is identical \u2014 only metadata differs.`}
-        </Text>
-      );
-    }
-    if ((node.a?.size ?? -1) === 0 && (node.b?.size ?? -1) === 0) {
-      return (
-        <Text fz="xs" c="dimmed">
-          {t`Both files are empty.`}
-        </Text>
-      );
-    }
     const current = contentDiffs[node.id];
     if (!current) {
       return (
@@ -356,20 +441,6 @@ function SnapshotComparePage() {
         </Button>
       );
     }
-    if (current.state === "binary") {
-      return (
-        <Text fz="xs" c="dimmed">
-          {t`Not a text file — content diff is not available.`}
-        </Text>
-      );
-    }
-    if (current.state === "too-large") {
-      return (
-        <Text fz="xs" c="dimmed">
-          {t`File is too large to diff in the browser.`}
-        </Text>
-      );
-    }
     if (current.state === "error") {
       return (
         <Text fz="xs" c="red.6">
@@ -377,13 +448,7 @@ function SnapshotComparePage() {
         </Text>
       );
     }
-    if (current.added === 0 && current.removed === 0) {
-      return (
-        <Text fz="xs" c="dimmed">
-          {t`Text is identical — only metadata differs.`}
-        </Text>
-      );
-    }
+    if (current.state !== "text") return null;
     const hidden = hiddenDiffs.has(node.id);
     return (
       <Stack gap={0} mt={4}>
@@ -439,9 +504,88 @@ function SnapshotComparePage() {
     );
   };
 
+  const changeRows = (node: DiffNode): { label: string; content: ReactNode }[] => {
+    const { a, b } = node;
+    if (node.isDir) return [];
+    if (!a || !b) return [];
+    const rows: { label: string; content: ReactNode }[] = [];
+    const change = (from: string, to: string) => (
+      <Code fz="xs" fw={600} style={{ whiteSpace: "nowrap" }}>
+        {`${from} → ${to}`}
+      </Code>
+    );
+    const sizeA = entrySizeOf(a);
+    const sizeB = entrySizeOf(b);
+    if (sizeA !== sizeB) {
+      const [from, to] = sizePair(sizeA, sizeB, bytesStringBase2);
+      rows.push({ label: "size", content: change(from, to) });
+    }
+    if (a.mode !== b.mode) rows.push({ label: "mode", content: change(a.mode, b.mode) });
+    if (a.uid !== b.uid || a.gid !== b.gid) {
+      const owner = (e: typeof a) => `${e.uid ?? "?"}:${e.gid ?? "?"}`;
+      rows.push({ label: "owner", content: change(owner(a), owner(b)) });
+    }
+    if (a.mtime !== b.mtime) {
+      const minutes = "YYYY-MM-DD HH:mm";
+      const sameMinute = dayjs(a.mtime).format(minutes) === dayjs(b.mtime).format(minutes);
+      const format = sameMinute ? "YYYY-MM-DD HH:mm:ss" : minutes;
+      rows.push({ label: "date", content: change(dayjs(a.mtime).format(format), dayjs(b.mtime).format(format)) });
+    }
+    const loaded = contentDiffs[node.id];
+    const nothingToShow =
+      loaded?.state === "binary" ||
+      loaded?.state === "too-large" ||
+      (loaded?.state === "text" && loaded.added === 0 && loaded.removed === 0);
+    const diffable =
+      sniffs[node.id] === "text" &&
+      !nothingToShow &&
+      !node.typeChanged &&
+      a.obj !== b.obj &&
+      !(sizeA === 0 && sizeB === 0) &&
+      sizeA <= MAX_DIFF_BYTES &&
+      sizeB <= MAX_DIFF_BYTES;
+    if (diffable) rows.push({ label: "content", content: renderContentDiff(node) });
+    return rows;
+  };
+
+  const renderChanges = (rows: { label: string; content: ReactNode }[]): ReactNode => (
+    <Stack gap={2}>
+      {rows.map((row) => (
+        <Group key={row.label} gap="xs" wrap="nowrap" align="flex-start">
+          <Text fz="xs" c="dimmed" w={70} style={{ flexShrink: 0 }}>
+            {row.label}
+          </Text>
+          <Box style={{ flex: 1, minWidth: 0 }}>{row.content}</Box>
+        </Group>
+      ))}
+    </Stack>
+  );
+
+  const childrenOf = (node: DiffNode): DiffNode[] | undefined => {
+    if (node.children) return node.children;
+    const lazy = lazyChildren[node.id];
+    return Array.isArray(lazy) ? lazy : undefined;
+  };
+
   const renderNode = (node: DiffNode, depth: number): ReactNode => {
     const open = isOpen(node);
-    const showDetail = !node.isDir && details.has(node.id);
+    const rows = node.isDir || node.status === "error" ? [] : changeRows(node);
+    const expandable = node.isDir ? node.status !== "error" : rows.length > 0;
+    const showDetail = expandable && !node.isDir && details.has(node.id);
+    const interactive = expandable
+      ? {
+          role: "button" as const,
+          tabIndex: 0,
+          "aria-expanded": node.isDir ? open : showDetail,
+          onClick: () => toggle(node),
+          onKeyDown: (e: KeyboardEvent<HTMLDivElement>) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              toggle(node);
+            }
+          }
+        }
+      : {};
     const delta = nodeDelta(node);
     return (
       <Box key={node.id}>
@@ -452,23 +596,17 @@ function SnapshotComparePage() {
           px="xs"
           py={6}
           ml={depth * 22}
-          role="button"
-          tabIndex={0}
-          aria-expanded={node.isDir ? open : showDetail}
+          {...interactive}
           style={{
-            cursor: "pointer",
+            cursor: expandable ? "pointer" : undefined,
             borderRadius: 4,
             background: open || showDetail ? "var(--mantine-color-gray-1)" : undefined
           }}
-          onClick={() => toggle(node)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              e.preventDefault();
-              toggle(node);
-            }
-          }}
         >
-          {node.status !== "error" ? (
+          <Text ff="monospace" fw={700} fz="sm" c={STATUS_COLOR[node.status]} style={{ width: 14, flexShrink: 0 }}>
+            {STATUS_GLYPH[node.status]}
+          </Text>
+          {expandable ? (
             <IconChevronRight
               size={13}
               style={{
@@ -485,7 +623,13 @@ function SnapshotComparePage() {
           ) : (
             <IconWrapper icon={getFileIcon(node.name)} color="blue" size={16} />
           )}
-          <Text ff="monospace" fz="sm" style={{ flex: 1, minWidth: 0 }} truncate="end">
+          <Text
+            ff="monospace"
+            fz="sm"
+            c={node.status === "added" || node.status === "removed" ? STATUS_COLOR[node.status] : undefined}
+            style={{ flex: 1, minWidth: 0 }}
+            truncate="end"
+          >
             {node.name}
             {node.typeChanged && (
               <Text component="span" inherit c="yellow.6">
@@ -515,62 +659,34 @@ function SnapshotComparePage() {
           >
             {node.isDir && node.status === "error"
               ? t`couldn't read`
-              : node.isDir && !node.agg && !node.oneSided
-                ? "…"
-                : signedSize(delta, bytesStringBase2)}
+              : node.status === "touched"
+                ? ""
+                : node.isDir && !node.agg && !node.oneSided
+                  ? "…"
+                  : signedSize(delta, bytesStringBase2)}
           </Text>
         </Group>
         {showDetail && (
           <Paper withBorder ml={depth * 22 + 30} mb={4} p="xs" radius="sm">
-            <Stack gap={2}>
-              {(() => {
-                const rows = [
-                  {
-                    label: "size",
-                    av: node.a ? sizeDisplayName(entrySizeOf(node.a), bytesStringBase2) : undefined,
-                    bv: node.b ? sizeDisplayName(entrySizeOf(node.b), bytesStringBase2) : undefined
-                  },
-                  { label: "mode", av: node.a?.mode, bv: node.b?.mode },
-                  {
-                    label: "date",
-                    av: node.a ? dayjs(node.a.mtime).format("YYYY-MM-DD HH:mm") : undefined,
-                    bv: node.b ? dayjs(node.b.mtime).format("YYYY-MM-DD HH:mm") : undefined
-                  }
-                ];
-                const both = node.a !== undefined && node.b !== undefined;
-                return rows.map((r) => (
-                  <Group key={r.label} gap="xs" wrap="nowrap">
-                    <Text fz="xs" c="dimmed" w={70} style={{ flexShrink: 0 }}>
-                      {r.label}
-                    </Text>
-                    <Code
-                      fz="xs"
-                      style={{
-                        whiteSpace: "nowrap",
-                        color: both && r.av === r.bv ? "var(--mantine-color-dimmed)" : undefined,
-                        fontWeight: both && r.av !== r.bv ? 600 : undefined
-                      }}
-                    >
-                      {both ? `${r.av} → ${r.bv}` : (r.av ?? r.bv)}
-                    </Code>
-                  </Group>
-                ));
-              })()}
-              {node.status === "modified" &&
-                !node.isDir &&
-                node.a &&
-                node.b &&
-                !node.typeChanged &&
-                renderContentDiff(node)}
-            </Stack>
+            {renderChanges(rows)}
           </Paper>
         )}
-        {node.isDir && open && node.children && (
+        {node.isDir && open && childrenOf(node) && (
           <Box>
-            {sortNodes(keepMatching(node.children, filter, query.trim().toLowerCase()), sort).map((child) =>
+            {sortNodes(keepMatching(childrenOf(node) ?? [], filter, query.trim().toLowerCase()), sort).map((child) =>
               renderNode(child, depth + 1)
             )}
           </Box>
+        )}
+        {node.isDir && open && lazyChildren[node.id] === "loading" && (
+          <Text fz="xs" c="dimmed" ml={(depth + 1) * 22 + 44} py={4}>
+            {t`Loading…`}
+          </Text>
+        )}
+        {node.isDir && open && lazyChildren[node.id] === "error" && (
+          <Text fz="xs" c="yellow.6" ml={(depth + 1) * 22 + 44} py={4}>
+            {t`couldn't read`}
+          </Text>
         )}
       </Box>
     );
@@ -579,21 +695,16 @@ function SnapshotComparePage() {
   return (
     <Container fluid>
       <Stack>
-        <Group gap="sm" wrap="nowrap">
+        <Group>
           <ActionIcon variant="subtle" onClick={() => navigate(-1)}>
             <IconArrowLeft size={24} />
           </ActionIcon>
-          <Title order={1}>{t`Compare snapshots`}</Title>
-          <Text
-            c="dimmed"
-            ff="monospace"
-            fz="sm"
-            truncate="end"
-            style={{ flex: 1, minWidth: 0, paddingTop: 6 }}
-            title={sourceInfo.path}
-          >
-            {sourceInfo.path}
-          </Text>
+          <Stack gap={0}>
+            <Title order={1}>{t`Compare snapshots`}</Title>
+            <Text size="sm" c="dimmed">
+              {sourceInfo.path}
+            </Text>
+          </Stack>
         </Group>
 
         {(snapshotA || snapshotB) && (
@@ -642,8 +753,8 @@ function SnapshotComparePage() {
           </Alert>
         )}
         {paramA && paramB && paramA === paramB && (
-          <Alert color="blue" variant="light">
-            {t`Pick two different snapshots to compare.`}
+          <Alert color="green" icon={<IconCheck size={16} />} variant="light">
+            {t`These snapshots have identical content \u2014 nothing changed.`}
           </Alert>
         )}
 
@@ -663,13 +774,13 @@ function SnapshotComparePage() {
           </Group>
         )}
 
-        {stats && stats.errors === 0 && stats.delta === 0 && visibleRoots.length === 0 && (
+        {stats && stats.errors === 0 && stats.delta === 0 && stats.filesTouched === 0 && visibleRoots.length === 0 && (
           <Alert color="green" icon={<IconCheck size={16} />} variant="light">
             {t`The selected snapshots are identical — nothing was added, removed or modified.`}
           </Alert>
         )}
 
-        {stats && (stats.errors > 0 || stats.delta !== 0 || visibleRoots.length > 0) && (
+        {stats && (stats.errors > 0 || stats.delta !== 0 || stats.filesTouched > 0 || visibleRoots.length > 0) && (
           <>
             <Paper withBorder p="md" radius="md">
               <Group justify="space-between" align="center" gap="md" wrap="wrap">
@@ -684,9 +795,18 @@ function SnapshotComparePage() {
                   {signedSize(stats.delta, bytesStringBase2)}
                 </Text>
                 <Stack gap={6} align="flex-end">
-                  {(["added", "removed", "modified"] as DiffStatus[]).map((key) => {
+                  {(["added", "removed", "modified", "touched"] as DiffStatus[]).map((key) => {
                     const count = countFor(stats, key);
                     if (count === 0) return null;
+                    if (key === "touched") {
+                      return (
+                        <Chip key={key} value={key} size="xs" onChange={(checked) => setFilter(checked ? key : "all")}>
+                          <span title={t`Content unchanged \u2014 only the timestamp, permissions or owner differ`}>
+                            {`${count} ${pillLabel(key)}`}
+                          </span>
+                        </Chip>
+                      );
+                    }
                     const value =
                       key === "added"
                         ? stats.bytesAdded
@@ -751,11 +871,12 @@ function SnapshotComparePage() {
               <Select
                 data={[
                   { value: "delta", label: t`Sort: size delta` },
+                  { value: "type", label: t`Sort: added, modified, removed` },
                   { value: "path", label: t`Sort: path` }
                 ]}
                 value={sort}
                 onChange={(v) => setSort((v as SortMode) ?? "delta")}
-                w={180}
+                w={250}
               />
               {(expanded.size > 0 || details.size > 0 || narrow) && (
                 <Button variant="subtle" size="xs" ml="auto" onClick={collapseAll}>

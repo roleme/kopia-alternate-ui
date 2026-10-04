@@ -41,6 +41,20 @@ export function diffLines(aText: string, bText: string, maxCells = 4_000_000): D
 
 /** True when the bytes look like displayable text: decodes as UTF-8 and has
  * no NUL bytes (the usual binary marker). */
+export function sniffsAsText(head: ArrayBuffer): boolean {
+  const arr = new Uint8Array(head);
+  if (arr.includes(0)) return false;
+  for (let cut = 0; cut <= 3 && cut <= arr.length; cut++) {
+    try {
+      new TextDecoder("utf-8", { fatal: true }).decode(arr.subarray(0, arr.length - cut));
+      return true;
+    } catch {
+      continue;
+    }
+  }
+  return false;
+}
+
 export function looksLikeText(bytes: ArrayBuffer): string | null {
   if (bytes.byteLength === 0) return "";
   const arr = new Uint8Array(bytes);

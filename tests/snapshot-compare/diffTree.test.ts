@@ -45,21 +45,38 @@ describe("compareEntries", () => {
     expect(stats.delta).toBe(0);
   });
 
-  it("counts metadata-only changes as modified with zero delta", () => {
+  it("counts metadata-only changes as touched with zero delta", () => {
     const { nodes, stats } = walk([file("f", "o1", 10, { mode: "0644" })], [file("f", "o1", 10, { mode: "0600" })]);
     expect(nodes).toHaveLength(1);
-    expect(nodes[0].status).toBe("modified");
+    expect(nodes[0].status).toBe("touched");
     expect(nodes[0].metaChanges).toEqual([{ field: "mode", from: "0644", to: "0600" }]);
-    expect(stats.filesModified).toBe(1);
+    expect(stats.filesTouched).toBe(1);
+    expect(stats.filesModified).toBe(0);
     expect(stats.delta).toBe(0);
   });
 
-  it("ignores mtime-only changes on files with identical content", () => {
+  it("marks mtime-only changes on files with identical content as touched", () => {
     const { nodes, stats } = walk(
       [file("wal", "o1", 10, { mtime: "2026-01-01T00:00:00Z" })],
       [file("wal", "o1", 10, { mtime: "2026-02-01T00:00:00Z" })]
     );
-    expect(nodes).toHaveLength(0);
+    expect(nodes).toHaveLength(1);
+    expect(nodes[0].status).toBe("touched");
+    expect(nodes[0].delta).toBe(0);
+    expect(stats.filesTouched).toBe(1);
+    expect(stats.filesModified).toBe(0);
+  });
+
+  it("marks permission and ownership changes on identical content as touched", () => {
+    const { nodes, stats } = walk(
+      [file("key", "o1", 10, { mode: "0600", uid: 1000, gid: 1000 }), file("cfg", "o2", 5, { mode: "0644" })],
+      [file("key", "o1", 10, { mode: "0600", uid: 0, gid: 0 }), file("cfg", "o2", 5, { mode: "0600" })]
+    );
+    expect(nodes.map((n) => [n.name, n.status])).toEqual([
+      ["cfg", "touched"],
+      ["key", "touched"]
+    ]);
+    expect(stats.filesTouched).toBe(2);
     expect(stats.filesModified).toBe(0);
   });
 
