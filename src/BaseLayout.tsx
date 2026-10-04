@@ -8,6 +8,7 @@ import { Outlet } from "react-router-dom";
 import { AppContextProvider } from "./core/context/AppContext";
 import { ServerInstanceContextProvider } from "./core/context/ServerInstanceContext";
 import { MobileHeader } from "./core/Sidebar/MobileHeader";
+import { SHELL_PROPS } from "./core/Sidebar/shellLayout";
 import { Sidebar } from "./core/Sidebar/Sidebar";
 import { dynamicActivate } from "./i18n";
 
@@ -27,11 +28,7 @@ function BaseLayout() {
           <ServerInstanceContextProvider>
             <AppContextProvider>
               <Notifications position="top-right" />
-              <AppShell
-                padding="md"
-                header={{ height: { base: 48, md: 0 } }}
-                navbar={{ width: 232, breakpoint: "md", collapsed: { mobile: true } }}
-              >
+              <AppShell {...SHELL_PROPS}>
                 <MobileHeader />
                 <Sidebar />
                 <AppShell.Main>

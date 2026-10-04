@@ -1,5 +1,4 @@
 import { t } from "@lingui/core/macro";
-import { LoadingOverlay } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import { createContext, type PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from "react";
@@ -150,7 +149,7 @@ export function ServerInstanceContextProvider({ children }: ServerInstanceContex
           />
         </SkeletonLayout>
       )}
-      {loginRequired ? null : loading || currentInstance === undefined ? <LoadingOverlay visible /> : children}
+      {loginRequired ? null : loading || currentInstance === undefined ? <SkeletonLayout /> : children}
     </ServerInstanceContext.Provider>
   );
 }

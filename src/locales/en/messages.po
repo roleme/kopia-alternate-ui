@@ -488,7 +488,7 @@ msgstr "Credentials JSON"
 msgid "Cron Expressions"
 msgstr "Cron Expressions"
 
-#: src/core/context/ServerInstanceContext.tsx:93
+#: src/core/context/ServerInstanceContext.tsx:92
 msgid "Currently browsing instance {currentName}"
 msgstr "Currently browsing instance {currentName}"
 
@@ -1160,6 +1160,10 @@ msgstr "List of additional files containing ignore rules (each file configures i
 #: src/policies/modals/PolicyModal/tabs/FilesTab.tsx:24
 msgid "List of file and directory names to ignore."
 msgstr "List of file and directory names to ignore."
+
+#: src/core/SkeletonLayout.tsx:65
+msgid "Loading"
+msgstr ""
 
 #: src/snapshot-compare/SnapshotComparePage.tsx:683
 msgid "Loading…"
@@ -2097,7 +2101,7 @@ msgstr "Storage Account"
 msgid "Success"
 msgstr ""
 
-#: src/core/context/ServerInstanceContext.tsx:92
+#: src/core/context/ServerInstanceContext.tsx:91
 msgid "Switched instance"
 msgstr "Switched instance"
 
