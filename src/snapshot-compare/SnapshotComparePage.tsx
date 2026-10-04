@@ -32,12 +32,14 @@ import type { Snapshot, Snapshots, SourceInfo } from "../core/types";
 import sizeDisplayName from "../utils/formatSize";
 import { walkTrees, type WalkProgress, type WalkResult } from "./compareWalk";
 import {
+  autoExpandIds,
   compareEntries,
+  emptyFolderChanges,
   emptyStats,
   entrySize as entrySizeOf,
+  statusCount,
   type DiffNode,
-  type DiffStatus,
-  type DiffStats
+  type DiffStatus
 } from "./diffTree";
 import { compactDiff, diffLines, looksLikeText, sniffsAsText, type DiffLine } from "./lineDiff";
 
@@ -133,21 +135,6 @@ function sortNodes(nodes: DiffNode[], sort: SortMode): DiffNode[] {
     sorted.sort((a, b) => nodeDelta(b) - nodeDelta(a) || a.path.localeCompare(b.path));
   }
   return sorted;
-}
-
-function countFor(stats: DiffStats, status: DiffStatus): number {
-  switch (status) {
-    case "added":
-      return stats.filesAdded;
-    case "removed":
-      return stats.filesRemoved;
-    case "modified":
-      return stats.filesModified;
-    case "touched":
-      return stats.filesTouched;
-    default:
-      return stats.errors;
-  }
 }
 
 function pillLabel(status: DiffStatus): string {
@@ -255,7 +242,10 @@ function SnapshotComparePage() {
           },
           isCancelled: stale
         });
-        if (!stale()) setResult(walk);
+        if (!stale()) {
+          setExpanded(new Set(autoExpandIds(walk.roots)));
+          setResult(walk);
+        }
       } catch (err) {
         if (!stale() && (err as Error).name !== "AbortError") {
           setWalkError(err instanceof Error ? err.message : String(err));
@@ -319,6 +309,17 @@ function SnapshotComparePage() {
     return keepMatching(result.roots, filter, query.trim().toLowerCase());
   }, [result, filter, query]);
 
+  const emptyChangeNote = useMemo(() => {
+    if (!result) return undefined;
+    const { added, removed } = emptyFolderChanges(result.roots);
+    const parts: string[] = [];
+    if (removed.length === 1) parts.push(t`empty folder removed: ${removed[0]}`);
+    else if (removed.length > 1) parts.push(t`${removed.length} empty folders removed`);
+    if (added.length === 1) parts.push(t`empty folder added: ${added[0]}`);
+    else if (added.length > 1) parts.push(t`${added.length} empty folders added`);
+    return parts.length > 0 ? parts.join(" \u00b7 ") : undefined;
+  }, [result]);
+
   const visibleCount = useMemo(
     () => (result ? countDisplayed(result.roots, filter, query.trim().toLowerCase()) : 0),
     [result, filter, query]
@@ -336,7 +337,8 @@ function SnapshotComparePage() {
   };
 
   const isOpen = (node: DiffNode) =>
-    expanded.has(node.id) || (narrow && (node.status === "modified" || node.status === "touched") && !collapsed.has(node.id));
+    expanded.has(node.id) ||
+    (narrow && (node.status === "modified" || node.status === "touched") && !collapsed.has(node.id));
 
   useEffect(() => {
     if (!result) return;
@@ -570,7 +572,7 @@ function SnapshotComparePage() {
   const renderNode = (node: DiffNode, depth: number): ReactNode => {
     const open = isOpen(node);
     const rows = node.isDir || node.status === "error" ? [] : changeRows(node);
-    const expandable = node.isDir ? node.status !== "error" : rows.length > 0;
+    const expandable = node.isDir ? node.status !== "error" && !node.oneSided?.empty : rows.length > 0;
     const showDetail = expandable && !node.isDir && details.has(node.id);
     const interactive = expandable
       ? {
@@ -639,7 +641,7 @@ function SnapshotComparePage() {
           </Text>
           {node.isDir && node.oneSided && (
             <Text ff="monospace" fz="xs" c="dimmed" style={{ flexShrink: 0 }} visibleFrom="xs">
-              {t`${node.oneSided.files} files, ${node.oneSided.dirs} dirs`}
+              {node.oneSided.empty ? t`empty folder` : t`${node.oneSided.files} files, ${node.oneSided.dirs} dirs`}
             </Text>
           )}
           <Text
@@ -784,19 +786,25 @@ function SnapshotComparePage() {
           <>
             <Paper withBorder p="md" radius="md">
               <Group justify="space-between" align="center" gap="md" wrap="wrap">
-                <Text
-                  ff="monospace"
-                  fz="xl"
-                  fw={500}
-                  title={stats.errors > 0 ? t`Lower bound \u2014 some folders could not be read` : undefined}
-                  c={stats.delta > 0 ? "green.6" : stats.delta < 0 ? "red.6" : undefined}
-                >
-                  {stats.errors > 0 ? "\u2265 " : ""}
-                  {signedSize(stats.delta, bytesStringBase2)}
-                </Text>
+                {stats.delta === 0 && stats.errors === 0 ? (
+                  <Text fz="lg" c="dimmed">
+                    {emptyChangeNote ? `${t`No size change`} \u00b7 ${emptyChangeNote}` : t`No size change`}
+                  </Text>
+                ) : (
+                  <Text
+                    ff="monospace"
+                    fz="xl"
+                    fw={500}
+                    title={stats.errors > 0 ? t`Lower bound \u2014 some folders could not be read` : undefined}
+                    c={stats.delta > 0 ? "green.6" : stats.delta < 0 ? "red.6" : undefined}
+                  >
+                    {stats.errors > 0 ? "\u2265 " : ""}
+                    {signedSize(stats.delta, bytesStringBase2)}
+                  </Text>
+                )}
                 <Stack gap={6} align="flex-end">
                   {(["added", "removed", "modified", "touched"] as DiffStatus[]).map((key) => {
-                    const count = countFor(stats, key);
+                    const count = statusCount(stats, key);
                     if (count === 0) return null;
                     if (key === "touched") {
                       return (
@@ -814,11 +822,13 @@ function SnapshotComparePage() {
                           ? -stats.bytesRemoved
                           : stats.modifiedDelta;
                     const color =
-                      key === "added" || (key === "modified" && value > 0)
-                        ? "green.6"
-                        : key === "removed" || (key === "modified" && value < 0)
-                          ? "red.6"
-                          : "dimmed";
+                      value === 0
+                        ? "dimmed"
+                        : key === "added" || (key === "modified" && value > 0)
+                          ? "green.6"
+                          : key === "removed" || (key === "modified" && value < 0)
+                            ? "red.6"
+                            : "dimmed";
                     return (
                       <Chip key={key} value={key} size="xs" onChange={(checked) => setFilter(checked ? key : "all")}>
                         {`${count} ${pillLabel(key)} \u00b7 `}
