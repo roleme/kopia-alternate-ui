@@ -33,3 +33,19 @@ jobs:
           sha256sum "$ARCHIVE" > SHA256SUMS
           gh release create "$GITHUB_REF_NAME" "$ARCHIVE" SHA256SUMS \
             --repo "$GITHUB_REPOSITORY" --verify-tag --generate-notes
+      - name: Publish dist branch
+        run: |
+          ls dist/assets > /tmp/assets-current
+          git worktree add --orphan -b dist-publish ../dist-site
+          cp -a dist/. ../dist-site/
+          cp /tmp/assets-current ../dist-site/.assets-current
+          if git fetch --depth=1 origin dist; then
+            git show FETCH_HEAD:.assets-current | sed 's#^#assets/#' > /tmp/assets-carry || true
+            while IFS= read -r file; do
+              [ -e "../dist-site/${file}" ] || git show "FETCH_HEAD:${file}" > "../dist-site/${file}"
+            done < /tmp/assets-carry
+          fi
+          cd ../dist-site
+          git add -A
+          git -c user.name=github-actions[bot] -c user.email=41898282+github-actions[bot]@users.noreply.github.com commit -qm "dist ${GITHUB_REF_NAME}"
+          git push -f origin HEAD:refs/heads/dist
