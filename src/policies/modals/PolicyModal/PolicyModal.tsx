@@ -1,5 +1,5 @@
 import { Trans } from "@lingui/react/macro";
-import { Button, Group, LoadingOverlay, Modal, Stack, Tabs, TabsList, TabsTab } from "@mantine/core";
+import { Button, Group, LoadingOverlay, Modal, Tabs, TabsList, TabsTab } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import {
   IconAlertTriangle,
@@ -24,6 +24,7 @@ import modalBaseStyles from "../../../styles/modalStyles";
 import modalClasses from "../../../styles/modals.module.css";
 import { getPolicyType } from "../../policiesUtil";
 import DeletePolicyButton from "./components/DeletePolicyButton";
+import { PolicyResolvedStack } from "./components/PolicyResolvedContext";
 import { defaultForm, policyFormSchema } from "./constants";
 import CompressionTab from "./tabs/CompressionTab";
 import ErrorHandlingTab from "./tabs/ErrorHandlingTab";
@@ -35,7 +36,8 @@ import SchedulingTab from "./tabs/SchedulingTab";
 import SnapshotActionsTab from "./tabs/SnapshotActionsTab";
 import SnapshotRetentionTab from "./tabs/SnapshotRetentionTab";
 import UploadTab from "./tabs/UploadTab";
-import type { PolicyForm } from "./types";
+import type { PolicyForm, PolicyFormActions } from "./types";
+import { nextActionTimeout } from "./utils/actionTimeout";
 import deleteUnusedProps from "./utils/deleteUnusedProps";
 import { mergePolicy } from "./utils/mergePolicy";
 import { transformPolicy } from "./utils/transformPolicy";
@@ -82,8 +84,10 @@ export default function PolicyModal({
         timeout: undefined
       });
     } else {
-      if (form.values.actions?.afterFolder?.timeout === undefined) {
-        form.setFieldValue(`actions.${key}.timeout`, 300);
+      const current = form.getValues().actions?.[key as keyof PolicyFormActions]?.timeout;
+      const next = nextActionTimeout(value, current);
+      if (next !== current) {
+        form.setFieldValue(`actions.${key}.timeout`, next);
       }
     }
   }
@@ -186,7 +190,7 @@ export default function PolicyModal({
     >
       <form id="update-policy-form" onSubmit={form.onSubmit(submitForm)} className={modalClasses.container}>
         <LoadingOverlay visible={loadingData || loadingResolve || saveAction.loading} />
-        <Stack w="100%">
+        <PolicyResolvedStack w="100%" target={target} resolved={resolved}>
           <ErrorAlert error={loadError || resolveError} />
           <Tabs
             defaultValue="snapshot-retention"
@@ -252,7 +256,7 @@ export default function PolicyModal({
             <LoggingTab form={form} resolvedValue={resolvedValue} definition={resolvedDefinition} />
             <OtherTab form={form} />
           </Tabs>
-        </Stack>
+        </PolicyResolvedStack>
       </form>
 
       <Group className={modalClasses.footer}>

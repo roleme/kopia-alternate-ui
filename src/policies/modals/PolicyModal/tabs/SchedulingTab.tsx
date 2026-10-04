@@ -78,6 +78,7 @@ export default function SchedulingTab({ form, resolvedValue, upcomingSnapshotTim
           />
 
           <PolicyTextListInput
+            showRowValue
             id="cron-expression"
             title={t`Cron Expressions`}
             description={t`Snapshot schedules using UNIX crontab syntax:`}

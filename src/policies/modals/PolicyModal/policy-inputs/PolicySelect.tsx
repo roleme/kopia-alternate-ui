@@ -31,7 +31,14 @@ export default function PolicySelect({
   const isDefined = inputProps.value || effective;
   return (
     <AccordionItem value={id}>
-      <PolicyAccordionControl title={title} description={description} isConfigured={isConfigured} />
+      <PolicyAccordionControl
+        title={title}
+        description={description}
+        formKey={formKey}
+        definedValue={inputProps.value}
+        optionData={data}
+        isConfigured={isConfigured}
+      />
       <AccordionPanel>
         <Group grow align="flex-start">
           <Select label={t`Defined`} placeholder={placeholder} data={data} withCheckIcon={false} {...inputProps} />

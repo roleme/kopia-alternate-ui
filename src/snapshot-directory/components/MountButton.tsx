@@ -9,9 +9,10 @@ type Props = {
   mount?: MountedSnapshot;
   rootID: string;
   onMounted: (mnt?: MountedSnapshot) => void;
+  disabled?: boolean;
 };
 
-export default function MountButton({ mount, rootID, onMounted }: Props) {
+export default function MountButton({ mount, rootID, onMounted, disabled }: Props) {
   const { kopiaService } = useServerInstanceContext();
 
   const mountAction = useApiRequest({
@@ -35,6 +36,7 @@ export default function MountButton({ mount, rootID, onMounted }: Props) {
       leftSection={<IconFolderBolt size={16} />}
       onClick={() => mountAction.execute(rootID)}
       loading={mountAction.loading}
+      disabled={disabled}
     >
       <Trans>Mount</Trans>
     </Button>
@@ -45,6 +47,7 @@ export default function MountButton({ mount, rootID, onMounted }: Props) {
       leftSection={<IconFolderMinus size={16} />}
       onClick={() => unMountAction.execute(rootID)}
       loading={unMountAction.loading}
+      disabled={disabled}
     >
       <Trans>Unmount</Trans>
     </Button>

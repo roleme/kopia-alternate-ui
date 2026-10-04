@@ -1,3 +1,4 @@
+import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import {
   ActionIcon,
@@ -22,24 +23,28 @@ import {
 } from "@tabler/icons-react";
 import IconWrapper from "../../core/IconWrapper";
 import type { NotificationProfile } from "../../core/types";
-import NotificationSeverityDisplay from "./NotificationSeverityDisplay";
+import { notificationDestination, type SeverityName, severityName } from "../notificationSummary";
 
 type Props = {
   data: NotificationProfile;
   disabled: boolean;
   onDelete: () => void;
-  onDuplicate: () => void;
   onEdit: () => void;
   onTest: () => void;
 };
-function NotificationCard({
-  data,
-  disabled,
-  onDelete,
-  // onDuplicate,
-  onEdit,
-  onTest
-}: Props) {
+function severityLabel(severity: number): string {
+  const labels: Record<SeverityName, string> = {
+    verbose: t`Verbose`,
+    success: t`Success`,
+    report: t`Report`,
+    warning: t`Warning`,
+    error: t`Error`
+  };
+  const name = severityName(severity);
+  return name ? labels[name] : String(severity);
+}
+
+function NotificationCard({ data, disabled, onDelete, onEdit, onTest }: Props) {
   const getIcon = () => {
     switch (data.method.type) {
       case "webhook":
@@ -70,14 +75,6 @@ function NotificationCard({
               <MenuItem leftSection={<IconWrapper icon={IconPencil} color="yellow" size={18} />} onClick={onEdit}>
                 <Trans>Edit</Trans>
               </MenuItem>
-              {/* <MenuItem
-                leftSection={
-                  <IconWrapper icon={IconCopy} color="blue" size={18} />
-                }
-                onClick={onDuplicate}
-              >
-                Duplicate
-              </MenuItem> */}
               <MenuItem leftSection={<IconWrapper icon={IconTestPipe} color="grape" size={18} />} onClick={onTest}>
                 <Trans>Send test notification</Trans>
               </MenuItem>
@@ -93,11 +90,21 @@ function NotificationCard({
         </Group>
       </CardSection>
       <CardSection p="xs">
-        <Stack gap="0">
-          <Text fw="bold" c="dimmed" fz="xs">
-            <Trans>Minimum Severity</Trans>
-          </Text>
-          <NotificationSeverityDisplay severity={data.minSeverity} />
+        <Stack gap="xs">
+          <Stack gap={0}>
+            <Text c="dimmed" fz="xs">
+              <Trans>Destination</Trans>
+            </Text>
+            <Text fz="sm" ff="monospace">
+              {notificationDestination(data) || "-"}
+            </Text>
+          </Stack>
+          <Stack gap={0}>
+            <Text c="dimmed" fz="xs">
+              <Trans>Minimum Severity</Trans>
+            </Text>
+            <Text fz="sm">{`>= ${severityLabel(data.minSeverity)}`}</Text>
+          </Stack>
         </Stack>
       </CardSection>
     </Card>
