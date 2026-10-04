@@ -106,7 +106,7 @@ describe("compareEntries", () => {
   });
 
   it("marks a one-sided folder with nothing inside as empty", () => {
-    const { nodes, stats } = walk([dir("_replaced_by_recut", "d1", { size: 0, files: 0, dirs: 1 })], []);
+    const { nodes, stats } = walk([dir("_old_copy", "d1", { size: 0, files: 0, dirs: 1 })], []);
     expect(nodes[0].status).toBe("removed");
     expect(nodes[0].oneSided).toEqual({ files: 0, dirs: 0, size: 0, empty: true });
     expect(stats.dirsRemoved).toBe(1);
