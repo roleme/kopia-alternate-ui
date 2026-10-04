@@ -1,0 +1,39 @@
+.title {
+  height: 44.2px;
+  display: flex;
+  align-items: center;
+}
+
+.table {
+  border: 1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+  border-radius: var(--mantine-radius-sm);
+  overflow: hidden;
+}
+
+.tableHeader {
+  height: 38px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-7));
+}
+
+.tableRow {
+  height: 43px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  border-top: 1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+}
+
+.pathCell {
+  flex: 0 0 38%;
+}
+
+.cell {
+  flex: 0 0 20%;
+}
+
+.cellNarrow {
+  flex: 0 0 14%;
+}

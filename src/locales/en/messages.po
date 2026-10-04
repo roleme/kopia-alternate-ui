@@ -213,6 +213,10 @@ msgstr "Back"
 msgid "Backblaze B2"
 msgstr "Backblaze B2"
 
+#: src/core/Sidebar/Sidebar.tsx:48
+msgid "Backups"
+msgstr ""
+
 #: src/snapshot-compare/SnapshotComparePage.tsx:715
 msgid "before"
 msgstr ""
@@ -310,6 +314,10 @@ msgstr ""
 msgid "Close"
 msgstr "Close"
 
+#: src/core/Sidebar/MobileHeader.tsx:48
+msgid "Close navigation"
+msgstr ""
+
 #: src/snapshot-compare/SnapshotComparePage.tsx:883
 msgid "Collapse all"
 msgstr ""
@@ -354,6 +362,10 @@ msgstr "Compression Algorithm"
 #: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:116
 msgid "Config file"
 msgstr "Config file"
+
+#: src/core/Sidebar/Sidebar.tsx:50
+msgid "Configuration"
+msgstr ""
 
 #: src/repo/ConfigureRepoSection.tsx:293
 msgid "Configure Provider"
@@ -476,7 +488,7 @@ msgstr "Credentials JSON"
 msgid "Cron Expressions"
 msgstr "Cron Expressions"
 
-#: src/core/context/ServerInstanceContext.tsx:93
+#: src/core/context/ServerInstanceContext.tsx:92
 msgid "Currently browsing instance {currentName}"
 msgstr "Currently browsing instance {currentName}"
 
@@ -1149,6 +1161,10 @@ msgstr "List of additional files containing ignore rules (each file configures i
 msgid "List of file and directory names to ignore."
 msgstr "List of file and directory names to ignore."
 
+#: src/core/SkeletonLayout.tsx:65
+msgid "Loading"
+msgstr ""
+
 #: src/snapshot-compare/SnapshotComparePage.tsx:683
 msgid "Loading…"
 msgstr ""
@@ -1217,21 +1233,9 @@ msgstr ""
 msgid "Mail From"
 msgstr "Mail From"
 
-#: src/core/Header/Header.tsx:75
-msgid "Manage mounted snapshots"
-msgstr "Manage mounted snapshots"
-
-#: src/core/Header/Header.tsx:88
-msgid "Manage repository status and configuration"
-msgstr "Manage repository status and configuration"
-
-#: src/core/Header/Header.tsx:95
-msgid "Manage snapshot policies for this repository"
-msgstr "Manage snapshot policies for this repository"
-
-#: src/core/Header/Header.tsx:68
-msgid "Manage snapshots"
-msgstr "Manage snapshots"
+#: src/core/Sidebar/Sidebar.tsx:68
+msgid "Main navigation"
+msgstr ""
 
 #: src/snapshots/components/SourceStatusCell.tsx:52
 msgid "Manual"
@@ -1322,7 +1326,7 @@ msgstr "Mounted at"
 msgid "Mounted Snapshots"
 msgstr "Mounted Snapshots"
 
-#: src/core/Header/Header.tsx:72
+#: src/core/Sidebar/Sidebar.tsx:33
 msgid "Mounts"
 msgstr "Mounts"
 
@@ -1618,7 +1622,7 @@ msgstr "Pin Snapshot"
 msgid "Plain Text Format"
 msgstr "Plain Text Format"
 
-#: src/core/Header/Header.tsx:92
+#: src/core/Sidebar/Sidebar.tsx:37
 #: src/policies/PoliciesPage.tsx:136
 msgid "Policies"
 msgstr "Policies"
@@ -1632,7 +1636,7 @@ msgstr "Port"
 msgid "Port number (e.g., 22)"
 msgstr "Port number (e.g., 22)"
 
-#: src/core/Header/Header.tsx:100
+#: src/core/Sidebar/Sidebar.tsx:41
 #: src/preferences/PreferencesPage.tsx:13
 msgid "Preferences"
 msgstr "Preferences"
@@ -1712,7 +1716,7 @@ msgstr ""
 msgid "Report"
 msgstr ""
 
-#: src/core/Header/Header.tsx:81
+#: src/core/Sidebar/Sidebar.tsx:39
 #: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:82
 msgid "Repository"
 msgstr "Repository"
@@ -2025,8 +2029,7 @@ msgstr "Snapshot unmounted"
 msgid "Snapshot(s) deleted"
 msgstr "Snapshot(s) deleted"
 
-#: src/core/Header/Header.tsx:59
-#: src/core/Header/Header.tsx:65
+#: src/core/Sidebar/Sidebar.tsx:31
 #: src/snapshot-history/components/SnapshotHistoryStats.tsx:83
 #: src/snapshot-history/SnapshotHistory.tsx:107
 #: src/snapshots/SnapshotsPage.tsx:115
@@ -2084,7 +2087,6 @@ msgstr "Start Time"
 msgid "Started"
 msgstr "Started"
 
-#: src/core/Header/Header.tsx:86
 #: src/snapshots/SnapshotsPage.tsx:256
 #: src/tasks/TasksPage.tsx:203
 msgid "Status"
@@ -2099,7 +2101,7 @@ msgstr "Storage Account"
 msgid "Success"
 msgstr ""
 
-#: src/core/context/ServerInstanceContext.tsx:92
+#: src/core/context/ServerInstanceContext.tsx:91
 msgid "Switched instance"
 msgstr "Switched instance"
 
@@ -2119,7 +2121,7 @@ msgstr "Task cancelled"
 msgid "Task ID"
 msgstr "Task ID"
 
-#: src/core/Header/Header.tsx:99
+#: src/core/Sidebar/Sidebar.tsx:35
 #: src/tasks/TasksPage.tsx:99
 msgid "Tasks"
 msgstr "Tasks"
@@ -2210,6 +2212,10 @@ msgstr "Timestamp"
 msgctxt "email-to"
 msgid "To"
 msgstr "To"
+
+#: src/core/Sidebar/MobileHeader.tsx:26
+msgid "Toggle navigation"
+msgstr ""
 
 #: src/repo/sections/KopiaRepoTokenRepo.tsx:24
 #: src/repo/sections/KopiaRepoTokenRepo.tsx:43

@@ -15,14 +15,14 @@ import { IconLockAccessOff } from "@tabler/icons-react";
 import { useAppContext } from "../context/AppContext";
 import { useServerInstanceContext } from "../context/ServerInstanceContext";
 import IconWrapper from "../IconWrapper";
-import classes from "./Footer.module.css";
+import classes from "./ConnectionInfo.module.css";
 
 export function ConnectionInfo() {
   const { repoStatus } = useAppContext();
   const { servers, currentServer, setServer, logoutFromServer } = useServerInstanceContext();
 
   return (
-    <Popover position="top" clickOutsideEvents={["mouseup", "touchend"]} width={300}>
+    <Popover position="top-start" clickOutsideEvents={["mouseup", "touchend"]} width={300}>
       <Popover.Target>
         <UnstyledButton className={classes.serverSelect}>
           <Indicator
