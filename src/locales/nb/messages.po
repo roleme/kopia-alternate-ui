@@ -28,17 +28,17 @@ msgstr ""
 msgid "{currentLength} out of {totalLength}"
 msgstr "{currentLength} av {totalLength}"
 
-#: src/core/Footer/Footer.tsx:53
-msgid "{failedTaskCount} task(s) failed"
-msgstr "{failedTaskCount} oppgave(r) feilet"
+#: src/core/TaskCounts/TaskCounts.tsx:26
+msgid "{failed} task(s) failed in the last 24 hours"
+msgstr ""
 
-#: src/core/Footer/Footer.tsx:60
-msgid "{inProgressTaskCount} task(s) in progress"
-msgstr "{inProgressTaskCount} oppgave(r) kjørende"
+#: src/core/TaskCounts/TaskCounts.tsx:38
+msgid "{running} task(s) in progress"
+msgstr ""
 
-#: src/core/Footer/Footer.tsx:46
-msgid "{successTaskCount} task(s) completed"
-msgstr "{successTaskCount} oppgave(r) fullført"
+#: src/core/TaskCounts/TaskCounts.tsx:14
+msgid "{success} task(s) completed"
+msgstr ""
 
 #: src/policies/modals/PolicyModal/tabs/SnapshotRetentionTab.tsx:74
 msgid "# of annual snapshots"
