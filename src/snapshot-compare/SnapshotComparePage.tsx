@@ -32,7 +32,9 @@ import type { Snapshot, Snapshots, SourceInfo } from "../core/types";
 import sizeDisplayName from "../utils/formatSize";
 import { walkTrees, type WalkProgress, type WalkResult } from "./compareWalk";
 import {
+  autoExpandIds,
   compareEntries,
+  emptyFolderChanges,
   emptyStats,
   entrySize as entrySizeOf,
   statusCount,
@@ -240,7 +242,10 @@ function SnapshotComparePage() {
           },
           isCancelled: stale
         });
-        if (!stale()) setResult(walk);
+        if (!stale()) {
+          setExpanded(new Set(autoExpandIds(walk.roots)));
+          setResult(walk);
+        }
       } catch (err) {
         if (!stale() && (err as Error).name !== "AbortError") {
           setWalkError(err instanceof Error ? err.message : String(err));
@@ -304,6 +309,17 @@ function SnapshotComparePage() {
     return keepMatching(result.roots, filter, query.trim().toLowerCase());
   }, [result, filter, query]);
 
+  const emptyChangeNote = useMemo(() => {
+    if (!result) return undefined;
+    const { added, removed } = emptyFolderChanges(result.roots);
+    const parts: string[] = [];
+    if (removed.length === 1) parts.push(t`empty folder removed: ${removed[0]}`);
+    else if (removed.length > 1) parts.push(t`${removed.length} empty folders removed`);
+    if (added.length === 1) parts.push(t`empty folder added: ${added[0]}`);
+    else if (added.length > 1) parts.push(t`${added.length} empty folders added`);
+    return parts.length > 0 ? parts.join(" \u00b7 ") : undefined;
+  }, [result]);
+
   const visibleCount = useMemo(
     () => (result ? countDisplayed(result.roots, filter, query.trim().toLowerCase()) : 0),
     [result, filter, query]
@@ -321,7 +337,8 @@ function SnapshotComparePage() {
   };
 
   const isOpen = (node: DiffNode) =>
-    expanded.has(node.id) || (narrow && (node.status === "modified" || node.status === "touched") && !collapsed.has(node.id));
+    expanded.has(node.id) ||
+    (narrow && (node.status === "modified" || node.status === "touched") && !collapsed.has(node.id));
 
   useEffect(() => {
     if (!result) return;
@@ -771,7 +788,7 @@ function SnapshotComparePage() {
               <Group justify="space-between" align="center" gap="md" wrap="wrap">
                 {stats.delta === 0 && stats.errors === 0 ? (
                   <Text fz="lg" c="dimmed">
-                    {t`No size change`}
+                    {emptyChangeNote ? `${t`No size change`} \u00b7 ${emptyChangeNote}` : t`No size change`}
                   </Text>
                 ) : (
                   <Text

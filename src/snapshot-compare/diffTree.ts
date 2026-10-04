@@ -355,3 +355,45 @@ export function finalizeAggregates(nodes: DiffNode[]): DiffAggregate {
   for (const node of nodes) roll(node);
   return aggregate(nodes);
 }
+
+const AUTO_EXPAND_LIMIT = 10;
+
+function countRows(nodes: DiffNode[]): number {
+  let rows = 0;
+  for (const node of nodes) {
+    if (node.status === "touched") continue;
+    rows += 1 + countRows(node.children ?? []);
+  }
+  return rows;
+}
+
+/** Folders to open on load when the whole result fits on a few rows. */
+export function autoExpandIds(roots: DiffNode[], limit = AUTO_EXPAND_LIMIT): string[] {
+  if (countRows(roots) > limit) return [];
+  const ids: string[] = [];
+  const visit = (nodes: DiffNode[]) => {
+    for (const node of nodes) {
+      if (node.status !== "modified" || !node.isDir || !node.children) continue;
+      ids.push(node.id);
+      visit(node.children);
+    }
+  };
+  visit(roots);
+  return ids;
+}
+
+export type EmptyFolderChanges = { added: string[]; removed: string[] };
+
+export function emptyFolderChanges(roots: DiffNode[]): EmptyFolderChanges {
+  const found: EmptyFolderChanges = { added: [], removed: [] };
+  const visit = (nodes: DiffNode[]) => {
+    for (const node of nodes) {
+      if (node.oneSided?.empty && (node.status === "added" || node.status === "removed")) {
+        found[node.status].push(node.path);
+      }
+      visit(node.children ?? []);
+    }
+  };
+  visit(roots);
+  return found;
+}
