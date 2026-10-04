@@ -5,6 +5,7 @@ import {
   compareEntries,
   emptyStats,
   finalizeAggregates,
+  statusCount,
   type DiffNode
 } from "../../src/snapshot-compare/diffTree";
 
@@ -99,11 +100,40 @@ describe("compareEntries", () => {
     expect(stats.delta).toBe(-10);
   });
 
+  it("does not count the folder itself in a one-sided folder's directory count", () => {
+    const { nodes } = walk([dir("tree", "d1", { size: 10, files: 2, dirs: 3 })], []);
+    expect(nodes[0].oneSided).toEqual({ files: 2, dirs: 2, size: 10, empty: false });
+  });
+
+  it("marks a one-sided folder with nothing inside as empty", () => {
+    const { nodes, stats } = walk([dir("_replaced_by_recut", "d1", { size: 0, files: 0, dirs: 1 })], []);
+    expect(nodes[0].status).toBe("removed");
+    expect(nodes[0].oneSided).toEqual({ files: 0, dirs: 0, size: 0, empty: true });
+    expect(stats.dirsRemoved).toBe(1);
+    expect(stats.delta).toBe(0);
+  });
+
+  it("does not call a folder empty when it only contains an empty subfolder", () => {
+    const { nodes } = walk([], [dir("outer", "d1", { size: 0, files: 0, dirs: 2 })]);
+    expect(nodes[0].oneSided?.empty).toBe(false);
+    expect(nodes[0].oneSided?.dirs).toBe(1);
+  });
+
+  it("counts folders as well as files in the added and removed totals", () => {
+    const { stats } = walk(
+      [file("gone.txt", "o1", 5), dir("empty", "d1", { size: 0, files: 0, dirs: 1 })],
+      [dir("fresh", "d2", { size: 9, files: 1, dirs: 1 })]
+    );
+    expect(statusCount(stats, "removed")).toBe(2);
+    expect(statusCount(stats, "added")).toBe(1);
+    expect(statusCount(stats, "modified")).toBe(0);
+  });
+
   it("uses directory summaries for one-sided directories without fetching", () => {
     const { nodes, stats } = walk([], [dir("backup", "d9", { size: 500, files: 7, dirs: 2 })]);
     expect(nodes).toHaveLength(1);
     expect(nodes[0].status).toBe("added");
-    expect(nodes[0].oneSided).toEqual({ files: 7, dirs: 2, size: 500 });
+    expect(nodes[0].oneSided).toEqual({ files: 7, dirs: 1, size: 500, empty: false });
     expect(nodes[0].children).toBeUndefined();
     expect(stats.dirsAdded).toBe(1);
     expect(stats.bytesAdded).toBe(500);

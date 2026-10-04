@@ -35,9 +35,9 @@ import {
   compareEntries,
   emptyStats,
   entrySize as entrySizeOf,
+  statusCount,
   type DiffNode,
-  type DiffStatus,
-  type DiffStats
+  type DiffStatus
 } from "./diffTree";
 import { compactDiff, diffLines, looksLikeText, sniffsAsText, type DiffLine } from "./lineDiff";
 
@@ -133,21 +133,6 @@ function sortNodes(nodes: DiffNode[], sort: SortMode): DiffNode[] {
     sorted.sort((a, b) => nodeDelta(b) - nodeDelta(a) || a.path.localeCompare(b.path));
   }
   return sorted;
-}
-
-function countFor(stats: DiffStats, status: DiffStatus): number {
-  switch (status) {
-    case "added":
-      return stats.filesAdded;
-    case "removed":
-      return stats.filesRemoved;
-    case "modified":
-      return stats.filesModified;
-    case "touched":
-      return stats.filesTouched;
-    default:
-      return stats.errors;
-  }
 }
 
 function pillLabel(status: DiffStatus): string {
@@ -570,7 +555,7 @@ function SnapshotComparePage() {
   const renderNode = (node: DiffNode, depth: number): ReactNode => {
     const open = isOpen(node);
     const rows = node.isDir || node.status === "error" ? [] : changeRows(node);
-    const expandable = node.isDir ? node.status !== "error" : rows.length > 0;
+    const expandable = node.isDir ? node.status !== "error" && !node.oneSided?.empty : rows.length > 0;
     const showDetail = expandable && !node.isDir && details.has(node.id);
     const interactive = expandable
       ? {
@@ -639,7 +624,7 @@ function SnapshotComparePage() {
           </Text>
           {node.isDir && node.oneSided && (
             <Text ff="monospace" fz="xs" c="dimmed" style={{ flexShrink: 0 }} visibleFrom="xs">
-              {t`${node.oneSided.files} files, ${node.oneSided.dirs} dirs`}
+              {node.oneSided.empty ? t`empty folder` : t`${node.oneSided.files} files, ${node.oneSided.dirs} dirs`}
             </Text>
           )}
           <Text
@@ -784,19 +769,25 @@ function SnapshotComparePage() {
           <>
             <Paper withBorder p="md" radius="md">
               <Group justify="space-between" align="center" gap="md" wrap="wrap">
-                <Text
-                  ff="monospace"
-                  fz="xl"
-                  fw={500}
-                  title={stats.errors > 0 ? t`Lower bound \u2014 some folders could not be read` : undefined}
-                  c={stats.delta > 0 ? "green.6" : stats.delta < 0 ? "red.6" : undefined}
-                >
-                  {stats.errors > 0 ? "\u2265 " : ""}
-                  {signedSize(stats.delta, bytesStringBase2)}
-                </Text>
+                {stats.delta === 0 && stats.errors === 0 ? (
+                  <Text fz="lg" c="dimmed">
+                    {t`No size change`}
+                  </Text>
+                ) : (
+                  <Text
+                    ff="monospace"
+                    fz="xl"
+                    fw={500}
+                    title={stats.errors > 0 ? t`Lower bound \u2014 some folders could not be read` : undefined}
+                    c={stats.delta > 0 ? "green.6" : stats.delta < 0 ? "red.6" : undefined}
+                  >
+                    {stats.errors > 0 ? "\u2265 " : ""}
+                    {signedSize(stats.delta, bytesStringBase2)}
+                  </Text>
+                )}
                 <Stack gap={6} align="flex-end">
                   {(["added", "removed", "modified", "touched"] as DiffStatus[]).map((key) => {
-                    const count = countFor(stats, key);
+                    const count = statusCount(stats, key);
                     if (count === 0) return null;
                     if (key === "touched") {
                       return (
@@ -814,11 +805,13 @@ function SnapshotComparePage() {
                           ? -stats.bytesRemoved
                           : stats.modifiedDelta;
                     const color =
-                      key === "added" || (key === "modified" && value > 0)
-                        ? "green.6"
-                        : key === "removed" || (key === "modified" && value < 0)
-                          ? "red.6"
-                          : "dimmed";
+                      value === 0
+                        ? "dimmed"
+                        : key === "added" || (key === "modified" && value > 0)
+                          ? "green.6"
+                          : key === "removed" || (key === "modified" && value < 0)
+                            ? "red.6"
+                            : "dimmed";
                     return (
                       <Chip key={key} value={key} size="xs" onChange={(checked) => setFilter(checked ? key : "all")}>
                         {`${count} ${pillLabel(key)} \u00b7 `}

@@ -40,6 +40,7 @@ export type DiffNode = {
     files: number;
     dirs: number;
     size: number;
+    empty: boolean;
   };
   /** Differing directory whose children the walker has not fetched yet. */
   fetched: boolean;
@@ -51,6 +52,21 @@ export type DiffStats = DiffAggregate & {
   skippedDirs: number;
   skippedFiles: number;
 };
+
+export function statusCount(stats: DiffAggregate, status: DiffStatus): number {
+  switch (status) {
+    case "added":
+      return stats.filesAdded + stats.dirsAdded;
+    case "removed":
+      return stats.filesRemoved + stats.dirsRemoved;
+    case "modified":
+      return stats.filesModified;
+    case "touched":
+      return stats.filesTouched;
+    default:
+      return stats.errors;
+  }
+}
 
 export function emptyStats(): DiffStats {
   return {
@@ -97,7 +113,8 @@ function metaDiffs(a: DirEntry, b: DirEntry): MetaChange[] {
 function oneSidedDir(entry: DirEntry, status: "added" | "removed", path: string, id: string): DiffNode {
   const size = entrySize(entry);
   const files = entryFiles(entry);
-  const dirs = entry.summ?.dirs ?? 0;
+  const dirs = Math.max((entry.summ?.dirs ?? 0) - 1, 0);
+  const empty = files === 0 && dirs === 0 && (entry.summ?.symlinks ?? 0) === 0;
   return {
     id,
     name: entry.name,
@@ -108,7 +125,7 @@ function oneSidedDir(entry: DirEntry, status: "added" | "removed", path: string,
     a: status === "removed" ? entry : undefined,
     b: status === "added" ? entry : undefined,
     delta: status === "added" ? size : -size,
-    oneSided: { files, dirs, size },
+    oneSided: { files, dirs, size, empty },
     fetched: true
   };
 }
