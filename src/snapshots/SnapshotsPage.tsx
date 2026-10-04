@@ -1,30 +1,9 @@
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import {
-  ActionIcon,
-  Anchor,
-  Badge,
-  Box,
-  Button,
-  Container,
-  Divider,
-  Group,
-  Stack,
-  Text,
-  Title,
-  Tooltip
-} from "@mantine/core";
+import { Anchor, Badge, Box, Button, Container, Divider, Group, Stack, Text, Title } from "@mantine/core";
 import { useDisclosure, useLocalStorage } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
-import {
-  IconCircleCheck,
-  IconClick,
-  IconFileCertificate,
-  IconFileDatabase,
-  IconFolderOpen,
-  IconPackageExport,
-  IconRefreshAlert
-} from "@tabler/icons-react";
+import { IconCircleCheck, IconClick, IconFileDatabase, IconFolderOpen, IconRefreshAlert } from "@tabler/icons-react";
 import sortBy from "lodash.sortby";
 import type { DataTableSortStatus } from "mantine-datatable";
 import { Fragment, useEffect, useMemo, useState } from "react";
@@ -43,6 +22,7 @@ import type { SourceInfo, SourceStatus, Sources } from "../core/types";
 import { formatOwnerName } from "../utils/formatOwnerName";
 import sizeDisplayName from "../utils/formatSize";
 import { onlyUnique } from "../utils/onlyUnique";
+import SourceRowActions from "./components/SourceRowActions";
 import SourceStatusCell, { EmptyCell } from "./components/SourceStatusCell";
 import NewSnapshotModal from "./modals/NewSnapshotModal";
 
@@ -280,48 +260,15 @@ function SnapshotsPage() {
               accessor: "",
               title: <IconClick size={16} />,
               textAlign: "right",
-              width: 300,
+              width: "0%",
               visibleMediaQuery: (theme) => `(min-width: ${theme.breakpoints.sm})`,
-              render: (item) => {
-                switch (item.status) {
-                  case "IDLE":
-                  case "PAUSED":
-                  case "REMOTE": {
-                    return (
-                      <Group gap={4} justify="right" wrap="nowrap">
-                        {item.status !== "REMOTE" && (
-                          <Tooltip label={t`Snapshot Now`}>
-                            <ActionIcon
-                              variant="subtle"
-                              color="green.5"
-                              loading={newSnapshotActions.loading}
-                              onClick={() => newSnapshotActions.execute(item.source)}
-                            >
-                              <IconWrapper icon={IconPackageExport} size={18} />
-                            </ActionIcon>
-                          </Tooltip>
-                        )}
-
-                        <Tooltip label={t`View Policy`}>
-                          <ActionIcon
-                            component={Link}
-                            to={{
-                              pathname: "/policies",
-                              search: `userName=${item.source.userName}&host=${item.source.host}&path=${encodeURIComponent(item.source.path)}&viewPolicy=true`
-                            }}
-                            variant="subtle"
-                            color="grape.5"
-                          >
-                            <IconWrapper icon={IconFileCertificate} size={16} />
-                          </ActionIcon>
-                        </Tooltip>
-                      </Group>
-                    );
-                  }
-                  default:
-                    return null;
-                }
-              }
+              render: (item) => (
+                <SourceRowActions
+                  source={item}
+                  snapshotNowLoading={newSnapshotActions.loading}
+                  onSnapshotNow={(info) => newSnapshotActions.execute(info)}
+                />
+              )
             }
           ]}
         />
