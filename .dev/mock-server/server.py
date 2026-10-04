@@ -206,7 +206,30 @@ FILE_OBJECTS_EXTRA = {
     "TK2": b"token=bbbbbbbbbbbbbbbbbbbbbbbb\n  \n",
 }
 
+MANIFESTS.update({
+    "E_OLD": [d("takeout_roman", "TKR_O", summ(0, 0, 2))],
+    "E_NEW": [d("takeout_roman", "TKR_N", summ(0, 0, 1))],
+    "TKR_O": [d("_replaced_by_recut", "EMP_O", summ(0, 0, 1))],
+    "TKR_N": [],
+    "EMP_O": [],
+    "F_OLD": [f("readme.md", "ROOTRM", 120), d("keep", "KEEP_D", summ(4000, 2, 1))],
+    "F_NEW": [f("readme.md", "ROOTRM", 120), d("keep", "KEEP_D", summ(4000, 2, 1)), d("new_empty", "EMP_N", summ(0, 0, 1)),
+              d("only_subfolder", "ONLY_N", summ(0, 0, 2))],
+    "EMP_N": [],
+    "ONLY_N": [d("inner", "EMP_N2", summ(0, 0, 1))],
+    "EMP_N2": [],
+    "KEEP_D": [f("a.txt", "KA", 2000), f("b.txt", "KB", 2000)],
+})
+
 SNAPSHOTS = [
+    {"id": "s14", "rootID": "F_NEW", "startTime": "2026-10-04T09:00:00Z", "endTime": "2026-10-04T09:00:05Z",
+     "summary": summ(4120, 3, 5), "retention": ["latest-1"], "pins": [], "description": "empty folders added (after)"},
+    {"id": "s15", "rootID": "F_OLD", "startTime": "2026-10-04T08:00:00Z", "endTime": "2026-10-04T08:00:05Z",
+     "summary": summ(4120, 3, 2), "retention": ["latest-2"], "pins": [], "description": "empty folders added (before)"},
+    {"id": "s12", "rootID": "E_NEW", "startTime": "2026-10-04T07:00:00Z", "endTime": "2026-10-04T07:00:05Z",
+     "summary": summ(0, 0, 2), "retention": ["latest-3"], "pins": [], "description": "empty folder removed (after)"},
+    {"id": "s13", "rootID": "E_OLD", "startTime": "2026-10-04T06:00:00Z", "endTime": "2026-10-04T06:00:05Z",
+     "summary": summ(0, 0, 3), "retention": ["latest-4"], "pins": [], "description": "empty folder removed (before)"},
     {"id": "s10", "rootID": "N_NEW", "startTime": "2026-10-03T09:00:00Z", "endTime": "2026-10-03T09:00:20Z",
      "summary": summ(18 * MB, 11, 4), "retention": ["latest-1", "hourly-1"], "pins": [], "description": "docker-data noise demo (after)"},
     {"id": "s11", "rootID": "N_OLD", "startTime": "2026-10-02T09:00:00Z", "endTime": "2026-10-02T09:00:20Z",

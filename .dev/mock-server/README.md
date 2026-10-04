@@ -16,6 +16,7 @@ Environment: `MOCK_PORT` (default 8790), `MOCK_DIST` (default `../../dist`), `KO
 | Sources (running, overdue, paused, manual, errors, never run, queued, remote) | `/snapshots` |
 | Snapshot history | `/snapshots/single-source?userName=root&host=mininas&path=%2Fvolume1%2Fphoto%2Fimmich` |
 | Compare (added, removed, modified, touched files) | `/snapshots/compare?host=mininas&userName=root&path=/volume1/photo/immich&a=N_OLD&b=N_NEW` |
+| Compare, only an empty folder removed (`E_OLD` to `E_NEW`) and empty folders added (`F_OLD` to `F_NEW`) | `/snapshots/compare?host=mininas&userName=root&path=/volume1/photo/immich&a=E_OLD&b=E_NEW` |
 | Browse, mounted / not mounted / error | `/snapshots/dir/k9077848b7782f7dab2cf55c37c94caf2`, `/snapshots/dir/R1`, `/snapshots/dir/NOPE` |
 | Tasks (running, failed with logs) | `/tasks`, `/tasks/41`, `/tasks/36` |
 | Policy editor | `/policies?userName=root&host=mininas&path=%2Fvolume1%2Fphoto%2Fimmich&viewPolicy=true` |
