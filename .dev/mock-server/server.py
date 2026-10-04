@@ -207,10 +207,10 @@ FILE_OBJECTS_EXTRA = {
 }
 
 MANIFESTS.update({
-    "E_OLD": [d("takeout_roman", "TKR_O", summ(0, 0, 2))],
-    "E_NEW": [d("takeout_roman", "TKR_N", summ(0, 0, 1))],
-    "TKR_O": [d("_replaced_by_recut", "EMP_O", summ(0, 0, 1))],
-    "TKR_N": [],
+    "E_OLD": [d("archive_2026", "ARC_O", summ(0, 0, 2))],
+    "E_NEW": [d("archive_2026", "ARC_N", summ(0, 0, 1))],
+    "ARC_O": [d("_old_copy", "EMP_O", summ(0, 0, 1))],
+    "ARC_N": [],
     "EMP_O": [],
     "F_OLD": [f("readme.md", "ROOTRM", 120), d("keep", "KEEP_D", summ(4000, 2, 1))],
     "F_NEW": [f("readme.md", "ROOTRM", 120), d("keep", "KEEP_D", summ(4000, 2, 1)), d("new_empty", "EMP_N", summ(0, 0, 1)),
