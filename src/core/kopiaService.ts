@@ -46,6 +46,7 @@ export interface IKopiaService {
   getObjects(oid: string): Promise<ApiResponse<DirManifest>>;
   objectUrl(obj: string, fname: string): string;
   getObjectBuffer(oid: string): Promise<ApiResponse<ArrayBuffer>>;
+  getObjectHead(oid: string, bytes: number): Promise<ApiResponse<ArrayBuffer>>;
   restore(data: RestoreRequest): Promise<ApiResponse<Task>>;
   getTasks(): Promise<ApiResponse<TaskList>>;
   getTask(taskId: string): Promise<ApiResponse<Task>>;
@@ -159,6 +160,19 @@ export class KopiaService implements IKopiaService {
         auth: this.authInfo
       });
       return response.data as ArrayBuffer;
+    });
+  }
+
+  public async getObjectHead(oid: string, bytes: number): Promise<ApiResponse<ArrayBuffer>> {
+    return await this.requestWrapper(async () => {
+      const response = await axios({
+        method: "GET",
+        url: `/api/${this.instance}/v1/objects/${oid}`,
+        headers: { Range: `bytes=0-${bytes - 1}` },
+        responseType: "arraybuffer",
+        auth: this.authInfo
+      });
+      return (response.data as ArrayBuffer).slice(0, bytes);
     });
   }
 

@@ -1,17 +1,18 @@
 import type { DirEntry } from "../core/types";
 
-export type DiffStatus = "added" | "removed" | "modified" | "error";
+export type DiffStatus = "added" | "removed" | "modified" | "touched" | "error";
 
 export type MetaChange = {
-  field: "mode";
-  from: string;
-  to: string;
+  field: "mode" | "mtime" | "uid" | "gid";
+  from: string | number | undefined;
+  to: string | number | undefined;
 };
 
 export type DiffAggregate = {
   filesAdded: number;
   filesRemoved: number;
   filesModified: number;
+  filesTouched: number;
   dirsAdded: number;
   dirsRemoved: number;
   errors: number;
@@ -56,6 +57,7 @@ export function emptyStats(): DiffStats {
     filesAdded: 0,
     filesRemoved: 0,
     filesModified: 0,
+    filesTouched: 0,
     dirsAdded: 0,
     dirsRemoved: 0,
     errors: 0,
@@ -86,6 +88,9 @@ export function entryFiles(entry: DirEntry): number {
 function metaDiffs(a: DirEntry, b: DirEntry): MetaChange[] {
   const changes: MetaChange[] = [];
   if (a.mode !== b.mode) changes.push({ field: "mode", from: a.mode, to: b.mode });
+  if (a.uid !== b.uid) changes.push({ field: "uid", from: a.uid, to: b.uid });
+  if (a.gid !== b.gid) changes.push({ field: "gid", from: a.gid, to: b.gid });
+  if (a.mtime !== b.mtime) changes.push({ field: "mtime", from: a.mtime, to: b.mtime });
   return changes;
 }
 
@@ -113,6 +118,7 @@ export function aggregate(children: DiffNode[]): DiffAggregate {
     filesAdded: 0,
     filesRemoved: 0,
     filesModified: 0,
+    filesTouched: 0,
     dirsAdded: 0,
     dirsRemoved: 0,
     errors: 0,
@@ -130,6 +136,7 @@ export function aggregate(children: DiffNode[]): DiffAggregate {
       agg.filesAdded += child.agg.filesAdded;
       agg.filesRemoved += child.agg.filesRemoved;
       agg.filesModified += child.agg.filesModified;
+      agg.filesTouched += child.agg.filesTouched;
       agg.dirsAdded += child.agg.dirsAdded;
       agg.dirsRemoved += child.agg.dirsRemoved;
       agg.errors += child.agg.errors;
@@ -162,6 +169,9 @@ export function aggregate(children: DiffNode[]): DiffAggregate {
         agg.filesModified += 1;
         agg.modifiedDelta += child.delta;
         agg.delta += child.delta;
+        break;
+      case "touched":
+        agg.filesTouched += 1;
         break;
     }
   }
@@ -199,12 +209,12 @@ export function compareEntries(
       } else {
         const changes = metaDiffs(a, b);
         if (changes.length > 0) {
-          stats.filesModified += 1;
+          stats.filesTouched += 1;
           nodes.push({
             id,
             name,
             path,
-            status: "modified",
+            status: "touched",
             isDir: false,
             typeChanged: false,
             a,
@@ -310,6 +320,9 @@ export function pruneUnchanged(nodes: DiffNode[]): DiffNode[] {
   return nodes.filter((node) => {
     if (!node.isDir || node.status !== "modified" || !node.fetched || !node.children) return true;
     node.children = pruneUnchanged(node.children);
+    if (node.children.length > 0 && node.children.every((child) => child.status === "touched")) {
+      node.status = "touched";
+    }
     return node.children.length > 0;
   });
 }
