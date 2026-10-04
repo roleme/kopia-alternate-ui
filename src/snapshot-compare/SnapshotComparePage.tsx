@@ -57,6 +57,7 @@ const STATUS_COLOR: Record<DiffStatus, MantineColor> = {
   added: "green.6",
   removed: "red.6",
   modified: "blue.6",
+  touched: "gray.6",
   error: "yellow.6"
 };
 
@@ -64,6 +65,7 @@ const STATUS_GLYPH: Record<DiffStatus, string> = {
   added: "+",
   removed: "−",
   modified: "±",
+  touched: "~",
   error: "!"
 };
 
@@ -90,17 +92,9 @@ function sizePair(from: number, to: number, base2: boolean): [string, string] {
   return [fmt(from, 3), fmt(to, 3)];
 }
 
-function countNodes(nodes: DiffNode[]): number {
-  let total = 0;
-  for (const node of nodes) {
-    total += 1;
-    if (node.children) total += countNodes(node.children);
-  }
-  return total;
-}
-
 function matchesFilter(node: DiffNode, filter: Filter, query: string): boolean {
-  if ((filter === "all" || node.status === filter) && node.path.toLowerCase().includes(query)) {
+  const shown = filter === "all" ? node.status !== "touched" : node.status === filter;
+  if (shown && node.path.toLowerCase().includes(query)) {
     return true;
   }
   return node.children?.some((c) => matchesFilter(c, filter, query)) ?? false;
@@ -121,7 +115,7 @@ function countDisplayed(nodes: DiffNode[], filter: Filter, query: string): numbe
   return total;
 }
 
-const TYPE_ORDER: Record<DiffStatus, number> = { added: 0, modified: 1, removed: 2, error: 3 };
+const TYPE_ORDER: Record<DiffStatus, number> = { added: 0, modified: 1, removed: 2, touched: 3, error: 4 };
 
 function sortNodes(nodes: DiffNode[], sort: SortMode): DiffNode[] {
   const sorted = [...nodes];
@@ -149,6 +143,8 @@ function countFor(stats: DiffStats, status: DiffStatus): number {
       return stats.filesRemoved;
     case "modified":
       return stats.filesModified;
+    case "touched":
+      return stats.filesTouched;
     default:
       return stats.errors;
   }
@@ -162,6 +158,8 @@ function pillLabel(status: DiffStatus): string {
       return t`removed`;
     case "modified":
       return t`modified`;
+    case "touched":
+      return t`touched`;
     default:
       return t`errors`;
   }
@@ -325,7 +323,10 @@ function SnapshotComparePage() {
     () => (result ? countDisplayed(result.roots, filter, query.trim().toLowerCase()) : 0),
     [result, filter, query]
   );
-  const totalCount = useMemo(() => (result ? countNodes(result.roots) : 0), [result]);
+  const totalCount = useMemo(
+    () => (result ? countDisplayed(result.roots, filter === "touched" ? "touched" : "all", "") : 0),
+    [result, filter]
+  );
 
   const flip = (prev: Set<string>, id: string) => {
     const next = new Set(prev);
@@ -335,7 +336,7 @@ function SnapshotComparePage() {
   };
 
   const isOpen = (node: DiffNode) =>
-    expanded.has(node.id) || (narrow && node.status === "modified" && !collapsed.has(node.id));
+    expanded.has(node.id) || (narrow && (node.status === "modified" || node.status === "touched") && !collapsed.has(node.id));
 
   useEffect(() => {
     if (!result) return;
@@ -519,6 +520,10 @@ function SnapshotComparePage() {
       rows.push({ label: "size", content: change(from, to) });
     }
     if (a.mode !== b.mode) rows.push({ label: "mode", content: change(a.mode, b.mode) });
+    if (a.uid !== b.uid || a.gid !== b.gid) {
+      const owner = (e: typeof a) => `${e.uid ?? "?"}:${e.gid ?? "?"}`;
+      rows.push({ label: "owner", content: change(owner(a), owner(b)) });
+    }
     if (a.mtime !== b.mtime) {
       const minutes = "YYYY-MM-DD HH:mm";
       const sameMinute = dayjs(a.mtime).format(minutes) === dayjs(b.mtime).format(minutes);
@@ -563,7 +568,7 @@ function SnapshotComparePage() {
 
   const renderNode = (node: DiffNode, depth: number): ReactNode => {
     const open = isOpen(node);
-    const rows = node.status === "modified" ? changeRows(node) : [];
+    const rows = node.status === "modified" || node.status === "touched" ? changeRows(node) : [];
     const expandable = node.isDir ? node.status !== "error" : rows.length > 0;
     const showDetail = expandable && !node.isDir && details.has(node.id);
     const interactive = expandable
@@ -653,9 +658,11 @@ function SnapshotComparePage() {
           >
             {node.isDir && node.status === "error"
               ? t`couldn't read`
-              : node.isDir && !node.agg && !node.oneSided
-                ? "…"
-                : signedSize(delta, bytesStringBase2)}
+              : node.status === "touched"
+                ? ""
+                : node.isDir && !node.agg && !node.oneSided
+                  ? "…"
+                  : signedSize(delta, bytesStringBase2)}
           </Text>
         </Group>
         {showDetail && (
@@ -766,13 +773,13 @@ function SnapshotComparePage() {
           </Group>
         )}
 
-        {stats && stats.errors === 0 && stats.delta === 0 && visibleRoots.length === 0 && (
+        {stats && stats.errors === 0 && stats.delta === 0 && stats.filesTouched === 0 && visibleRoots.length === 0 && (
           <Alert color="green" icon={<IconCheck size={16} />} variant="light">
             {t`The selected snapshots are identical — nothing was added, removed or modified.`}
           </Alert>
         )}
 
-        {stats && (stats.errors > 0 || stats.delta !== 0 || visibleRoots.length > 0) && (
+        {stats && (stats.errors > 0 || stats.delta !== 0 || stats.filesTouched > 0 || visibleRoots.length > 0) && (
           <>
             <Paper withBorder p="md" radius="md">
               <Group justify="space-between" align="center" gap="md" wrap="wrap">
@@ -787,9 +794,18 @@ function SnapshotComparePage() {
                   {signedSize(stats.delta, bytesStringBase2)}
                 </Text>
                 <Stack gap={6} align="flex-end">
-                  {(["added", "removed", "modified"] as DiffStatus[]).map((key) => {
+                  {(["added", "removed", "modified", "touched"] as DiffStatus[]).map((key) => {
                     const count = countFor(stats, key);
                     if (count === 0) return null;
+                    if (key === "touched") {
+                      return (
+                        <Chip key={key} value={key} size="xs" onChange={(checked) => setFilter(checked ? key : "all")}>
+                          <span title={t`Content unchanged \u2014 only the timestamp, permissions or owner differ`}>
+                            {`${count} ${pillLabel(key)}`}
+                          </span>
+                        </Chip>
+                      );
+                    }
                     const value =
                       key === "added"
                         ? stats.bytesAdded

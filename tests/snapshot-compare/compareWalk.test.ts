@@ -89,7 +89,7 @@ describe("walkTrees", () => {
     await expect(walkTrees(rootA, rootB, fetcher, { isCancelled: () => true })).rejects.toThrow("walk cancelled");
   });
 
-  it("shows nothing for folders whose only difference is metadata noise", async () => {
+  it("marks folders whose only difference is a timestamp as touched, not modified", async () => {
     const T1 = "2026-01-01T00:00:00Z";
     const T2 = "2026-01-02T00:00:00Z";
     const store: Record<string, DirManifest> = {
@@ -114,12 +114,16 @@ describe("walkTrees", () => {
 
     const { roots, stats } = await walkTrees(rootA, rootB, fetcher);
 
-    expect(roots.map((n) => n.name)).toEqual(["adguard"]);
+    expect(roots.map((n) => [n.name, n.status])).toEqual([
+      ["adguard", "modified"],
+      ["uptime-kuma", "touched"]
+    ]);
     expect(stats.filesModified).toBe(1);
+    expect(stats.filesTouched).toBe(1);
     expect(stats.delta).toBe(2);
   });
 
-  it("keeps only the sibling branch that has a real change, at any depth", async () => {
+  it("separates the branch with a real change from the branch that was only touched, at any depth", async () => {
     const T1 = "2026-01-01T00:00:00Z";
     const T2 = "2026-01-02T00:00:00Z";
     const store: Record<string, DirManifest> = {
@@ -142,9 +146,13 @@ describe("walkTrees", () => {
 
     expect(roots).toHaveLength(1);
     const top = roots[0];
-    expect(top.children?.map((n) => n.name)).toEqual(["busy"]);
+    expect(top.children?.map((n) => [n.name, n.status])).toEqual([
+      ["busy", "modified"],
+      ["quiet", "touched"]
+    ]);
     expect(top.children?.[0].children?.[0].children?.map((n) => n.name)).toEqual(["data"]);
     expect(top.agg?.filesModified).toBe(1);
+    expect(top.agg?.filesTouched).toBe(1);
   });
 
   it("keeps folders that could not be read visible next to pruned ones", async () => {
