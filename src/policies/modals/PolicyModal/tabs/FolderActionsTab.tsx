@@ -24,6 +24,7 @@ export default function FolderActionsTab({ form, resolvedValue, definition }: Pr
       <ScrollAreaAutosize mah={600} scrollbarSize={4}>
         <Accordion variant="contained">
           <PolicyTextInput
+            multiline
             id="before-folder"
             title={t`Before Folder`}
             description={t`Script to run before folder`}
@@ -65,6 +66,7 @@ export default function FolderActionsTab({ form, resolvedValue, definition }: Pr
             effectiveDefinedIn={definition?.actions?.beforeFolder}
           />
           <PolicyTextInput
+            multiline
             id="after-folder"
             title={t`After Folder`}
             description={t`Script to run after folder`}

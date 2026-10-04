@@ -143,12 +143,12 @@ msgid "after"
 msgstr ""
 
 #: src/policies/modals/PolicyModal/constants.ts:170
-#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:69
+#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:71
 msgid "After Folder"
 msgstr "After Folder"
 
 #: src/policies/modals/PolicyModal/constants.ts:184
-#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:74
+#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:76
 msgid "After Snapshot"
 msgstr "After Snapshot"
 
@@ -218,12 +218,12 @@ msgid "before"
 msgstr ""
 
 #: src/policies/modals/PolicyModal/constants.ts:163
-#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:28
+#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:29
 msgid "Before Folder"
 msgstr "Before Folder"
 
 #: src/policies/modals/PolicyModal/constants.ts:177
-#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:28
+#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:29
 msgid "Before Snapshot"
 msgstr "Before Snapshot"
 
@@ -305,7 +305,7 @@ msgstr ""
 msgid "Clear"
 msgstr ""
 
-#: src/policies/modals/PolicyCodeEditModal/PolicyCodeEditModal.tsx:32
+#: src/policies/modals/PolicyCodeEditModal/PolicyCodeEditModal.tsx:41
 #: src/snapshots/modals/TaskEstimationModal.tsx:96
 msgid "Close"
 msgstr "Close"
@@ -316,15 +316,15 @@ msgstr ""
 
 #: src/policies/modals/PolicyModal/constants.ts:172
 #: src/policies/modals/PolicyModal/constants.ts:186
-#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:94
-#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:99
+#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:96
+#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:101
 msgid "Command Mode - After"
 msgstr "Command Mode - After"
 
 #: src/policies/modals/PolicyModal/constants.ts:165
 #: src/policies/modals/PolicyModal/constants.ts:179
-#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:53
-#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:57
+#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:54
+#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:58
 msgid "Command Mode - Before"
 msgstr "Command Mode - Before"
 
@@ -503,7 +503,8 @@ msgstr "Default page size"
 #: src/policies/modals/PolicyModal/policy-inputs/PolicyNumberInput.tsx:40
 #: src/policies/modals/PolicyModal/policy-inputs/PolicyNumberSelect.tsx:46
 #: src/policies/modals/PolicyModal/policy-inputs/PolicySelect.tsx:44
-#: src/policies/modals/PolicyModal/policy-inputs/PolicyTextInput.tsx:42
+#: src/policies/modals/PolicyModal/policy-inputs/PolicyTextInput.tsx:55
+#: src/policies/modals/PolicyModal/policy-inputs/PolicyTextInput.tsx:65
 #: src/policies/modals/PolicyModal/policy-inputs/PolicyTextListInput.tsx:67
 #: src/policies/modals/PolicyModal/policy-inputs/PolicyTimeOfDayInput.tsx:47
 #: src/policies/PoliciesPage.tsx:203
@@ -682,7 +683,7 @@ msgstr "Edit script"
 #: src/policies/modals/PolicyModal/policy-inputs/PolicyNumberInput.tsx:43
 #: src/policies/modals/PolicyModal/policy-inputs/PolicyNumberSelect.tsx:54
 #: src/policies/modals/PolicyModal/policy-inputs/PolicySelect.tsx:47
-#: src/policies/modals/PolicyModal/policy-inputs/PolicyTextInput.tsx:45
+#: src/policies/modals/PolicyModal/policy-inputs/PolicyTextInput.tsx:41
 #: src/policies/modals/PolicyModal/policy-inputs/PolicyTextListInput.tsx:97
 #: src/policies/modals/PolicyModal/policy-inputs/PolicyTimeOfDayInput.tsx:77
 msgid "Effective"
@@ -842,10 +843,10 @@ msgstr "Error Handling"
 msgid "errors"
 msgstr ""
 
-#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:54
-#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:95
-#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:58
-#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:100
+#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:55
+#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:97
+#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:59
+#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:102
 msgid "Essential (must succeed; default behavior), optional (failures are tolerated), or async (Kopia will start the action but not wait for it to finish)"
 msgstr "Essential (must succeed; default behavior), optional (failures are tolerated), or async (Kopia will start the action but not wait for it to finish)"
 
@@ -1003,10 +1004,10 @@ msgstr "Ignore directories containing CACHEDIR.TAG and similar"
 msgid "Ignore Directory Errors"
 msgstr "Ignore Directory Errors"
 
-#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:57
-#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:98
-#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:61
-#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:103
+#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:58
+#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:100
+#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:62
+#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:105
 msgid "Ignore failures"
 msgstr "Ignore failures"
 
@@ -1329,10 +1330,10 @@ msgstr "Mounts"
 msgid "must be specified using global, user, or host policy"
 msgstr "must be specified using global, user, or host policy"
 
-#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:56
-#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:97
-#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:60
-#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:102
+#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:57
+#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:99
+#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:61
+#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:104
 msgid "Must Succeed"
 msgstr "Must Succeed"
 
@@ -1490,10 +1491,10 @@ msgstr "Only one of Password, Path to key file or Key Data must be set"
 msgid "Only one of Path to known_hosts File or Known Hosts Data must be set"
 msgstr "Only one of Path to known_hosts File or Known Hosts Data must be set"
 
-#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:35
-#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:76
-#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:35
-#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:81
+#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:36
+#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:78
+#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:36
+#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:83
 msgid "Open in large edit"
 msgstr "Open in large edit"
 
@@ -1778,10 +1779,10 @@ msgstr ""
 msgid "Root"
 msgstr "Root"
 
-#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:59
-#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:100
-#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:63
-#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:105
+#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:60
+#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:102
+#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:64
+#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:107
 msgid "Run asynchronously, ignore failures"
 msgstr "Run asynchronously, ignore failures"
 
@@ -1827,19 +1828,19 @@ msgstr "Scan only one filesystem"
 msgid "Scheduling"
 msgstr "Scheduling"
 
-#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:70
+#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:72
 msgid "Script to run after folder"
 msgstr "Script to run after folder"
 
-#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:75
+#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:77
 msgid "Script to run after snapshot"
 msgstr "Script to run after snapshot"
 
-#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:29
+#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:30
 msgid "Script to run before folder"
 msgstr "Script to run before folder"
 
-#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:29
+#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:30
 msgid "Script to run before snapshot"
 msgstr "Script to run before snapshot"
 
@@ -2178,22 +2179,22 @@ msgstr "Time Of Day"
 
 #: src/policies/modals/PolicyModal/constants.ts:171
 #: src/policies/modals/PolicyModal/constants.ts:185
-#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:85
-#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:90
+#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:87
+#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:92
 msgid "Timeout - After"
 msgstr "Timeout - After"
 
 #: src/policies/modals/PolicyModal/constants.ts:164
 #: src/policies/modals/PolicyModal/constants.ts:178
-#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:44
-#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:48
+#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:45
+#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:49
 msgid "Timeout - Before"
 msgstr "Timeout - Before"
 
-#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:45
-#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:86
-#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:49
-#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:91
+#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:46
+#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:88
+#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:50
+#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:93
 msgid "Timeout in seconds before Kopia kills the process"
 msgstr "Timeout in seconds before Kopia kills the process"
 
