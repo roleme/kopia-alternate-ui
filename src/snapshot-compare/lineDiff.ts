@@ -41,23 +41,6 @@ export function diffLines(aText: string, bText: string, maxCells = 4_000_000): D
 
 /** True when the bytes look like displayable text: decodes as UTF-8 and has
  * no NUL bytes (the usual binary marker). */
-export function sniffImageMime(head: ArrayBuffer): string | null {
-  const b = new Uint8Array(head);
-  const ascii = (from: number, to: number) => String.fromCharCode(...b.subarray(from, to));
-  if (b.length >= 8 && b[0] === 0x89 && ascii(1, 4) === "PNG") return "image/png";
-  if (b.length >= 3 && b[0] === 0xff && b[1] === 0xd8 && b[2] === 0xff) return "image/jpeg";
-  if (b.length >= 6 && (ascii(0, 6) === "GIF87a" || ascii(0, 6) === "GIF89a")) return "image/gif";
-  if (b.length >= 12 && ascii(0, 4) === "RIFF" && ascii(8, 12) === "WEBP") return "image/webp";
-  if (b.length >= 12 && ascii(4, 8) === "ftyp" && (ascii(8, 12) === "avif" || ascii(8, 12) === "avis")) {
-    return "image/avif";
-  }
-  if (sniffsAsText(head)) {
-    const start = new TextDecoder().decode(b).trimStart().slice(0, 400);
-    if (start.startsWith("<svg") || (start.startsWith("<?xml") && start.includes("<svg"))) return "image/svg+xml";
-  }
-  return null;
-}
-
 export function sniffsAsText(head: ArrayBuffer): boolean {
   const arr = new Uint8Array(head);
   if (arr.includes(0)) return false;

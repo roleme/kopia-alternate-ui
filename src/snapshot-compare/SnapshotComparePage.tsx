@@ -39,8 +39,7 @@ import {
   type DiffStatus,
   type DiffStats
 } from "./diffTree";
-import ContentPreview, { MAX_IMAGE_BYTES, MAX_TEXT_BYTES } from "./ContentPreview";
-import { compactDiff, diffLines, looksLikeText, sniffImageMime, sniffsAsText, type DiffLine } from "./lineDiff";
+import { compactDiff, diffLines, looksLikeText, sniffsAsText, type DiffLine } from "./lineDiff";
 
 type Filter = "all" | DiffStatus;
 type SortMode = "delta" | "type" | "path";
@@ -193,7 +192,7 @@ function SnapshotComparePage() {
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const [collapsed, setCollapsed] = useState<Set<string>>(new Set());
   const [details, setDetails] = useState<Set<string>>(new Set());
-  const [sniffs, setSniffs] = useState<Record<string, "text" | "image" | "binary">>({});
+  const [sniffs, setSniffs] = useState<Record<string, "text" | "binary">>({});
   const sniffing = useRef<Set<string>>(new Set());
   const [lazyChildren, setLazyChildren] = useState<Record<string, DiffNode[] | "loading" | "error">>({});
   const [hiddenDiffs, setHiddenDiffs] = useState<Set<string>>(new Set());
@@ -341,26 +340,29 @@ function SnapshotComparePage() {
 
   useEffect(() => {
     if (!result) return;
-    const classify = (head: ArrayBuffer | undefined, other?: ArrayBuffer): "text" | "image" | "binary" => {
-      const heads = other ? [head, other] : [head];
-      if (heads.some((h) => !h)) return "binary";
-      if (heads.every((h) => sniffsAsText(h as ArrayBuffer))) return "text";
-      if (heads.every((h) => sniffImageMime(h as ArrayBuffer))) return "image";
-      return "binary";
-    };
     const visit = (nodes: DiffNode[]) => {
       for (const node of nodes) {
         const { a, b } = node;
-        const modified = node.status === "modified" && a && b && a.obj !== b.obj && !node.typeChanged;
-        const oneSided = (node.status === "added" || node.status === "removed") && Boolean(a ?? b);
-        if (!node.isDir && (modified || oneSided) && !sniffing.current.has(node.id)) {
+        if (
+          !node.isDir &&
+          node.status === "modified" &&
+          a &&
+          b &&
+          a.obj !== b.obj &&
+          !node.typeChanged &&
+          !sniffing.current.has(node.id)
+        ) {
           sniffing.current.add(node.id);
-          const objs = a && b ? [a.obj, b.obj] : [(a ?? b)?.obj as string];
           void (async () => {
-            const heads = await Promise.all(objs.map((obj) => kopiaService.getObjectHead(obj, 512)));
-            const data = heads.map((h) => (!h.isError && h.data ? h.data : undefined));
-            const kind = classify(data[0], data[1]);
-            setSniffs((prev) => ({ ...prev, [node.id]: kind }));
+            const [headA, headB] = await Promise.all([
+              kopiaService.getObjectHead(a.obj, 512),
+              kopiaService.getObjectHead(b.obj, 512)
+            ]);
+            const text =
+              !headA.isError && headA.data && !headB.isError && headB.data
+                ? sniffsAsText(headA.data) && sniffsAsText(headB.data)
+                : false;
+            setSniffs((prev) => ({ ...prev, [node.id]: text ? "text" : "binary" }));
           })();
         }
         if (node.isDir && childrenOf(node) && isOpen(node)) visit(childrenOf(node) ?? []);
@@ -504,17 +506,8 @@ function SnapshotComparePage() {
 
   const changeRows = (node: DiffNode): { label: string; content: ReactNode }[] => {
     const { a, b } = node;
-    if (node.isDir || (!a && !b)) return [];
-    if (!a || !b) {
-      const entry = (a ?? b) as NonNullable<typeof a>;
-      const size = entry.size ?? 0;
-      const kind = sniffs[node.id];
-      const previewable = (kind === "text" && size <= MAX_TEXT_BYTES) || (kind === "image" && size <= MAX_IMAGE_BYTES);
-      if (!previewable || size === 0) return [];
-      return [
-        { label: "content", content: <ContentPreview key={entry.obj} obj={entry.obj} size={size} /> }
-      ];
-    }
+    if (node.isDir) return [];
+    if (!a || !b) return [];
     const rows: { label: string; content: ReactNode }[] = [];
     const change = (from: string, to: string) => (
       <Code fz="xs" fw={600} style={{ whiteSpace: "nowrap" }}>
@@ -552,27 +545,6 @@ function SnapshotComparePage() {
       sizeA <= MAX_DIFF_BYTES &&
       sizeB <= MAX_DIFF_BYTES;
     if (diffable) rows.push({ label: "content", content: renderContentDiff(node) });
-    if (sniffs[node.id] === "image" && a.obj !== b.obj && sizeA <= MAX_IMAGE_BYTES && sizeB <= MAX_IMAGE_BYTES) {
-      rows.push({
-        label: "content",
-        content: (
-          <Group gap="md" align="flex-start" wrap="wrap">
-            <Stack gap={2}>
-              <Text fz="xs" c="dimmed">
-                {t`before`}
-              </Text>
-              <ContentPreview key={a.obj} obj={a.obj} size={a.size ?? 0} />
-            </Stack>
-            <Stack gap={2}>
-              <Text fz="xs" c="dimmed">
-                {t`after`}
-              </Text>
-              <ContentPreview key={b.obj} obj={b.obj} size={b.size ?? 0} />
-            </Stack>
-          </Group>
-        )
-      });
-    }
     return rows;
   };
 
