@@ -43,3 +43,8 @@
 .bottomRow {
   padding: 4px 2px;
 }
+
+.drawerBody {
+  height: calc(100% - 60px);
+  padding-top: 0;
+}

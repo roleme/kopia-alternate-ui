@@ -314,6 +314,10 @@ msgstr ""
 msgid "Close"
 msgstr "Lukk"
 
+#: src/core/Sidebar/MobileHeader.tsx:48
+msgid "Close navigation"
+msgstr ""
+
 #: src/snapshot-compare/SnapshotComparePage.tsx:883
 msgid "Collapse all"
 msgstr ""
@@ -1225,7 +1229,7 @@ msgstr ""
 msgid "Mail From"
 msgstr "Avsender"
 
-#: src/core/Sidebar/Sidebar.tsx:66
+#: src/core/Sidebar/Sidebar.tsx:68
 msgid "Main navigation"
 msgstr ""
 
@@ -2228,6 +2232,10 @@ msgstr "Tidsstempel"
 msgctxt "email-to"
 msgid "To"
 msgstr "Til"
+
+#: src/core/Sidebar/MobileHeader.tsx:26
+msgid "Toggle navigation"
+msgstr ""
 
 #: src/repo/sections/KopiaRepoTokenRepo.tsx:24
 #: src/repo/sections/KopiaRepoTokenRepo.tsx:43

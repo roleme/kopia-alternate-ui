@@ -51,18 +51,20 @@ function groupLabel(id: NavGroupId) {
   }
 }
 
-export function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
+export function SidebarContent({ onNavigate, showBrand = true }: { onNavigate?: () => void; showBrand?: boolean }) {
   const { repoStatus } = useAppContext();
   const location = useLocation();
   const activeId = findActiveNavItem(location.pathname);
 
   return (
     <div className={classes.content}>
-      <Link to="/" className={classes.brand} onClick={onNavigate}>
-        <Text fw="bold" fz="lg">
-          Kopia UI
-        </Text>
-      </Link>
+      {showBrand && (
+        <Link to="/" className={classes.brand} onClick={onNavigate}>
+          <Text fw="bold" fz="lg">
+            Kopia UI
+          </Text>
+        </Link>
+      )}
       <nav aria-label={t`Main navigation`}>
         {NAV_GROUPS.map((group) => (
           <div key={group.id}>
@@ -110,7 +112,7 @@ export function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
 
 export function Sidebar() {
   return (
-    <AppShellNavbar p="xs">
+    <AppShellNavbar p="xs" visibleFrom="md">
       <SidebarContent />
     </AppShellNavbar>
   );
