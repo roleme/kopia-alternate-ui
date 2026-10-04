@@ -8,6 +8,7 @@ import {
   Code,
   Container,
   Group,
+  type MantineColor,
   Paper,
   Chip,
   Progress,
@@ -42,6 +43,20 @@ type ContentDiffState =
   | { state: "too-large" }
   | { state: "error" }
   | { state: "text"; lines: DiffLine[]; added: number; removed: number };
+
+const STATUS_COLOR: Record<DiffStatus, MantineColor> = {
+  added: "green.6",
+  removed: "red.6",
+  modified: "blue.6",
+  error: "yellow.6"
+};
+
+const STATUS_GLYPH: Record<DiffStatus, string> = {
+  added: "+",
+  removed: "−",
+  modified: "±",
+  error: "!"
+};
 
 function nodeDelta(node: DiffNode): number {
   return node.agg ? node.agg.delta : node.delta;
@@ -468,6 +483,9 @@ function SnapshotComparePage() {
             }
           }}
         >
+          <Text ff="monospace" fw={700} fz="sm" c={STATUS_COLOR[node.status]} style={{ width: 14, flexShrink: 0 }}>
+            {STATUS_GLYPH[node.status]}
+          </Text>
           {node.status !== "error" ? (
             <IconChevronRight
               size={13}
@@ -485,7 +503,13 @@ function SnapshotComparePage() {
           ) : (
             <IconWrapper icon={getFileIcon(node.name)} color="blue" size={16} />
           )}
-          <Text ff="monospace" fz="sm" style={{ flex: 1, minWidth: 0 }} truncate="end">
+          <Text
+            ff="monospace"
+            fz="sm"
+            c={node.status === "added" || node.status === "removed" ? STATUS_COLOR[node.status] : undefined}
+            style={{ flex: 1, minWidth: 0 }}
+            truncate="end"
+          >
             {node.name}
             {node.typeChanged && (
               <Text component="span" inherit c="yellow.6">
