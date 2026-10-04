@@ -24,7 +24,16 @@ export default function PolicyCodeEditModal({ form, formKey, onClose }: Props) {
       size="xl"
     >
       <div className={modalClasses.container}>
-        <Textarea w="100%" miw={400} resize="both" rows={20} {...form.getInputProps(formKey)} />
+        <Textarea
+          w="100%"
+          miw={400}
+          resize="both"
+          rows={20}
+          styles={{
+            input: { fontFamily: "var(--mantine-font-family-monospace)", fontSize: "var(--mantine-font-size-xs)" }
+          }}
+          {...form.getInputProps(formKey)}
+        />
       </div>
 
       <Group className={modalClasses.footer} style={{ justifyContent: "flex-end" }}>

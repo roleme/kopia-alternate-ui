@@ -27,6 +27,7 @@ type Props = {
   children?: React.ReactElement;
   effective?: string[];
   infoNode?: React.ReactNode;
+  showRowValue?: boolean;
 } & PolicyInput;
 
 export default function PolicyTextListInput({
@@ -38,18 +39,23 @@ export default function PolicyTextListInput({
   formKey,
   infoNode,
   effective,
+  showRowValue = false,
   effectiveDefinedIn
 }: Props) {
   const [open, openHandlers] = useDisclosure(false);
   const inputProps = form.getInputProps(formKey);
   const items = (inputProps.value as string[]) || [];
   const effectiveValues = (inputProps.value as string[]) || effective || [];
+  const shownValues = items.length > 0 ? items : effective || [];
   const isDefined = inputProps.value || effective;
   return (
     <AccordionItem value={id}>
       <PolicyAccordionControl
         title={title}
         description={description}
+        formKey={formKey}
+        definedValue={inputProps.value}
+        showValue={showRowValue}
         isConfigured={inputProps.value !== undefined && inputProps.value !== "" && effectiveValues.length > 0}
       />
       <AccordionPanel>
@@ -96,8 +102,8 @@ export default function PolicyTextListInput({
               }
             >
               <List listStyleType="none" style={{ paddingInlineStart: 0 }}>
-                {effectiveValues.length > 0 ? (
-                  effectiveValues.map((x) => (
+                {shownValues.length > 0 ? (
+                  shownValues.map((x) => (
                     <ListItem>
                       <Code>{x}</Code>
                     </ListItem>

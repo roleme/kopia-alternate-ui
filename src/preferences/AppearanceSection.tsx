@@ -22,7 +22,7 @@ type PreferencesForm = {
 function AppearanceSection() {
   const { kopiaService } = useServerInstanceContext();
   const { setColorScheme } = useMantineColorScheme();
-  const { reloadPreferences } = useAppContext();
+  const { reloadPreferences, showStatistics, setShowStatistics } = useAppContext();
   const [data, setData] = useState<Preferences>();
   const form = useForm<PreferencesForm, Preferences>({
     mode: "controlled",
@@ -147,6 +147,12 @@ function AppearanceSection() {
           {...form.getInputProps("defaultSnapshotViewAll", {
             type: "checkbox"
           })}
+        />
+        <Checkbox
+          label={t`Show snapshot statistics`}
+          description={t`Charts at the top of the snapshot history page. Applies immediately and is stored in this browser only.`}
+          checked={showStatistics}
+          onChange={(e) => setShowStatistics(e.currentTarget.checked)}
         />
         <Group justify="flex-end" p="sm">
           <Button type="submit" color="green">

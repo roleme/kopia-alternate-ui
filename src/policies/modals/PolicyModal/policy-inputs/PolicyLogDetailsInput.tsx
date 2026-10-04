@@ -43,6 +43,9 @@ export default function PolicyLogDetailsInput({
       <PolicyAccordionControl
         title={title}
         description={description}
+        formKey={formKey}
+        definedValue={inputProps.value}
+        optionData={logDetailsOptions}
         isConfigured={inputProps.value !== undefined && inputProps.value !== ""}
       />
       <AccordionPanel>

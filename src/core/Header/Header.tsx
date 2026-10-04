@@ -16,7 +16,6 @@ import {
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
-  IconBrandGithub,
   IconChevronDown,
   IconClipboardCheck,
   IconDatabase,
@@ -98,12 +97,7 @@ export function Header() {
         ]
       },
       { link: "/tasks", label: t`Tasks`, icon: IconClipboardCheck },
-      { link: "/preferences", label: t`Preferences`, icon: IconSettings },
-      {
-        link: "ext:https://github.com/joachimdalen/kopia-alternate-ui",
-        label: "GitHub",
-        icon: IconBrandGithub
-      }
+      { link: "/preferences", label: t`Preferences`, icon: IconSettings }
     ] satisfies AllLinks[];
   }, [repoStatus]);
 

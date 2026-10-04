@@ -24,6 +24,7 @@ export default function SnapshotActionsTab({ form, resolvedValue, definition }: 
       <ScrollAreaAutosize mah={600} scrollbarSize={4}>
         <Accordion variant="contained">
           <PolicyTextInput
+            multiline
             id="before-snapshot"
             title={t`Before Snapshot`}
             description={t`Script to run before snapshot`}
@@ -70,6 +71,7 @@ export default function SnapshotActionsTab({ form, resolvedValue, definition }: 
             effectiveDefinedIn={definition?.actions?.beforeSnapshotRoot}
           />
           <PolicyTextInput
+            multiline
             id="after-snapshot"
             title={t`After Snapshot`}
             description={t`Script to run after snapshot`}
