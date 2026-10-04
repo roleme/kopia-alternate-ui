@@ -774,11 +774,7 @@ function SnapshotComparePage() {
           <>
             <Paper withBorder p="md" radius="md">
               <Group justify="space-between" align="center" gap="md" wrap="wrap">
-                {stats.delta === 0 && stats.errors === 0 ? (
-                  <Text fz="lg" c="dimmed">
-                    {t`No size change`}
-                  </Text>
-                ) : (
+                {(stats.delta !== 0 || stats.errors > 0) && (
                   <Text
                     ff="monospace"
                     fz="xl"
@@ -790,7 +786,7 @@ function SnapshotComparePage() {
                     {signedSize(stats.delta, bytesStringBase2)}
                   </Text>
                 )}
-                <Stack gap={6} align="flex-end">
+                <Stack gap={6} align="flex-end" ml="auto">
                   {(["added", "removed", "modified", "touched"] as DiffStatus[]).map((key) => {
                     const count = statusCount(stats, key);
                     if (count === 0) return null;
