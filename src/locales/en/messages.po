@@ -190,10 +190,6 @@ msgstr "Are you sure you want to delete this policy?"
 msgid "Are you sure you want to disconnect from this repository?"
 msgstr "Are you sure you want to disconnect from this repository?"
 
-#: src/snapshots/components/SourceRowActions.tsx:52
-msgid "At least two snapshots are needed to compare"
-msgstr ""
-
 #: src/repo/sections/AzureBlobStorageRepo.tsx:47
 msgid "Azure Blob Storage"
 msgstr "Azure Blob Storage"
@@ -335,11 +331,6 @@ msgstr "Command Mode - After"
 #: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:58
 msgid "Command Mode - Before"
 msgstr "Command Mode - Before"
-
-#: src/snapshots/components/SourceRowActions.tsx:51
-#: src/snapshots/components/SourceRowActions.tsx:58
-msgid "Compare latest snapshot with the previous one"
-msgstr ""
 
 #: src/snapshot-compare/SnapshotComparePage.tsx:703
 msgid "Compare snapshots"
@@ -1310,10 +1301,6 @@ msgstr ""
 msgid "Monthly"
 msgstr "Monthly"
 
-#: src/snapshots/components/SourceRowActions.tsx:68
-msgid "More actions"
-msgstr ""
-
 #: src/snapshot-directory/components/MountButton.tsx:41
 msgid "Mount"
 msgstr "Mount"
@@ -1445,10 +1432,6 @@ msgstr "Not configured"
 #: src/policies/modals/PolicyModal/policy-inputs/PolicyTimeOfDayInput.tsx:90
 msgid "Not defined"
 msgstr "Not defined"
-
-#: src/snapshots/components/SourceRowActions.tsx:33
-msgid "Nothing to compare"
-msgstr ""
 
 #: src/preferences/modals/EmailModal.tsx:239
 #: src/preferences/modals/WebhookModal.tsx:187
@@ -2009,7 +1992,7 @@ msgstr "Snapshot is mounted at the following path"
 msgid "Snapshot now"
 msgstr "Snapshot now"
 
-#: src/snapshots/components/SourceRowActions.tsx:79
+#: src/snapshots/components/SourceRowActions.tsx:22
 msgid "Snapshot Now"
 msgstr "Snapshot Now"
 
@@ -2170,10 +2153,6 @@ msgstr ""
 msgid "This is the internal representation of a policy"
 msgstr "This is the internal representation of a policy"
 
-#: src/snapshots/components/SourceRowActions.tsx:34
-msgid "This source has only one snapshot"
-msgstr ""
-
 #: src/policies/modals/PolicyModal/constants.ts:138
 #: src/policies/modals/PolicyModal/tabs/SchedulingTab.tsx:71
 msgid "Time Of Day"
@@ -2332,7 +2311,7 @@ msgstr ""
 msgid "Verbose"
 msgstr ""
 
-#: src/snapshots/components/SourceRowActions.tsx:90
+#: src/snapshots/components/SourceRowActions.tsx:33
 msgid "View Policy"
 msgstr "View Policy"
 
