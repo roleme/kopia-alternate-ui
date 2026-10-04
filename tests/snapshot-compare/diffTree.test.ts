@@ -3,7 +3,6 @@ import type { DirEntry, DirManifest } from "../../src/core/types";
 import {
   aggregate,
   autoExpandIds,
-  emptyFolderChanges,
   compareEntries,
   emptyStats,
   finalizeAggregates,
@@ -231,24 +230,5 @@ describe("autoExpandIds", () => {
   it("never opens one-sided folders", () => {
     const { nodes } = walk([dir("gone", "d1", { size: 5, files: 1, dirs: 2 })], []);
     expect(autoExpandIds(nodes)).toEqual([]);
-  });
-});
-
-describe("emptyFolderChanges", () => {
-  it("lists removed and added empty folders by path", () => {
-    const root = walk([dir("parent", "d1", { size: 10, files: 1 })], [dir("parent", "d2", { size: 10, files: 1 })])
-      .nodes[0];
-    root.children = compareEntries(
-      [dir("_old_copy", "e1", { size: 0, files: 0, dirs: 1 })],
-      [dir("fresh", "e2", { size: 0, files: 0, dirs: 1 })],
-      "parent",
-      emptyStats()
-    );
-    expect(emptyFolderChanges([root])).toEqual({ added: ["parent/fresh"], removed: ["parent/_old_copy"] });
-  });
-
-  it("ignores folders that hold files", () => {
-    const { nodes } = walk([dir("full", "d1", { size: 5, files: 1, dirs: 1 })], []);
-    expect(emptyFolderChanges(nodes)).toEqual({ added: [], removed: [] });
   });
 });

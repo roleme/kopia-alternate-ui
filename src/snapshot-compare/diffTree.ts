@@ -381,19 +381,3 @@ export function autoExpandIds(roots: DiffNode[], limit = AUTO_EXPAND_LIMIT): str
   visit(roots);
   return ids;
 }
-
-export type EmptyFolderChanges = { added: string[]; removed: string[] };
-
-export function emptyFolderChanges(roots: DiffNode[]): EmptyFolderChanges {
-  const found: EmptyFolderChanges = { added: [], removed: [] };
-  const visit = (nodes: DiffNode[]) => {
-    for (const node of nodes) {
-      if (node.oneSided?.empty && (node.status === "added" || node.status === "removed")) {
-        found[node.status].push(node.path);
-      }
-      visit(node.children ?? []);
-    }
-  };
-  visit(roots);
-  return found;
-}
