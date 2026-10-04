@@ -213,7 +213,7 @@ msgstr "Tilbake"
 msgid "Backblaze B2"
 msgstr "Backblaze B2"
 
-#: src/core/Sidebar/Sidebar.tsx:46
+#: src/core/Sidebar/Sidebar.tsx:48
 msgid "Backups"
 msgstr ""
 
@@ -359,7 +359,7 @@ msgstr "Kompresjonsalgoritme"
 msgid "Config file"
 msgstr "Konfigurasjonsfil"
 
-#: src/core/Sidebar/Sidebar.tsx:48
+#: src/core/Sidebar/Sidebar.tsx:50
 msgid "Configuration"
 msgstr ""
 
@@ -1225,7 +1225,7 @@ msgstr ""
 msgid "Mail From"
 msgstr "Avsender"
 
-#: src/core/Sidebar/Sidebar.tsx:64
+#: src/core/Sidebar/Sidebar.tsx:66
 msgid "Main navigation"
 msgstr ""
 
@@ -1335,7 +1335,7 @@ msgid "Mounted Snapshots"
 msgstr "Monterte øyeblikksbilder"
 
 #: src/core/Header/Header.tsx:72
-#: src/core/Sidebar/Sidebar.tsx:31
+#: src/core/Sidebar/Sidebar.tsx:33
 msgid "Mounts"
 msgstr "Monteringer"
 
@@ -1632,7 +1632,7 @@ msgid "Plain Text Format"
 msgstr "Vanlig tekstformat"
 
 #: src/core/Header/Header.tsx:92
-#: src/core/Sidebar/Sidebar.tsx:35
+#: src/core/Sidebar/Sidebar.tsx:37
 #: src/policies/PoliciesPage.tsx:136
 msgid "Policies"
 msgstr "Strategier"
@@ -1647,7 +1647,7 @@ msgid "Port number (e.g., 22)"
 msgstr "Port nummer (e.g., 22)"
 
 #: src/core/Header/Header.tsx:100
-#: src/core/Sidebar/Sidebar.tsx:39
+#: src/core/Sidebar/Sidebar.tsx:41
 #: src/preferences/PreferencesPage.tsx:13
 msgid "Preferences"
 msgstr "Preferanser"
@@ -1728,7 +1728,7 @@ msgid "Report"
 msgstr ""
 
 #: src/core/Header/Header.tsx:81
-#: src/core/Sidebar/Sidebar.tsx:37
+#: src/core/Sidebar/Sidebar.tsx:39
 #: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:82
 msgid "Repository"
 msgstr "Oppbevaringssted"
@@ -2043,7 +2043,7 @@ msgstr "Øyeblikksbilde(r) slettet"
 
 #: src/core/Header/Header.tsx:59
 #: src/core/Header/Header.tsx:65
-#: src/core/Sidebar/Sidebar.tsx:29
+#: src/core/Sidebar/Sidebar.tsx:31
 #: src/snapshot-history/components/SnapshotHistoryStats.tsx:83
 #: src/snapshot-history/SnapshotHistory.tsx:107
 #: src/snapshots/SnapshotsPage.tsx:115
@@ -2137,7 +2137,7 @@ msgid "Task ID"
 msgstr "Oppgave ID"
 
 #: src/core/Header/Header.tsx:99
-#: src/core/Sidebar/Sidebar.tsx:33
+#: src/core/Sidebar/Sidebar.tsx:35
 #: src/tasks/TasksPage.tsx:99
 msgid "Tasks"
 msgstr "Oppgaver"

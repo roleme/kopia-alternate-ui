@@ -10,7 +10,9 @@ import {
 } from "@tabler/icons-react";
 import { Link, useLocation } from "react-router";
 import { useAppContext } from "../context/AppContext";
+import { ConnectionInfo } from "../Footer/ConnectionInfo";
 import IconWrapper from "../IconWrapper";
+import { TaskCounts } from "../TaskCounts/TaskCounts";
 import { findActiveNavItem, NAV_GROUPS, type NavGroupId, type NavItemId } from "./navItems";
 import classes from "./Sidebar.module.css";
 
@@ -94,6 +96,14 @@ export function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
           </div>
         ))}
       </nav>
+      <div className={classes.bottom}>
+        <div className={classes.bottomRow}>
+          <ConnectionInfo />
+        </div>
+        <div className={classes.bottomRow}>
+          <TaskCounts />
+        </div>
+      </div>
     </div>
   );
 }

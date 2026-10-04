@@ -22,7 +22,7 @@ export function ConnectionInfo() {
   const { servers, currentServer, setServer, logoutFromServer } = useServerInstanceContext();
 
   return (
-    <Popover position="top" clickOutsideEvents={["mouseup", "touchend"]} width={300}>
+    <Popover position="top-start" clickOutsideEvents={["mouseup", "touchend"]} width={300}>
       <Popover.Target>
         <UnstyledButton className={classes.serverSelect}>
           <Indicator

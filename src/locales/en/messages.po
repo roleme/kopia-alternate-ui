@@ -213,7 +213,7 @@ msgstr "Back"
 msgid "Backblaze B2"
 msgstr "Backblaze B2"
 
-#: src/core/Sidebar/Sidebar.tsx:46
+#: src/core/Sidebar/Sidebar.tsx:48
 msgid "Backups"
 msgstr ""
 
@@ -359,7 +359,7 @@ msgstr "Compression Algorithm"
 msgid "Config file"
 msgstr "Config file"
 
-#: src/core/Sidebar/Sidebar.tsx:48
+#: src/core/Sidebar/Sidebar.tsx:50
 msgid "Configuration"
 msgstr ""
 
@@ -1225,7 +1225,7 @@ msgstr ""
 msgid "Mail From"
 msgstr "Mail From"
 
-#: src/core/Sidebar/Sidebar.tsx:64
+#: src/core/Sidebar/Sidebar.tsx:66
 msgid "Main navigation"
 msgstr ""
 
@@ -1335,7 +1335,7 @@ msgid "Mounted Snapshots"
 msgstr "Mounted Snapshots"
 
 #: src/core/Header/Header.tsx:72
-#: src/core/Sidebar/Sidebar.tsx:31
+#: src/core/Sidebar/Sidebar.tsx:33
 msgid "Mounts"
 msgstr "Mounts"
 
@@ -1632,7 +1632,7 @@ msgid "Plain Text Format"
 msgstr "Plain Text Format"
 
 #: src/core/Header/Header.tsx:92
-#: src/core/Sidebar/Sidebar.tsx:35
+#: src/core/Sidebar/Sidebar.tsx:37
 #: src/policies/PoliciesPage.tsx:136
 msgid "Policies"
 msgstr "Policies"
@@ -1647,7 +1647,7 @@ msgid "Port number (e.g., 22)"
 msgstr "Port number (e.g., 22)"
 
 #: src/core/Header/Header.tsx:100
-#: src/core/Sidebar/Sidebar.tsx:39
+#: src/core/Sidebar/Sidebar.tsx:41
 #: src/preferences/PreferencesPage.tsx:13
 msgid "Preferences"
 msgstr "Preferences"
@@ -1728,7 +1728,7 @@ msgid "Report"
 msgstr ""
 
 #: src/core/Header/Header.tsx:81
-#: src/core/Sidebar/Sidebar.tsx:37
+#: src/core/Sidebar/Sidebar.tsx:39
 #: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:82
 msgid "Repository"
 msgstr "Repository"
@@ -2043,7 +2043,7 @@ msgstr "Snapshot(s) deleted"
 
 #: src/core/Header/Header.tsx:59
 #: src/core/Header/Header.tsx:65
-#: src/core/Sidebar/Sidebar.tsx:29
+#: src/core/Sidebar/Sidebar.tsx:31
 #: src/snapshot-history/components/SnapshotHistoryStats.tsx:83
 #: src/snapshot-history/SnapshotHistory.tsx:107
 #: src/snapshots/SnapshotsPage.tsx:115
@@ -2137,7 +2137,7 @@ msgid "Task ID"
 msgstr "Task ID"
 
 #: src/core/Header/Header.tsx:99
-#: src/core/Sidebar/Sidebar.tsx:33
+#: src/core/Sidebar/Sidebar.tsx:35
 #: src/tasks/TasksPage.tsx:99
 msgid "Tasks"
 msgstr "Tasks"
