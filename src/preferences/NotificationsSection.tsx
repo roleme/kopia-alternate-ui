@@ -120,7 +120,6 @@ function NotificationsSection() {
                     }
                   })
                 }
-                onDuplicate={() => console.log("d")}
                 onTest={() => testAction.execute(n)}
               />
             ))}

@@ -493,7 +493,7 @@ msgid "Defined"
 msgstr "Defined"
 
 #: src/policies/modals/PolicyModal/components/DeletePolicyButton.tsx:41
-#: src/preferences/components/NotificationCard.tsx:89
+#: src/preferences/components/NotificationCard.tsx:86
 #: src/snapshot-history/modals/DeleteSnapshotModal.tsx:82
 #: src/snapshot-history/modals/PinSnapshotModal.tsx:88
 msgid "Delete"
@@ -522,6 +522,7 @@ msgstr "Description"
 msgid "Description updated"
 msgstr "Description updated"
 
+#: src/preferences/components/NotificationCard.tsx:96
 #: src/snapshot-directory/modals/RestoreModal.tsx:155
 msgid "Destination"
 msgstr "Destination"
@@ -622,7 +623,7 @@ msgid "Duration"
 msgstr "Duration"
 
 #: src/policies/PoliciesPage.tsx:221
-#: src/preferences/components/NotificationCard.tsx:71
+#: src/preferences/components/NotificationCard.tsx:76
 msgid "Edit"
 msgstr "Edit"
 
@@ -796,6 +797,10 @@ msgstr "Enter trusted server certificate fingerprint printed at server startup"
 #: src/snapshot-history/components/SnapshotHistoryStats.tsx:97
 msgid "Entries over time"
 msgstr "Entries over time"
+
+#: src/preferences/components/NotificationCard.tsx:41
+msgid "Error"
+msgstr ""
 
 #: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:164
 #: src/repo/CreateRepoSection.tsx:193
@@ -1244,7 +1249,7 @@ msgstr "Minimum File Size"
 msgid "Minimum file size in bytes"
 msgstr "Minimum file size in bytes"
 
-#: src/preferences/components/NotificationCard.tsx:98
+#: src/preferences/components/NotificationCard.tsx:104
 #: src/preferences/modals/EmailModal.tsx:200
 #: src/preferences/modals/PushoverModal.tsx:118
 #: src/preferences/modals/WebhookModal.tsx:159
@@ -1659,6 +1664,10 @@ msgstr "Remote"
 msgid "removed"
 msgstr ""
 
+#: src/preferences/components/NotificationCard.tsx:39
+msgid "Report"
+msgstr ""
+
 #: src/core/Header/Header.tsx:82
 #: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:82
 msgid "Repository"
@@ -1819,7 +1828,7 @@ msgstr "Select Snapshot Frequency"
 msgid "Select the preferred storage type"
 msgstr "Select the preferred storage type"
 
-#: src/preferences/components/NotificationCard.tsx:82
+#: src/preferences/components/NotificationCard.tsx:79
 msgid "Send test notification"
 msgstr "Send test notification"
 
@@ -2035,6 +2044,10 @@ msgstr "Status"
 #: src/repo/sections/AzureBlobStorageRepo.tsx:66
 msgid "Storage Account"
 msgstr "Storage Account"
+
+#: src/preferences/components/NotificationCard.tsx:38
+msgid "Success"
+msgstr ""
 
 #: src/core/context/ServerInstanceContext.tsx:92
 msgid "Switched instance"
@@ -2255,9 +2268,17 @@ msgstr "Value defined in policy"
 msgid "Value is too short"
 msgstr ""
 
+#: src/preferences/components/NotificationCard.tsx:37
+msgid "Verbose"
+msgstr ""
+
 #: src/snapshots/SnapshotsPage.tsx:311
 msgid "View Policy"
 msgstr "View Policy"
+
+#: src/preferences/components/NotificationCard.tsx:40
+msgid "Warning"
+msgstr ""
 
 #: src/repo/sections/WebDavRepo.tsx:37
 msgid "WebDAV Server"
