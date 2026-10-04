@@ -20,7 +20,7 @@ import {
 } from "@mantine/core";
 import { IconArrowLeft, IconCheck, IconChevronRight, IconExclamationCircle, IconFolderOpen } from "@tabler/icons-react";
 import dayjs from "dayjs";
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { type KeyboardEvent, type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 import { useAppContext } from "../core/context/AppContext";
 import { useServerInstanceContext } from "../core/context/ServerInstanceContext";
@@ -456,7 +456,22 @@ function SnapshotComparePage() {
 
   const renderNode = (node: DiffNode, depth: number): ReactNode => {
     const open = isOpen(node);
-    const showDetail = !node.isDir && details.has(node.id);
+    const expandable = node.isDir ? node.status !== "error" : node.status === "modified";
+    const showDetail = !node.isDir && node.status === "modified" && details.has(node.id);
+    const interactive = expandable
+      ? {
+          role: "button" as const,
+          tabIndex: 0,
+          "aria-expanded": node.isDir ? open : showDetail,
+          onClick: () => toggle(node),
+          onKeyDown: (e: KeyboardEvent<HTMLDivElement>) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              toggle(node);
+            }
+          }
+        }
+      : {};
     const delta = nodeDelta(node);
     return (
       <Box key={node.id}>
@@ -467,26 +482,17 @@ function SnapshotComparePage() {
           px="xs"
           py={6}
           ml={depth * 22}
-          role="button"
-          tabIndex={0}
-          aria-expanded={node.isDir ? open : showDetail}
+          {...interactive}
           style={{
-            cursor: "pointer",
+            cursor: expandable ? "pointer" : undefined,
             borderRadius: 4,
             background: open || showDetail ? "var(--mantine-color-gray-1)" : undefined
-          }}
-          onClick={() => toggle(node)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              e.preventDefault();
-              toggle(node);
-            }
           }}
         >
           <Text ff="monospace" fw={700} fz="sm" c={STATUS_COLOR[node.status]} style={{ width: 14, flexShrink: 0 }}>
             {STATUS_GLYPH[node.status]}
           </Text>
-          {node.status !== "error" ? (
+          {expandable ? (
             <IconChevronRight
               size={13}
               style={{
