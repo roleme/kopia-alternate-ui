@@ -39,7 +39,7 @@ import {
   type DiffStatus,
   type DiffStats
 } from "./diffTree";
-import ContentPreview from "./ContentPreview";
+import ContentPreview, { MAX_IMAGE_BYTES, MAX_TEXT_BYTES } from "./ContentPreview";
 import { compactDiff, diffLines, looksLikeText, sniffImageMime, sniffsAsText, type DiffLine } from "./lineDiff";
 
 type Filter = "all" | DiffStatus;
@@ -341,33 +341,29 @@ function SnapshotComparePage() {
 
   useEffect(() => {
     if (!result) return;
+    const classify = (head: ArrayBuffer | undefined, other?: ArrayBuffer): "text" | "image" | "binary" => {
+      const heads = other ? [head, other] : [head];
+      if (heads.some((h) => !h)) return "binary";
+      if (heads.every((h) => sniffsAsText(h as ArrayBuffer))) return "text";
+      if (heads.every((h) => sniffImageMime(h as ArrayBuffer))) return "image";
+      return "binary";
+    };
     const visit = (nodes: DiffNode[]) => {
       for (const node of nodes) {
         const { a, b } = node;
-        if (
-          !node.isDir &&
-          node.status === "modified" &&
-          a &&
-          b &&
-          a.obj !== b.obj &&
-          !node.typeChanged &&
-          !sniffing.current.has(node.id)
-        ) {
+        const modified = node.status === "modified" && a && b && a.obj !== b.obj && !node.typeChanged;
+        const oneSided = (node.status === "added" || node.status === "removed") && Boolean(a ?? b);
+        if (!node.isDir && (modified || oneSided) && !sniffing.current.has(node.id)) {
           sniffing.current.add(node.id);
+          const objs = a && b ? [a.obj, b.obj] : [(a ?? b)?.obj as string];
           void (async () => {
-            const [headA, headB] = await Promise.all([
-              kopiaService.getObjectHead(a.obj, 512),
-              kopiaService.getObjectHead(b.obj, 512)
-            ]);
-            let kind: "text" | "image" | "binary" = "binary";
-            if (!headA.isError && headA.data && !headB.isError && headB.data) {
-              if (sniffsAsText(headA.data) && sniffsAsText(headB.data)) kind = "text";
-              else if (sniffImageMime(headA.data) && sniffImageMime(headB.data)) kind = "image";
-            }
+            const heads = await Promise.all(objs.map((obj) => kopiaService.getObjectHead(obj, 512)));
+            const data = heads.map((h) => (!h.isError && h.data ? h.data : undefined));
+            const kind = classify(data[0], data[1]);
             setSniffs((prev) => ({ ...prev, [node.id]: kind }));
           })();
         }
-        if (node.isDir && node.children && isOpen(node)) visit(node.children);
+        if (node.isDir && childrenOf(node) && isOpen(node)) visit(childrenOf(node) ?? []);
       }
     };
     visit(result.roots);
@@ -509,23 +505,14 @@ function SnapshotComparePage() {
   const changeRows = (node: DiffNode): { label: string; content: ReactNode }[] => {
     const { a, b } = node;
     if (node.isDir || (!a && !b)) return [];
-    const downloadLink = (entry: NonNullable<typeof a>, label: string) => (
-      <Anchor key={label} fz="xs" href={kopiaService.objectUrl(entry.obj, entry.name)}>
-        {label}
-      </Anchor>
-    );
     if (!a || !b) {
       const entry = (a ?? b) as NonNullable<typeof a>;
+      const size = entry.size ?? 0;
+      const kind = sniffs[node.id];
+      const previewable = (kind === "text" && size <= MAX_TEXT_BYTES) || (kind === "image" && size <= MAX_IMAGE_BYTES);
+      if (!previewable || size === 0) return [];
       return [
-        {
-          label: "content",
-          content: (
-            <Stack gap={4} align="flex-start">
-              <ContentPreview key={entry.obj} obj={entry.obj} size={entry.size ?? 0} />
-              {downloadLink(entry, t`Download`)}
-            </Stack>
-          )
-        }
+        { label: "content", content: <ContentPreview key={entry.obj} obj={entry.obj} size={size} /> }
       ];
     }
     const rows: { label: string; content: ReactNode }[] = [];
@@ -565,7 +552,7 @@ function SnapshotComparePage() {
       sizeA <= MAX_DIFF_BYTES &&
       sizeB <= MAX_DIFF_BYTES;
     if (diffable) rows.push({ label: "content", content: renderContentDiff(node) });
-    if (sniffs[node.id] === "image" && a.obj !== b.obj) {
+    if (sniffs[node.id] === "image" && a.obj !== b.obj && sizeA <= MAX_IMAGE_BYTES && sizeB <= MAX_IMAGE_BYTES) {
       rows.push({
         label: "content",
         content: (
@@ -582,17 +569,6 @@ function SnapshotComparePage() {
               </Text>
               <ContentPreview key={b.obj} obj={b.obj} size={b.size ?? 0} />
             </Stack>
-          </Group>
-        )
-      });
-    }
-    if (node.status === "modified" && a.obj !== b.obj) {
-      rows.push({
-        label: "download",
-        content: (
-          <Group gap="sm">
-            {downloadLink(a, t`before`)}
-            {downloadLink(b, t`after`)}
           </Group>
         )
       });

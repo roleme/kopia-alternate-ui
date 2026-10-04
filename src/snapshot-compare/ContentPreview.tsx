@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { useServerInstanceContext } from "../core/context/ServerInstanceContext";
 import { sniffImageMime, sniffsAsText } from "./lineDiff";
 
-const MAX_TEXT_BYTES = 512 * 1024;
-const MAX_IMAGE_BYTES = 10 * 1024 * 1024;
+export const MAX_TEXT_BYTES = 512 * 1024;
+export const MAX_IMAGE_BYTES = 10 * 1024 * 1024;
 
 type Preview =
   | { kind: "pending" }
