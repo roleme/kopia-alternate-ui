@@ -44,6 +44,11 @@ type ContentDiffState =
   | { state: "error" }
   | { state: "text"; lines: DiffLine[]; added: number; removed: number };
 
+const MAX_DIFF_BYTES = 2 * 1024 * 1024;
+
+const BINARY_NAME =
+  /\.(db|sqlite3?|bin|gz|tgz|zip|7z|rar|bz2|xz|zst|lz4|jpe?g|png|gif|webp|heic|heif|avif|ico|mp3|m4a|flac|mp4|mov|mkv|avi|webm|pdf|iso|img|so|dll|dylib|exe|jar|class|woff2?|ttf|otf|parquet)(-wal|-shm|-journal)?$/i;
+
 const STATUS_COLOR: Record<DiffStatus, MantineColor> = {
   added: "green.6",
   removed: "red.6",
@@ -238,8 +243,7 @@ function SnapshotComparePage() {
 
   const loadContentDiff = async (node: DiffNode) => {
     if (!node.a || !node.b) return;
-    const maxBytes = 2 * 1024 * 1024;
-    if ((node.a.size ?? 0) > maxBytes || (node.b.size ?? 0) > maxBytes) {
+    if ((node.a.size ?? 0) > MAX_DIFF_BYTES || (node.b.size ?? 0) > MAX_DIFF_BYTES) {
       setContentDiffs((prev) => ({ ...prev, [node.id]: { state: "too-large" } }));
       return;
     }
@@ -339,23 +343,6 @@ function SnapshotComparePage() {
   };
 
   const renderContentDiff = (node: DiffNode): ReactNode => {
-    // Deterministic outcomes — no button, no fetch:
-    // equal object IDs prove identical content; two zero-size files are
-    // both empty. The error state is left for genuine fetch failures.
-    if (node.a && node.b && node.a.obj === node.b.obj) {
-      return (
-        <Text fz="xs" c="dimmed">
-          {t`Text is identical \u2014 only metadata differs.`}
-        </Text>
-      );
-    }
-    if ((node.a?.size ?? -1) === 0 && (node.b?.size ?? -1) === 0) {
-      return (
-        <Text fz="xs" c="dimmed">
-          {t`Both files are empty.`}
-        </Text>
-      );
-    }
     const current = contentDiffs[node.id];
     if (!current) {
       return (
@@ -395,7 +382,7 @@ function SnapshotComparePage() {
     if (current.added === 0 && current.removed === 0) {
       return (
         <Text fz="xs" c="dimmed">
-          {t`Text is identical — only metadata differs.`}
+          {t`No line changes.`}
         </Text>
       );
     }
@@ -454,10 +441,58 @@ function SnapshotComparePage() {
     );
   };
 
+  const changeRows = (node: DiffNode): { label: string; content: ReactNode }[] => {
+    const { a, b } = node;
+    if (!a || !b || node.isDir) return [];
+    const rows: { label: string; content: ReactNode }[] = [];
+    const change = (from: string, to: string) => (
+      <Code fz="xs" fw={600} style={{ whiteSpace: "nowrap" }}>
+        {`${from} → ${to}`}
+      </Code>
+    );
+    const sizeA = entrySizeOf(a);
+    const sizeB = entrySizeOf(b);
+    if (sizeA !== sizeB) {
+      const from = sizeDisplayName(sizeA, bytesStringBase2);
+      const to = sizeDisplayName(sizeB, bytesStringBase2);
+      rows.push({ label: "size", content: from === to ? change(`${sizeA} B`, `${sizeB} B`) : change(from, to) });
+    }
+    if (a.mode !== b.mode) rows.push({ label: "mode", content: change(a.mode, b.mode) });
+    if (a.mtime !== b.mtime) {
+      const minutes = "YYYY-MM-DD HH:mm";
+      const sameMinute = dayjs(a.mtime).format(minutes) === dayjs(b.mtime).format(minutes);
+      const format = sameMinute ? "YYYY-MM-DD HH:mm:ss" : minutes;
+      rows.push({ label: "date", content: change(dayjs(a.mtime).format(format), dayjs(b.mtime).format(format)) });
+    }
+    const diffable =
+      !node.typeChanged &&
+      a.obj !== b.obj &&
+      !(sizeA === 0 && sizeB === 0) &&
+      !BINARY_NAME.test(node.name) &&
+      sizeA <= MAX_DIFF_BYTES &&
+      sizeB <= MAX_DIFF_BYTES;
+    if (diffable) rows.push({ label: "content", content: renderContentDiff(node) });
+    return rows;
+  };
+
+  const renderChanges = (rows: { label: string; content: ReactNode }[]): ReactNode => (
+    <Stack gap={2}>
+      {rows.map((row) => (
+        <Group key={row.label} gap="xs" wrap="nowrap" align="flex-start">
+          <Text fz="xs" c="dimmed" w={70} style={{ flexShrink: 0 }}>
+            {row.label}
+          </Text>
+          <Box style={{ flex: 1, minWidth: 0 }}>{row.content}</Box>
+        </Group>
+      ))}
+    </Stack>
+  );
+
   const renderNode = (node: DiffNode, depth: number): ReactNode => {
     const open = isOpen(node);
-    const expandable = node.isDir ? node.status !== "error" : node.status === "modified";
-    const showDetail = !node.isDir && node.status === "modified" && details.has(node.id);
+    const rows = node.status === "modified" ? changeRows(node) : [];
+    const expandable = node.isDir ? node.status !== "error" : rows.length > 0;
+    const showDetail = expandable && !node.isDir && details.has(node.id);
     const interactive = expandable
       ? {
           role: "button" as const,
@@ -552,47 +587,7 @@ function SnapshotComparePage() {
         </Group>
         {showDetail && (
           <Paper withBorder ml={depth * 22 + 30} mb={4} p="xs" radius="sm">
-            <Stack gap={2}>
-              {(() => {
-                const rows = [
-                  {
-                    label: "size",
-                    av: node.a ? sizeDisplayName(entrySizeOf(node.a), bytesStringBase2) : undefined,
-                    bv: node.b ? sizeDisplayName(entrySizeOf(node.b), bytesStringBase2) : undefined
-                  },
-                  { label: "mode", av: node.a?.mode, bv: node.b?.mode },
-                  {
-                    label: "date",
-                    av: node.a ? dayjs(node.a.mtime).format("YYYY-MM-DD HH:mm") : undefined,
-                    bv: node.b ? dayjs(node.b.mtime).format("YYYY-MM-DD HH:mm") : undefined
-                  }
-                ];
-                const both = node.a !== undefined && node.b !== undefined;
-                return rows.map((r) => (
-                  <Group key={r.label} gap="xs" wrap="nowrap">
-                    <Text fz="xs" c="dimmed" w={70} style={{ flexShrink: 0 }}>
-                      {r.label}
-                    </Text>
-                    <Code
-                      fz="xs"
-                      style={{
-                        whiteSpace: "nowrap",
-                        color: both && r.av === r.bv ? "var(--mantine-color-dimmed)" : undefined,
-                        fontWeight: both && r.av !== r.bv ? 600 : undefined
-                      }}
-                    >
-                      {both ? `${r.av} → ${r.bv}` : (r.av ?? r.bv)}
-                    </Code>
-                  </Group>
-                ));
-              })()}
-              {node.status === "modified" &&
-                !node.isDir &&
-                node.a &&
-                node.b &&
-                !node.typeChanged &&
-                renderContentDiff(node)}
-            </Stack>
+            {renderChanges(rows)}
           </Paper>
         )}
         {node.isDir && open && node.children && (
