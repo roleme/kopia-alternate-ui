@@ -39,7 +39,8 @@ import {
   type DiffStatus,
   type DiffStats
 } from "./diffTree";
-import { compactDiff, diffLines, looksLikeText, sniffsAsText, type DiffLine } from "./lineDiff";
+import ContentPreview from "./ContentPreview";
+import { compactDiff, diffLines, looksLikeText, sniffImageMime, sniffsAsText, type DiffLine } from "./lineDiff";
 
 type Filter = "all" | DiffStatus;
 type SortMode = "delta" | "type" | "path";
@@ -192,7 +193,7 @@ function SnapshotComparePage() {
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const [collapsed, setCollapsed] = useState<Set<string>>(new Set());
   const [details, setDetails] = useState<Set<string>>(new Set());
-  const [sniffs, setSniffs] = useState<Record<string, "text" | "binary">>({});
+  const [sniffs, setSniffs] = useState<Record<string, "text" | "image" | "binary">>({});
   const sniffing = useRef<Set<string>>(new Set());
   const [lazyChildren, setLazyChildren] = useState<Record<string, DiffNode[] | "loading" | "error">>({});
   const [hiddenDiffs, setHiddenDiffs] = useState<Set<string>>(new Set());
@@ -358,11 +359,12 @@ function SnapshotComparePage() {
               kopiaService.getObjectHead(a.obj, 512),
               kopiaService.getObjectHead(b.obj, 512)
             ]);
-            const text =
-              !headA.isError && headA.data && !headB.isError && headB.data
-                ? sniffsAsText(headA.data) && sniffsAsText(headB.data)
-                : false;
-            setSniffs((prev) => ({ ...prev, [node.id]: text ? "text" : "binary" }));
+            let kind: "text" | "image" | "binary" = "binary";
+            if (!headA.isError && headA.data && !headB.isError && headB.data) {
+              if (sniffsAsText(headA.data) && sniffsAsText(headB.data)) kind = "text";
+              else if (sniffImageMime(headA.data) && sniffImageMime(headB.data)) kind = "image";
+            }
+            setSniffs((prev) => ({ ...prev, [node.id]: kind }));
           })();
         }
         if (node.isDir && node.children && isOpen(node)) visit(node.children);
@@ -506,7 +508,26 @@ function SnapshotComparePage() {
 
   const changeRows = (node: DiffNode): { label: string; content: ReactNode }[] => {
     const { a, b } = node;
-    if (!a || !b || node.isDir) return [];
+    if (node.isDir || (!a && !b)) return [];
+    const downloadLink = (entry: NonNullable<typeof a>, label: string) => (
+      <Anchor key={label} fz="xs" href={kopiaService.objectUrl(entry.obj, entry.name)}>
+        {label}
+      </Anchor>
+    );
+    if (!a || !b) {
+      const entry = (a ?? b) as NonNullable<typeof a>;
+      return [
+        {
+          label: "content",
+          content: (
+            <Stack gap={4} align="flex-start">
+              <ContentPreview key={entry.obj} obj={entry.obj} size={entry.size ?? 0} />
+              {downloadLink(entry, t`Download`)}
+            </Stack>
+          )
+        }
+      ];
+    }
     const rows: { label: string; content: ReactNode }[] = [];
     const change = (from: string, to: string) => (
       <Code fz="xs" fw={600} style={{ whiteSpace: "nowrap" }}>
@@ -544,6 +565,38 @@ function SnapshotComparePage() {
       sizeA <= MAX_DIFF_BYTES &&
       sizeB <= MAX_DIFF_BYTES;
     if (diffable) rows.push({ label: "content", content: renderContentDiff(node) });
+    if (sniffs[node.id] === "image" && a.obj !== b.obj) {
+      rows.push({
+        label: "content",
+        content: (
+          <Group gap="md" align="flex-start" wrap="wrap">
+            <Stack gap={2}>
+              <Text fz="xs" c="dimmed">
+                {t`before`}
+              </Text>
+              <ContentPreview key={a.obj} obj={a.obj} size={a.size ?? 0} />
+            </Stack>
+            <Stack gap={2}>
+              <Text fz="xs" c="dimmed">
+                {t`after`}
+              </Text>
+              <ContentPreview key={b.obj} obj={b.obj} size={b.size ?? 0} />
+            </Stack>
+          </Group>
+        )
+      });
+    }
+    if (node.status === "modified" && a.obj !== b.obj) {
+      rows.push({
+        label: "download",
+        content: (
+          <Group gap="sm">
+            {downloadLink(a, t`before`)}
+            {downloadLink(b, t`after`)}
+          </Group>
+        )
+      });
+    }
     return rows;
   };
 
@@ -568,7 +621,7 @@ function SnapshotComparePage() {
 
   const renderNode = (node: DiffNode, depth: number): ReactNode => {
     const open = isOpen(node);
-    const rows = node.status === "modified" || node.status === "touched" ? changeRows(node) : [];
+    const rows = node.isDir || node.status === "error" ? [] : changeRows(node);
     const expandable = node.isDir ? node.status !== "error" : rows.length > 0;
     const showDetail = expandable && !node.isDir && details.has(node.id);
     const interactive = expandable

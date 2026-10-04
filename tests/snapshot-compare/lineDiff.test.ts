@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { compactDiff, diffLines, looksLikeText } from "../../src/snapshot-compare/lineDiff";
+import {
+  compactDiff,
+  diffLines,
+  looksLikeText,
+  sniffImageMime,
+  sniffsAsText
+} from "../../src/snapshot-compare/lineDiff";
 
 const enc = new TextEncoder();
 
@@ -68,5 +74,45 @@ describe("compactDiff", () => {
     expect(out.length).toBeLessThan(12);
     expect(out.some((l) => l.text === "…")).toBe(true);
     expect(out.some((l) => l.text === "CHANGED")).toBe(true);
+  });
+});
+
+const bytes = (...values: number[]) => new Uint8Array(values).buffer;
+const ascii = (text: string) => new TextEncoder().encode(text).buffer;
+
+describe("sniffImageMime", () => {
+  it("recognizes common raster formats by their magic bytes", () => {
+    expect(sniffImageMime(bytes(0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0, 0))).toBe("image/png");
+    expect(sniffImageMime(bytes(0xff, 0xd8, 0xff, 0xe0, 0, 0x10))).toBe("image/jpeg");
+    expect(sniffImageMime(ascii("GIF89a\u0001\u0000"))).toBe("image/gif");
+    expect(sniffImageMime(ascii("RIFF\u0000\u0000\u0000\u0000WEBPVP8 "))).toBe("image/webp");
+    expect(sniffImageMime(ascii("\u0000\u0000\u0000\u001cftypavif"))).toBe("image/avif");
+  });
+
+  it("recognizes SVG markup but not other text", () => {
+    expect(sniffImageMime(ascii('<svg xmlns="http://www.w3.org/2000/svg"></svg>'))).toBe("image/svg+xml");
+    expect(sniffImageMime(ascii('<?xml version="1.0"?><svg></svg>'))).toBe("image/svg+xml");
+    expect(sniffImageMime(ascii("<html></html>"))).toBeNull();
+    expect(sniffImageMime(ascii("plain text"))).toBeNull();
+  });
+
+  it("returns null for unknown binary", () => {
+    expect(sniffImageMime(bytes(0, 1, 2, 3, 4, 5))).toBeNull();
+  });
+});
+
+describe("sniffsAsText", () => {
+  it("accepts text and rejects NUL bytes", () => {
+    expect(sniffsAsText(ascii("hello\nworld"))).toBe(true);
+    expect(sniffsAsText(bytes(0x68, 0x00, 0x69))).toBe(false);
+  });
+
+  it("tolerates a multi-byte character cut off at the end of the sample", () => {
+    const full = new TextEncoder().encode("héllo wörld ✓");
+    expect(sniffsAsText(full.slice(0, full.length - 1).buffer)).toBe(true);
+  });
+
+  it("rejects invalid UTF-8 in the middle", () => {
+    expect(sniffsAsText(bytes(0x61, 0xff, 0xfe, 0x62, 0x63, 0x64, 0x65, 0x66))).toBe(false);
   });
 });
