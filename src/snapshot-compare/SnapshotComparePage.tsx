@@ -638,7 +638,7 @@ function SnapshotComparePage() {
             )}
           </Text>
           {node.isDir && node.oneSided && (
-            <Text ff="monospace" fz="xs" c="dimmed" style={{ flexShrink: 0 }}>
+            <Text ff="monospace" fz="xs" c="dimmed" style={{ flexShrink: 0 }} visibleFrom="xs">
               {t`${node.oneSided.files} files, ${node.oneSided.dirs} dirs`}
             </Text>
           )}
