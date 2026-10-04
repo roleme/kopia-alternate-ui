@@ -1,6 +1,6 @@
 import { AppShellHeader, Box, Container, Text } from "@mantine/core";
 import { Link } from "react-router";
-import classes from "./Header.module.css";
+import classes from "./SkeletonHeader.module.css";
 
 export function SkeletonHeader() {
   return (

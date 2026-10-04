@@ -1233,22 +1233,6 @@ msgstr "Mail From"
 msgid "Main navigation"
 msgstr ""
 
-#: src/core/Header/Header.tsx:75
-msgid "Manage mounted snapshots"
-msgstr "Manage mounted snapshots"
-
-#: src/core/Header/Header.tsx:88
-msgid "Manage repository status and configuration"
-msgstr "Manage repository status and configuration"
-
-#: src/core/Header/Header.tsx:95
-msgid "Manage snapshot policies for this repository"
-msgstr "Manage snapshot policies for this repository"
-
-#: src/core/Header/Header.tsx:68
-msgid "Manage snapshots"
-msgstr "Manage snapshots"
-
 #: src/snapshots/components/SourceStatusCell.tsx:52
 msgid "Manual"
 msgstr ""
@@ -1338,7 +1322,6 @@ msgstr "Mounted at"
 msgid "Mounted Snapshots"
 msgstr "Mounted Snapshots"
 
-#: src/core/Header/Header.tsx:72
 #: src/core/Sidebar/Sidebar.tsx:33
 msgid "Mounts"
 msgstr "Mounts"
@@ -1635,7 +1618,6 @@ msgstr "Pin Snapshot"
 msgid "Plain Text Format"
 msgstr "Plain Text Format"
 
-#: src/core/Header/Header.tsx:92
 #: src/core/Sidebar/Sidebar.tsx:37
 #: src/policies/PoliciesPage.tsx:136
 msgid "Policies"
@@ -1650,7 +1632,6 @@ msgstr "Port"
 msgid "Port number (e.g., 22)"
 msgstr "Port number (e.g., 22)"
 
-#: src/core/Header/Header.tsx:100
 #: src/core/Sidebar/Sidebar.tsx:41
 #: src/preferences/PreferencesPage.tsx:13
 msgid "Preferences"
@@ -1731,7 +1712,6 @@ msgstr ""
 msgid "Report"
 msgstr ""
 
-#: src/core/Header/Header.tsx:81
 #: src/core/Sidebar/Sidebar.tsx:39
 #: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:82
 msgid "Repository"
@@ -2045,8 +2025,6 @@ msgstr "Snapshot unmounted"
 msgid "Snapshot(s) deleted"
 msgstr "Snapshot(s) deleted"
 
-#: src/core/Header/Header.tsx:59
-#: src/core/Header/Header.tsx:65
 #: src/core/Sidebar/Sidebar.tsx:31
 #: src/snapshot-history/components/SnapshotHistoryStats.tsx:83
 #: src/snapshot-history/SnapshotHistory.tsx:107
@@ -2105,7 +2083,6 @@ msgstr "Start Time"
 msgid "Started"
 msgstr "Started"
 
-#: src/core/Header/Header.tsx:86
 #: src/snapshots/SnapshotsPage.tsx:256
 #: src/tasks/TasksPage.tsx:203
 msgid "Status"
@@ -2140,7 +2117,6 @@ msgstr "Task cancelled"
 msgid "Task ID"
 msgstr "Task ID"
 
-#: src/core/Header/Header.tsx:99
 #: src/core/Sidebar/Sidebar.tsx:35
 #: src/tasks/TasksPage.tsx:99
 msgid "Tasks"

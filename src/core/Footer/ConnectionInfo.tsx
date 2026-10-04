@@ -15,7 +15,7 @@ import { IconLockAccessOff } from "@tabler/icons-react";
 import { useAppContext } from "../context/AppContext";
 import { useServerInstanceContext } from "../context/ServerInstanceContext";
 import IconWrapper from "../IconWrapper";
-import classes from "./Footer.module.css";
+import classes from "./ConnectionInfo.module.css";
 
 export function ConnectionInfo() {
   const { repoStatus } = useAppContext();

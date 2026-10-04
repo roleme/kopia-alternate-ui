@@ -1233,22 +1233,6 @@ msgstr "Avsender"
 msgid "Main navigation"
 msgstr ""
 
-#: src/core/Header/Header.tsx:75
-msgid "Manage mounted snapshots"
-msgstr "Administrer monterte øyeblikksbilder"
-
-#: src/core/Header/Header.tsx:88
-msgid "Manage repository status and configuration"
-msgstr "Administrer status og konfigurasjon på oppbevaringsstedet"
-
-#: src/core/Header/Header.tsx:95
-msgid "Manage snapshot policies for this repository"
-msgstr "Administrer strategier for øyeblikksbilder"
-
-#: src/core/Header/Header.tsx:68
-msgid "Manage snapshots"
-msgstr "Administrer øyeblikksbilder"
-
 #: src/snapshots/components/SourceStatusCell.tsx:52
 msgid "Manual"
 msgstr ""
@@ -1338,7 +1322,6 @@ msgstr "Montert på"
 msgid "Mounted Snapshots"
 msgstr "Monterte øyeblikksbilder"
 
-#: src/core/Header/Header.tsx:72
 #: src/core/Sidebar/Sidebar.tsx:33
 msgid "Mounts"
 msgstr "Monteringer"
@@ -1635,7 +1618,6 @@ msgstr "Fest Øyeblikksbilde"
 msgid "Plain Text Format"
 msgstr "Vanlig tekstformat"
 
-#: src/core/Header/Header.tsx:92
 #: src/core/Sidebar/Sidebar.tsx:37
 #: src/policies/PoliciesPage.tsx:136
 msgid "Policies"
@@ -1650,7 +1632,6 @@ msgstr "Port"
 msgid "Port number (e.g., 22)"
 msgstr "Port nummer (e.g., 22)"
 
-#: src/core/Header/Header.tsx:100
 #: src/core/Sidebar/Sidebar.tsx:41
 #: src/preferences/PreferencesPage.tsx:13
 msgid "Preferences"
@@ -1731,7 +1712,6 @@ msgstr ""
 msgid "Report"
 msgstr ""
 
-#: src/core/Header/Header.tsx:81
 #: src/core/Sidebar/Sidebar.tsx:39
 #: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:82
 msgid "Repository"
@@ -2045,8 +2025,6 @@ msgstr "Øyeblikksbilde demontert"
 msgid "Snapshot(s) deleted"
 msgstr "Øyeblikksbilde(r) slettet"
 
-#: src/core/Header/Header.tsx:59
-#: src/core/Header/Header.tsx:65
 #: src/core/Sidebar/Sidebar.tsx:31
 #: src/snapshot-history/components/SnapshotHistoryStats.tsx:83
 #: src/snapshot-history/SnapshotHistory.tsx:107
@@ -2105,7 +2083,6 @@ msgstr "Start tid"
 msgid "Started"
 msgstr "Staret"
 
-#: src/core/Header/Header.tsx:86
 #: src/snapshots/SnapshotsPage.tsx:256
 #: src/tasks/TasksPage.tsx:203
 msgid "Status"
@@ -2140,7 +2117,6 @@ msgstr "Oppgave Kansellert"
 msgid "Task ID"
 msgstr "Oppgave ID"
 
-#: src/core/Header/Header.tsx:99
 #: src/core/Sidebar/Sidebar.tsx:35
 #: src/tasks/TasksPage.tsx:99
 msgid "Tasks"
