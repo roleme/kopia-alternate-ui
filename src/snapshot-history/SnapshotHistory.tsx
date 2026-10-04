@@ -1,6 +1,6 @@
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { ActionIcon, Anchor, Badge, Button, Code, Container, Group, Stack, Text, Title, Tooltip } from "@mantine/core";
+import { ActionIcon, Anchor, Badge, Button, Container, Group, Stack, Text, Title, Tooltip } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import {
   IconArrowLeft,
@@ -25,8 +25,10 @@ import useApiRequest from "../core/hooks/useApiRequest";
 import IconWrapper from "../core/IconWrapper";
 import type { ItemAction, Snapshot, Snapshots, SourceInfo } from "../core/types";
 import sizeDisplayName from "../utils/formatSize";
+import signedSizeDisplayName from "../utils/formatSignedSize";
 import RetentionBadge from "./components/RetentionBadge";
 import SnapshotCountControl from "./components/SnapshotCountControl";
+import { sizeChangesById } from "./sizeChanges";
 import SnapshotHistoryStats from "./components/SnapshotHistoryStats";
 import DeleteSnapshotModal from "./modals/DeleteSnapshotModal";
 import PinSnapshotModal from "./modals/PinSnapshotModal";
@@ -62,6 +64,8 @@ function SnapshotHistory() {
       .sort((a, b) => new Date(b.startTime).getTime() - new Date(a.startTime).getTime());
     return older.find((s) => s.rootID !== current.rootID) ?? older[0];
   };
+
+  const sizeChanges = useMemo(() => sizeChangesById(data?.snapshots ?? []), [data]);
 
   const visibleData = useMemo(() => {
     if (data?.snapshots === undefined) return [];
@@ -154,31 +158,22 @@ function SnapshotHistory() {
               accessor: "startTime",
               title: t`Start Time`,
               sortable: true,
-              width: 200,
               render: (item) => (
-                <Anchor
-                  component={Link}
-                  to={`/snapshots/dir/${item.rootID}`}
-                  state={{ label: searchParams.get("path") }}
-                  td="none"
-                  fz="sm"
-                >
-                  <FormattedDate value={item.startTime} />
-                </Anchor>
-              )
-            },
-            {
-              accessor: "rootID",
-              title: t`Root`,
-              width: 300,
-              render: (item) => (
-                <Stack>
-                  <div>
-                    <Code fz="xs">{item.rootID}</Code>
-                  </div>
+                <Stack gap={2}>
+                  <Tooltip label={`${t`Root`}: ${item.rootID}`}>
+                    <Anchor
+                      component={Link}
+                      to={`/snapshots/dir/${item.rootID}`}
+                      state={{ label: searchParams.get("path") }}
+                      td="none"
+                      fz="sm"
+                    >
+                      <FormattedDate value={item.startTime} />
+                    </Anchor>
+                  </Tooltip>
                   {item.description && (
                     <Tooltip label={item.description}>
-                      <Text truncate fz="xs">
+                      <Text truncate fz="xs" c="dimmed" maw={280}>
                         {item.description}
                       </Text>
                     </Tooltip>
@@ -222,6 +217,25 @@ function SnapshotHistory() {
               sortable: true,
               textAlign: "center",
               render: (item) => sizeDisplayName(item.summary.size, bytesStringBase2)
+            },
+            {
+              accessor: "change",
+              title: t`Change`,
+              textAlign: "right",
+              render: (item) => {
+                const change = sizeChanges.get(item.id);
+                if (change === undefined) return null;
+                return (
+                  <Text
+                    ff="monospace"
+                    fz="sm"
+                    style={{ whiteSpace: "nowrap" }}
+                    c={change > 0 ? "green.6" : change < 0 ? "red.6" : "dimmed"}
+                  >
+                    {signedSizeDisplayName(change, bytesStringBase2)}
+                  </Text>
+                );
+              }
             },
             {
               accessor: "summary.files",

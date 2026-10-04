@@ -120,7 +120,7 @@ msgstr "Aktiv"
 msgid "Add"
 msgstr "Legg til"
 
-#: src/snapshot-history/SnapshotHistory.tsx:281
+#: src/snapshot-history/SnapshotHistory.tsx:295
 msgid "Add pin to prevent snapshot deletion"
 msgstr "Legg til nål for å forhindre sletting av øyeblikksbilde"
 
@@ -279,6 +279,10 @@ msgstr "Kansellert etter"
 msgid "Canceling for"
 msgstr "Avbryter for"
 
+#: src/snapshot-history/SnapshotHistory.tsx:223
+msgid "Change"
+msgstr ""
+
 #: src/snapshots/modals/NewSnapshotModal.tsx:122
 msgid "Change policy parameters"
 msgstr "Endre policy parametere"
@@ -314,8 +318,8 @@ msgstr "Kommandomodus – Før"
 msgid "Compare snapshots"
 msgstr ""
 
-#: src/snapshot-history/SnapshotHistory.tsx:246
-#: src/snapshot-history/SnapshotHistory.tsx:250
+#: src/snapshot-history/SnapshotHistory.tsx:260
+#: src/snapshot-history/SnapshotHistory.tsx:264
 msgid "Compare with previous snapshot"
 msgstr ""
 
@@ -495,7 +499,7 @@ msgstr "Slett"
 msgid "Delete policy"
 msgstr "Slett strategi"
 
-#: src/snapshot-history/SnapshotHistory.tsx:116
+#: src/snapshot-history/SnapshotHistory.tsx:120
 msgid "Delete Selected"
 msgstr "Slett valgte"
 
@@ -543,7 +547,7 @@ msgid "Directory to create policy for"
 msgstr "Mappe som strategi skal opprettes for"
 
 #: src/snapshot-directory/SnapshotDirectory.tsx:235
-#: src/snapshot-history/SnapshotHistory.tsx:234
+#: src/snapshot-history/SnapshotHistory.tsx:248
 msgid "Dirs"
 msgstr "Mapper"
 
@@ -853,7 +857,7 @@ msgstr "Fil øyeblikksbilde"
 #: src/policies/modals/PolicyModal/PolicyModal.tsx:206
 #: src/snapshot-directory/SnapshotDirectory.tsx:229
 #: src/snapshot-history/components/SnapshotHistoryStats.tsx:101
-#: src/snapshot-history/SnapshotHistory.tsx:228
+#: src/snapshot-history/SnapshotHistory.tsx:242
 msgid "Files"
 msgstr "Filer"
 
@@ -1375,7 +1379,7 @@ msgstr ""
 msgid "No snapshots mounted"
 msgstr "Ingen øyeblikksbilder montert"
 
-#: src/snapshot-history/SnapshotHistory.tsx:147
+#: src/snapshot-history/SnapshotHistory.tsx:151
 msgid "No snapshots taken"
 msgstr "Ingen øyeblikksbilder tatt"
 
@@ -1638,7 +1642,7 @@ msgstr "Oppføringer per side"
 
 #: src/policies/PoliciesPage.tsx:172
 #: src/snapshot-directory/SnapshotDirectory.tsx:147
-#: src/snapshot-history/SnapshotHistory.tsx:124
+#: src/snapshot-history/SnapshotHistory.tsx:128
 #: src/snapshot-mounts/SnapshotMountsPage.tsx:59
 #: src/snapshots/SnapshotsPage.tsx:182
 #: src/tasks/TasksPage.tsx:172
@@ -1707,7 +1711,7 @@ msgstr "Gjenopprett filer og mapper"
 msgid "Results are partial — counts cover what was read."
 msgstr ""
 
-#: src/snapshot-history/SnapshotHistory.tsx:191
+#: src/snapshot-history/SnapshotHistory.tsx:186
 msgid "Retention"
 msgstr "Bevaring"
 
@@ -1715,7 +1719,7 @@ msgstr "Bevaring"
 msgid "Retry"
 msgstr ""
 
-#: src/snapshot-history/SnapshotHistory.tsx:172
+#: src/snapshot-history/SnapshotHistory.tsx:163
 msgid "Root"
 msgstr "Root"
 
@@ -1877,7 +1881,7 @@ msgstr ""
 
 #: src/snapshot-directory/SnapshotDirectory.tsx:221
 #: src/snapshot-history/components/SnapshotHistoryStats.tsx:91
-#: src/snapshot-history/SnapshotHistory.tsx:221
+#: src/snapshot-history/SnapshotHistory.tsx:216
 #: src/snapshots/SnapshotsPage.tsx:248
 msgid "Size"
 msgstr "Størrelse"
@@ -1955,14 +1959,14 @@ msgstr "Øyeblikksbilde-planer ved bruk av UNIX crontab-syntaks:"
 msgid "Snapshot unmounted"
 msgstr "Øyeblikksbilde demontert"
 
-#: src/snapshot-history/SnapshotHistory.tsx:329
+#: src/snapshot-history/SnapshotHistory.tsx:343
 msgid "Snapshot(s) deleted"
 msgstr "Øyeblikksbilde(r) slettet"
 
 #: src/core/Header/Header.tsx:60
 #: src/core/Header/Header.tsx:66
 #: src/snapshot-history/components/SnapshotHistoryStats.tsx:83
-#: src/snapshot-history/SnapshotHistory.tsx:103
+#: src/snapshot-history/SnapshotHistory.tsx:107
 #: src/snapshots/SnapshotsPage.tsx:136
 msgid "Snapshots"
 msgstr "Øyeblikksbilder"
@@ -2009,7 +2013,7 @@ msgstr "SSH Kommando"
 msgid "SSH host name (e.g., example.com)"
 msgstr "SSH-vertsnavn (f.eks. example.com)"
 
-#: src/snapshot-history/SnapshotHistory.tsx:155
+#: src/snapshot-history/SnapshotHistory.tsx:159
 #: src/tasks/TasksPage.tsx:194
 msgid "Start Time"
 msgstr "Start tid"
@@ -2077,7 +2081,7 @@ msgstr "Oppbevaringsstedet ble synkronisert"
 msgid "The selected snapshots are identical — nothing was added, removed or modified."
 msgstr ""
 
-#: src/snapshot-history/SnapshotHistory.tsx:330
+#: src/snapshot-history/SnapshotHistory.tsx:344
 msgid "The snapshot(s) was delete successfully"
 msgstr "øyeblikksbilde(ne) ble slettet"
 
@@ -2190,7 +2194,7 @@ msgid "Update"
 msgstr "Oppdater"
 
 #: src/snapshot-history/modals/UpdateDescriptionModal.tsx:50
-#: src/snapshot-history/SnapshotHistory.tsx:267
+#: src/snapshot-history/SnapshotHistory.tsx:281
 msgid "Update description"
 msgstr "Oppdater beskrivelse"
 
