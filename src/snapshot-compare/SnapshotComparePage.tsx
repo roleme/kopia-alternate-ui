@@ -579,21 +579,16 @@ function SnapshotComparePage() {
   return (
     <Container fluid>
       <Stack>
-        <Group gap="sm" wrap="nowrap">
+        <Group>
           <ActionIcon variant="subtle" onClick={() => navigate(-1)}>
             <IconArrowLeft size={24} />
           </ActionIcon>
-          <Title order={1}>{t`Compare snapshots`}</Title>
-          <Text
-            c="dimmed"
-            ff="monospace"
-            fz="sm"
-            truncate="end"
-            style={{ flex: 1, minWidth: 0, paddingTop: 6 }}
-            title={sourceInfo.path}
-          >
-            {sourceInfo.path}
-          </Text>
+          <Stack gap={0}>
+            <Title order={1}>{t`Compare snapshots`}</Title>
+            <Text size="sm" c="dimmed">
+              {sourceInfo.path}
+            </Text>
+          </Stack>
         </Group>
 
         {(snapshotA || snapshotB) && (
