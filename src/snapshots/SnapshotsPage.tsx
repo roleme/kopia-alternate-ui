@@ -4,6 +4,7 @@ import {
   ActionIcon,
   Anchor,
   Badge,
+  Box,
   Button,
   Container,
   Divider,
@@ -18,7 +19,6 @@ import { showNotification } from "@mantine/notifications";
 import {
   IconCircleCheck,
   IconClick,
-  IconClockExclamation,
   IconFileCertificate,
   IconFileDatabase,
   IconFolderOpen,
@@ -27,7 +27,7 @@ import {
 } from "@tabler/icons-react";
 import sortBy from "lodash.sortby";
 import type { DataTableSortStatus } from "mantine-datatable";
-import { useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router";
 import { newActionProps, refreshButtonProps } from "../core/commonButtons";
 import { useAppContext } from "../core/context/AppContext";
@@ -42,15 +42,14 @@ import RelativeDate from "../core/RelativeDate";
 import type { SourceInfo, SourceStatus, Sources } from "../core/types";
 import { formatOwnerName } from "../utils/formatOwnerName";
 import sizeDisplayName from "../utils/formatSize";
-import { isPastDateTime } from "../utils/isPasteDateTime";
 import { onlyUnique } from "../utils/onlyUnique";
-import UploadingLoader from "./components/UploadingLoader";
+import SourceStatusCell, { EmptyCell } from "./components/SourceStatusCell";
 import NewSnapshotModal from "./modals/NewSnapshotModal";
 
 function SnapshotsPage() {
   const { kopiaService } = useServerInstanceContext();
   const [show, setShow] = useDisclosure();
-  const { pageSize: tablePageSize, bytesStringBase2, locale } = useAppContext();
+  const { pageSize: tablePageSize, bytesStringBase2 } = useAppContext();
   const [data, setData] = useState<Sources>();
   const [filterState, setFilterState] = useState<"all" | "local" | string>("all");
   const [sortStatus, setSortStatus] = useState<DataTableSortStatus<SourceStatus>>({
@@ -209,8 +208,10 @@ function SnapshotsPage() {
               title: <Trans>Path</Trans>,
               sortable: true,
               render: (item) => (
-                <Group gap="5">
-                  <IconWrapper icon={IconFolderOpen} color="yellow" size={18} />
+                <Group gap="5" wrap="nowrap" align="flex-start">
+                  <Box style={{ flexShrink: 0, display: "flex" }}>
+                    <IconWrapper icon={IconFolderOpen} color="yellow" size={18} />
+                  </Box>
                   <Anchor
                     component={Link}
                     to={{
@@ -219,8 +220,18 @@ function SnapshotsPage() {
                     }}
                     td="none"
                     fz="sm"
+                    style={{ overflowWrap: "break-word", minWidth: 0 }}
                   >
-                    {item.source.path}
+                    {item.source.path.split("/").map((segment, index, all) => (
+                      <Fragment key={all.slice(0, index + 1).join("/")}>
+                        {segment}
+                        {index < all.length - 1 && (
+                          <>
+                            /<wbr />
+                          </>
+                        )}
+                      </Fragment>
+                    ))}
                   </Anchor>
                 </Group>
               )
@@ -247,40 +258,23 @@ function SnapshotsPage() {
               sortable: true,
               title: <Trans>Size</Trans>,
               visibleMediaQuery: (theme) => `(min-width: ${theme.breakpoints.md})`,
-              render: (item) =>
-                item.lastSnapshot?.rootEntry?.summ?.size &&
-                sizeDisplayName(item.lastSnapshot.rootEntry.summ.size, bytesStringBase2)
+              render: (item) => {
+                const size = item.lastSnapshot?.rootEntry?.summ?.size;
+                return size === undefined ? <EmptyCell /> : sizeDisplayName(size, bytesStringBase2);
+              }
             },
             {
               accessor: "lastSnapshot.startTime",
               sortable: true,
               title: <Trans>Last Snapshot</Trans>,
-              render: (item) => item.lastSnapshot && <RelativeDate value={item.lastSnapshot.startTime} />
+              visibleMediaQuery: (theme) => `(min-width: ${theme.breakpoints.sm})`,
+              render: (item) =>
+                item.lastSnapshot ? <RelativeDate value={item.lastSnapshot.startTime} /> : <EmptyCell />
             },
             {
-              accessor: "nextSnapshotTime",
-              title: <Trans>Next snapshot</Trans>,
-              render: (item) => {
-                if (!item.nextSnapshotTime) return undefined;
-
-                return (
-                  <Group>
-                    <Text fz="sm">{item.nextSnapshotTime && <RelativeDate value={item.nextSnapshotTime} />}</Text>
-                    {isPastDateTime(item.nextSnapshotTime, locale) && (
-                      <Badge
-                        color="yellow"
-                        variant="light"
-                        radius={3}
-                        size="sm"
-                        tt="none"
-                        leftSection={<IconClockExclamation size={12} />}
-                      >
-                        <Trans>Overdue</Trans>
-                      </Badge>
-                    )}
-                  </Group>
-                );
-              }
+              accessor: "status",
+              title: <Trans>Status</Trans>,
+              render: (item) => <SourceStatusCell source={item} bytesStringBase2={bytesStringBase2} />
             },
             {
               accessor: "",
@@ -324,20 +318,8 @@ function SnapshotsPage() {
                       </Group>
                     );
                   }
-                  case "PENDING":
-                    return (
-                      <Group gap={5}>
-                        <IconWrapper icon={IconClockExclamation} color="yellow" />
-                        <Text fz="xs" c="yellow">
-                          <Trans>Pending</Trans>
-                        </Text>
-                      </Group>
-                    );
-                  case "UPLOADING": {
-                    return <UploadingLoader data={item.upload} bytesStringBase2={bytesStringBase2} />;
-                  }
                   default:
-                    return item.status;
+                    return null;
                 }
               }
             }

@@ -1,4 +1,5 @@
 import type { SourceStatus } from "../core/types";
+import sizeDisplayName from "../utils/formatSize";
 
 export type SourceStatusView =
   | { kind: "running"; percent?: number; doneBytes?: number; totalBytes?: number }
@@ -29,7 +30,7 @@ function runningView(source: SourceStatus): SourceStatusView {
   const upload = source.upload;
   if (!upload?.estimatedBytes || upload.estimatedBytes <= 0) return { kind: "running" };
   const doneBytes = (upload.hashedBytes ?? 0) + (upload.cachedBytes ?? 0);
-  const percent = Math.min(100, Math.max(0, Math.round((doneBytes * 100) / upload.estimatedBytes)));
+  const percent = Math.min(100, Math.max(0, Math.floor((doneBytes * 100) / upload.estimatedBytes)));
   return { kind: "running", percent, doneBytes, totalBytes: upload.estimatedBytes };
 }
 
@@ -63,4 +64,13 @@ export function getSourceStatusView(source: SourceStatus, now: Date | number = D
   if (lateMs > scheduleIntervalSeconds(source.schedule) * 1000) return { kind: "overdue", dueAt: next };
   if (lateMs > 0) return { kind: "due", dueAt: next };
   return source.lastSnapshot ? { kind: "scheduled", at: next } : { kind: "firstRun", at: next };
+}
+
+export function formatByteProgress(doneBytes: number, totalBytes: number, bytesStringBase2: boolean): string {
+  const done = sizeDisplayName(doneBytes, bytesStringBase2);
+  const total = sizeDisplayName(totalBytes, bytesStringBase2);
+  const doneUnit = done.slice(done.indexOf(" ") + 1);
+  const totalUnit = total.slice(total.indexOf(" ") + 1);
+  if (doneUnit === totalUnit) return `${done.slice(0, done.indexOf(" "))}/${total}`;
+  return `${done}/${total}`;
 }

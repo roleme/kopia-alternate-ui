@@ -1,6 +1,11 @@
 import { describe, expect, it } from "vitest";
 import type { SourceStatus } from "../../src/core/types";
-import { getSourceStatusView, scheduleIntervalSeconds, sourceErrorCount } from "../../src/snapshots/sourceStatus";
+import {
+  formatByteProgress,
+  getSourceStatusView,
+  scheduleIntervalSeconds,
+  sourceErrorCount
+} from "../../src/snapshots/sourceStatus";
 
 const NOW = new Date("2026-10-04T12:00:00Z").getTime();
 const HOUR = 3600 * 1000;
@@ -64,6 +69,9 @@ describe("getSourceStatusView", () => {
   it("shows percent and byte counts for a running source", () => {
     const view = getSourceStatusView(make({ status: "UPLOADING", upload: upload(200, 680, 1000) }), NOW);
     expect(view).toEqual({ kind: "running", percent: 88, doneBytes: 880, totalBytes: 1000 });
+    expect(getSourceStatusView(make({ status: "UPLOADING", upload: upload(0, 999, 1000) }), NOW)).toMatchObject({
+      percent: 99
+    });
   });
 
   it("falls back to plain running without upload counters", () => {
@@ -225,5 +233,15 @@ describe("sourceErrorCount", () => {
   });
   it("prefers the stats error count", () => {
     expect(sourceErrorCount(make({ lastSnapshot: lastSnapshot(4, 9) }))).toBe(4);
+  });
+});
+
+describe("formatByteProgress", () => {
+  it("shares the unit when both sides use it", () => {
+    expect(formatByteProgress(16.3e9, 18.4e9, false)).toBe("16.3/18.4 GB");
+    expect(formatByteProgress(16.3 * 1024 ** 3, 18.4 * 1024 ** 3, true)).toBe("16.3/18.4 GiB");
+  });
+  it("keeps both units when they differ", () => {
+    expect(formatByteProgress(800e6, 1.2e9, false)).toBe("800 MB/1.2 GB");
   });
 });

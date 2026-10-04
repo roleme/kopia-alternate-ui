@@ -13,6 +13,11 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#. placeholder {0}: view.count
+#: src/snapshots/components/SourceStatusCell.tsx:58
+msgid "{0, plural, one {# error} other {# errors}}"
+msgstr ""
+
 #. placeholder {0}: node.oneSided.files
 #. placeholder {1}: node.oneSided.dirs
 #: src/snapshot-compare/SnapshotComparePage.tsx:642
@@ -74,23 +79,23 @@ msgstr ""
 msgid "1 folder could not be read"
 msgstr ""
 
-#: src/snapshots/SnapshotsPage.tsx:147
+#: src/snapshots/SnapshotsPage.tsx:146
 msgid "1 minute"
 msgstr "1 minutt"
 
-#: src/snapshots/SnapshotsPage.tsx:145
+#: src/snapshots/SnapshotsPage.tsx:144
 msgid "10 seconds"
 msgstr "10 sekunder"
 
-#: src/snapshots/SnapshotsPage.tsx:144
+#: src/snapshots/SnapshotsPage.tsx:143
 msgid "3 seconds"
 msgstr "3 sekunder"
 
-#: src/snapshots/SnapshotsPage.tsx:146
+#: src/snapshots/SnapshotsPage.tsx:145
 msgid "30 seconds"
 msgstr "30 sekunder"
 
-#: src/snapshots/SnapshotsPage.tsx:148
+#: src/snapshots/SnapshotsPage.tsx:147
 msgid "5 minutes"
 msgstr "5 minutt"
 
@@ -156,7 +161,7 @@ msgstr "Alle"
 msgid "All Policies"
 msgstr "Alle strategier"
 
-#: src/snapshots/SnapshotsPage.tsx:156
+#: src/snapshots/SnapshotsPage.tsx:155
 msgid "All Snapshots"
 msgstr "Alle øyeblikksbilder"
 
@@ -571,7 +576,7 @@ msgstr "Deaktiver ZIP kompresjon"
 
 #: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:158
 #: src/repo/CreateRepoSection.tsx:182
-#: src/snapshots/SnapshotsPage.tsx:143
+#: src/snapshots/SnapshotsPage.tsx:142
 msgid "Disabled"
 msgstr "Deaktivert"
 
@@ -617,6 +622,10 @@ msgstr "Do you want to delete the selected snapshot?"
 #: src/snapshot-directory/SnapshotDirectory.tsx:245
 msgid "Download"
 msgstr "Last ned"
+
+#: src/snapshots/components/SourceStatusCell.tsx:72
+msgid "Due <0/>"
+msgstr ""
 
 #: src/tasks/TaskDetailsPage.tsx:87
 msgid "Duration"
@@ -889,6 +898,10 @@ msgstr "Fullført"
 msgid "Finished in"
 msgstr "Fullført på"
 
+#: src/snapshots/components/SourceStatusCell.tsx:86
+msgid "First run <0/>"
+msgstr ""
+
 #: src/policies/modals/PolicyModal/PolicyModal.tsx:230
 msgid "Folder Actions"
 msgstr "Mappehandlinger"
@@ -1078,7 +1091,7 @@ msgstr "Kopa Repository Server"
 msgid "Last Modification"
 msgstr "Sist Endret"
 
-#: src/snapshots/SnapshotsPage.tsx:257
+#: src/snapshots/SnapshotsPage.tsx:269
 msgid "Last Snapshot"
 msgstr "Siste øyeblikksbilde"
 
@@ -1130,7 +1143,7 @@ msgstr "Lokal katalog eller NAS"
 msgid "Local Path Policies"
 msgstr "Lokale sti strategier"
 
-#: src/snapshots/SnapshotsPage.tsx:157
+#: src/snapshots/SnapshotsPage.tsx:156
 msgid "Local Snapshots"
 msgstr "Lokale øyeblikksbilder"
 
@@ -1201,6 +1214,10 @@ msgstr "Administrer strategier for øyeblikksbilder"
 #: src/core/Header/Header.tsx:69
 msgid "Manage snapshots"
 msgstr "Administrer øyeblikksbilder"
+
+#: src/snapshots/components/SourceStatusCell.tsx:52
+msgid "Manual"
+msgstr ""
 
 #: src/policies/modals/PolicyModal/constants.ts:140
 #: src/policies/modals/PolicyModal/tabs/SchedulingTab.tsx:109
@@ -1328,17 +1345,13 @@ msgid "New snapshot"
 msgstr "Ta nytt øyeblikksbilde"
 
 #: src/snapshots/components/NewSnapshotButton.tsx:33
-#: src/snapshots/SnapshotsPage.tsx:175
+#: src/snapshots/SnapshotsPage.tsx:174
 msgid "New Snapshot"
 msgstr "Nytt øyeblikksbilde"
 
 #: src/repo/ConfigureRepoSection.tsx:306
 msgid "Next"
 msgstr "Neste"
-
-#: src/snapshots/SnapshotsPage.tsx:262
-msgid "Next snapshot"
-msgstr "Neste øyeblikksbilde"
 
 #: src/policies/modals/PolicyModal/components/InheritYesNoPolicyControl.tsx:60
 #: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:172
@@ -1462,9 +1475,9 @@ msgstr "Åpne i stort vindu"
 msgid "Other"
 msgstr "Annet"
 
-#: src/snapshots/SnapshotsPage.tsx:278
-msgid "Overdue"
-msgstr "Forfalt"
+#: src/snapshots/components/SourceStatusCell.tsx:64
+msgid "Overdue - due <0/>"
+msgstr ""
 
 #: src/repo/sections/AmazonS3Repo.tsx:43
 #: src/repo/sections/AmazonS3Repo.tsx:96
@@ -1493,7 +1506,7 @@ msgstr "Overskriv filer"
 msgid "Overwrite Symbolic Links"
 msgstr "Overskriv symbolske lenker"
 
-#: src/snapshots/SnapshotsPage.tsx:230
+#: src/snapshots/SnapshotsPage.tsx:241
 msgid "Owner"
 msgstr "Eier"
 
@@ -1538,7 +1551,7 @@ msgstr "Lim inn JSON-legitimasjon her"
 #: src/policies/PoliciesPage.tsx:198
 #: src/repo/sections/SFTPServerRepo.tsx:55
 #: src/repo/sections/SFTPServerRepo.tsx:189
-#: src/snapshots/SnapshotsPage.tsx:209
+#: src/snapshots/SnapshotsPage.tsx:208
 msgid "Path"
 msgstr "Sti"
 
@@ -1556,9 +1569,9 @@ msgstr "Sti til known_hosts-filen"
 msgid "Path to snapshot"
 msgstr "Sti til øyeblikksbilde"
 
-#: src/snapshots/SnapshotsPage.tsx:332
-msgid "Pending"
-msgstr "Venter"
+#: src/snapshots/components/SourceStatusCell.tsx:46
+msgid "Paused"
+msgstr ""
 
 #: src/policies/PoliciesPage.tsx:147
 msgid "Per-Host Policies"
@@ -1617,6 +1630,10 @@ msgstr "Pushover"
 msgid "Pushover App Token"
 msgstr "Pushover App Token"
 
+#: src/snapshots/components/SourceStatusCell.tsx:40
+msgid "Queued"
+msgstr ""
+
 #: src/repo/sections/RcloneRepo.tsx:27
 #: src/repo/sections/RcloneRepo.tsx:53
 msgid "Rclone Executable Path"
@@ -1651,12 +1668,12 @@ msgstr "Oppføringer per side"
 #: src/snapshot-directory/SnapshotDirectory.tsx:147
 #: src/snapshot-history/SnapshotHistory.tsx:128
 #: src/snapshot-mounts/SnapshotMountsPage.tsx:59
-#: src/snapshots/SnapshotsPage.tsx:182
+#: src/snapshots/SnapshotsPage.tsx:181
 #: src/tasks/TasksPage.tsx:172
 msgid "Refresh"
 msgstr "Oppdater"
 
-#: src/snapshots/SnapshotsPage.tsx:238
+#: src/snapshots/SnapshotsPage.tsx:249
 msgid "Remote"
 msgstr "Ekstern"
 
@@ -1695,7 +1712,7 @@ msgstr "Oppbevaringssted er koblet til i lesemodus"
 msgid "Repository Password"
 msgstr "Oppbevaringssted Passord"
 
-#: src/snapshots/SnapshotsPage.tsx:123
+#: src/snapshots/SnapshotsPage.tsx:122
 msgid "Repository synchronized"
 msgstr "Oppbevaringssted synkronisert"
 
@@ -1747,6 +1764,7 @@ msgstr "Kjør asynkront, ignorer feil"
 msgid "Run Missed Snapshots on Startup"
 msgstr "Kjør tapte øyeblikksbilder ved oppstart"
 
+#: src/snapshots/components/SourceStatusCell.tsx:24
 #: src/tasks/TasksPage.tsx:123
 msgid "Running"
 msgstr "Kjørende"
@@ -1895,7 +1913,7 @@ msgstr ""
 #: src/snapshot-directory/SnapshotDirectory.tsx:221
 #: src/snapshot-history/components/SnapshotHistoryStats.tsx:91
 #: src/snapshot-history/SnapshotHistory.tsx:216
-#: src/snapshots/SnapshotsPage.tsx:248
+#: src/snapshots/SnapshotsPage.tsx:259
 msgid "Size"
 msgstr "Størrelse"
 
@@ -1956,7 +1974,7 @@ msgstr "Øyeblikksbilde er montert under følgende sti"
 msgid "Snapshot now"
 msgstr "Ta øyeblikksbilde"
 
-#: src/snapshots/SnapshotsPage.tsx:299
+#: src/snapshots/SnapshotsPage.tsx:293
 msgid "Snapshot Now"
 msgstr "Øyeblikksbilde nå"
 
@@ -1980,7 +1998,7 @@ msgstr "Øyeblikksbilde(r) slettet"
 #: src/core/Header/Header.tsx:66
 #: src/snapshot-history/components/SnapshotHistoryStats.tsx:83
 #: src/snapshot-history/SnapshotHistory.tsx:107
-#: src/snapshots/SnapshotsPage.tsx:136
+#: src/snapshots/SnapshotsPage.tsx:135
 msgid "Snapshots"
 msgstr "Øyeblikksbilder"
 
@@ -2036,6 +2054,7 @@ msgid "Started"
 msgstr "Staret"
 
 #: src/core/Header/Header.tsx:87
+#: src/snapshots/SnapshotsPage.tsx:276
 #: src/tasks/TasksPage.tsx:203
 msgid "Status"
 msgstr "Status"
@@ -2057,7 +2076,7 @@ msgstr "Server byttet"
 msgid "Symlinks"
 msgstr "Symlinks"
 
-#: src/snapshots/SnapshotsPage.tsx:191
+#: src/snapshots/SnapshotsPage.tsx:190
 msgid "Sync"
 msgstr "Synk"
 
@@ -2086,7 +2105,7 @@ msgstr "Beskrivelsen av oppbevaringsstedet ble oppdatert"
 msgid "The repository was successfully disconnected"
 msgstr "Oppbevaringsstedet ble koblet fra"
 
-#: src/snapshots/SnapshotsPage.tsx:124
+#: src/snapshots/SnapshotsPage.tsx:123
 msgid "The repository was synchronized successfully"
 msgstr "Oppbevaringsstedet ble synkronisert"
 
@@ -2272,7 +2291,7 @@ msgstr ""
 msgid "Verbose"
 msgstr ""
 
-#: src/snapshots/SnapshotsPage.tsx:311
+#: src/snapshots/SnapshotsPage.tsx:305
 msgid "View Policy"
 msgstr "Vis policy"
 
