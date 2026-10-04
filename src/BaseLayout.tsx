@@ -7,8 +7,9 @@ import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { AppContextProvider } from "./core/context/AppContext";
 import { ServerInstanceContextProvider } from "./core/context/ServerInstanceContext";
-import { Footer } from "./core/Footer/Footer";
-import { Header } from "./core/Header/Header";
+import { MobileHeader } from "./core/Sidebar/MobileHeader";
+import { SHELL_PROPS } from "./core/Sidebar/shellLayout";
+import { Sidebar } from "./core/Sidebar/Sidebar";
 import { dynamicActivate } from "./i18n";
 
 function BaseLayout() {
@@ -27,12 +28,12 @@ function BaseLayout() {
           <ServerInstanceContextProvider>
             <AppContextProvider>
               <Notifications position="top-right" />
-              <AppShell padding="md" header={{ height: 60 }} footer={{ height: 40 }}>
-                <Header />
+              <AppShell {...SHELL_PROPS}>
+                <MobileHeader />
+                <Sidebar />
                 <AppShell.Main>
                   <Outlet />
                 </AppShell.Main>
-                <Footer />
               </AppShell>
             </AppContextProvider>
           </ServerInstanceContextProvider>
