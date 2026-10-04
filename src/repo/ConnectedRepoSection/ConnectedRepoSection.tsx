@@ -11,9 +11,8 @@ import {
   SimpleGrid,
   Stack,
   Text,
-  TextInput
+  Title
 } from "@mantine/core";
-import { useField } from "@mantine/form";
 import { modals } from "@mantine/modals";
 import { showNotification } from "@mantine/notifications";
 import { IconCircleCheck, IconEditOff } from "@tabler/icons-react";
@@ -32,6 +31,7 @@ import { RcloneRepoHeader } from "../sections/RcloneRepo";
 import { SFTPServerRepoHeader } from "../sections/SFTPServerRepo";
 import { WebDavRepoHeader } from "../sections/WebDavRepo";
 import classes from "./ConnectedRepoSection.module.css";
+import RepoDescription from "./RepoDescription";
 
 const headers: Record<string, React.ReactNode> = {
   filesystem: <FileSystemRepoHeader />,
@@ -62,23 +62,6 @@ function ConnectedRepoSection() {
       reloadStatus();
     }
   });
-  const updateDescriptionAction = useApiRequest({
-    action: (data?: string) => kopiaService.updateRepoDescription(data!),
-    onReturn() {
-      showNotification({
-        title: t`Description updated`,
-        message: t`The repository description was successfully updated`,
-        color: "green",
-        icon: <IconCircleCheck size={16} />
-      });
-      reloadStatus();
-    }
-  });
-  const field = useField({
-    initialValue: repoStatus.description || "",
-    validateOnBlur: true,
-    validate: (value) => (value.trim().length < 2 ? "Value is too short" : null)
-  });
 
   const openDisconnectConfirmation = () =>
     modals.openConfirmModal({
@@ -95,6 +78,9 @@ function ConnectedRepoSection() {
     });
   return (
     <Container>
+      <Title order={1} mb="md">
+        <Trans>Repository</Trans>
+      </Title>
       <Card withBorder radius="xs" className={classes.connectedRepoSection}>
         <CardSection withBorder inheritPadding py="xs">
           <Group justify="space-between">
@@ -112,23 +98,7 @@ function ConnectedRepoSection() {
         </CardSection>
         <CardSection p="xs">
           <Stack>
-            <Group align="flex-end">
-              <TextInput
-                flex={1}
-                label={t`Description`}
-                disabled={updateDescriptionAction.loading || disconnectRepoAction.loading}
-                {...field.getInputProps()}
-              />
-              <Button
-                disabled={
-                  field.getValue() === "" || disconnectRepoAction.loading || field.getValue() === repoStatus.description
-                }
-                onClick={() => updateDescriptionAction.execute(field.getValue())}
-                loading={updateDescriptionAction.loading}
-              >
-                <Trans>Update</Trans>
-              </Button>
-            </Group>
+            <RepoDescription />
             <Divider />
             {repoStatus.readonly && (
               <Alert color="orange">

@@ -181,7 +181,7 @@ msgstr "Gjeldende strategier"
 msgid "Are you sure you want to delete this policy?"
 msgstr "Er du sikker på at du vil slette denne strategien?"
 
-#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:88
+#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:71
 msgid "Are you sure you want to disconnect from this repository?"
 msgstr "Er du sikkert på at du vil koble fra oppbevaringsstedet?"
 
@@ -254,7 +254,8 @@ msgstr "Hurtigbufferbom"
 #: src/preferences/modals/EmailModal.tsx:300
 #: src/preferences/modals/PushoverModal.tsx:152
 #: src/preferences/modals/WebhookModal.tsx:228
-#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:91
+#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:74
+#: src/repo/ConnectedRepoSection/RepoDescription.tsx:83
 #: src/snapshot-directory/modals/RestoreModal.tsx:275
 #: src/snapshot-history/modals/DeleteSnapshotModal.tsx:78
 #: src/snapshot-history/modals/PinSnapshotModal.tsx:83
@@ -332,7 +333,7 @@ msgstr "Kompresjon"
 msgid "Compression Algorithm"
 msgstr "Kompresjonsalgoritme"
 
-#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:146
+#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:116
 msgid "Config file"
 msgstr "Konfigurasjonsfil"
 
@@ -376,7 +377,7 @@ msgstr "Koble til i lese-modus"
 msgid "Connect to repository"
 msgstr "Koble til oppbevaringsstedet"
 
-#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:206
+#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:176
 msgid "Connected as"
 msgstr "Koblet til som"
 
@@ -507,13 +508,13 @@ msgstr "Slett valgte"
 msgid "Deprecated"
 msgstr "Utdatert"
 
-#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:118
+#: src/repo/ConnectedRepoSection/RepoDescription.tsx:61
 #: src/snapshot-history/modals/UpdateDescriptionModal.tsx:62
 #: src/tasks/TasksPage.tsx:213
 msgid "Description"
 msgstr "Beskrivelse"
 
-#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:69
+#: src/repo/ConnectedRepoSection/RepoDescription.tsx:24
 msgid "Description updated"
 msgstr "Beskrivelse oppdatert"
 
@@ -563,18 +564,18 @@ msgstr "Deaktiver overordnet strategi evaluering"
 msgid "Disable ZIP compression"
 msgstr "Deaktiver ZIP kompresjon"
 
-#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:188
+#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:158
 #: src/repo/CreateRepoSection.tsx:182
 #: src/snapshots/SnapshotsPage.tsx:143
 msgid "Disabled"
 msgstr "Deaktivert"
 
-#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:91
-#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:109
+#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:74
+#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:95
 msgid "Disconnect"
 msgstr "Koble fra"
 
-#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:85
+#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:68
 msgid "Disconnect repository?"
 msgstr "Koble fra oppbevaringsstedet?"
 
@@ -625,6 +626,11 @@ msgstr "Varighet"
 msgid "Edit"
 msgstr "Rediger"
 
+#: src/repo/ConnectedRepoSection/RepoDescription.tsx:94
+#: src/repo/ConnectedRepoSection/RepoDescription.tsx:95
+msgid "Edit description"
+msgstr ""
+
 #: src/preferences/modals/EmailModal.tsx:179
 msgid "Edit email notification"
 msgstr "Rediger e-post notifikasjon"
@@ -671,7 +677,7 @@ msgstr "Aktiver øyeblikksbilde statistikk"
 msgid "Encryption"
 msgstr "Kryptering"
 
-#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:158
+#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:128
 msgid "Encryption Algorithm"
 msgstr "Krypteringsalgoritme"
 
@@ -795,12 +801,12 @@ msgstr "Skriv inn sertifikat fingeravtrykk (printet ut ved serveroppstart)"
 msgid "Entries over time"
 msgstr "Oppføringer over tid"
 
-#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:194
+#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:164
 #: src/repo/CreateRepoSection.tsx:193
 msgid "Error Correction Algorithm"
 msgstr "Feilkorrigeringsalgoritme"
 
-#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:184
+#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:154
 #: src/repo/CreateRepoSection.tsx:180
 msgid "Error Correction Overhead"
 msgstr "Feilretting Overhead"
@@ -902,7 +908,7 @@ msgstr "Global strategi"
 msgid "Google Cloud Storage"
 msgstr "Google Cloud Lagring"
 
-#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:164
+#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:134
 #: src/repo/CreateRepoSection.tsx:149
 msgid "Hash Algorithm"
 msgstr "Hash-algoritme"
@@ -1030,7 +1036,7 @@ msgstr "Kjør eventuelle tapte øyeblikksbilder umiddelbart når kopia starter (
 msgid "Inherit"
 msgstr "Arve"
 
-#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:200
+#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:170
 msgid "Internal Compression"
 msgstr "Intern kompresjon"
 
@@ -1075,7 +1081,7 @@ msgstr "Sist Endret"
 msgid "Last Snapshot"
 msgstr "Siste øyeblikksbilde"
 
-#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:179
+#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:149
 #: src/repo/CreateRepoSection.tsx:167
 msgid "Latest format"
 msgstr "Siste format"
@@ -1094,7 +1100,7 @@ msgstr "Start ekstern passordløs SSH-kommando"
 msgid "Leave empty to remove description"
 msgstr "La stå tomt for å fjerne beskrivelsen"
 
-#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:179
+#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:149
 #: src/repo/CreateRepoSection.tsx:169
 msgid "Legacy format compatible with v0.8"
 msgstr "Eldre format kompatibelt med v0.8"
@@ -1334,7 +1340,7 @@ msgid "Next snapshot"
 msgstr "Neste øyeblikksbilde"
 
 #: src/policies/modals/PolicyModal/components/InheritYesNoPolicyControl.tsx:60
-#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:202
+#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:172
 msgid "No"
 msgstr "Nei"
 
@@ -1598,7 +1604,7 @@ msgstr "Preferanser oppdatert"
 msgid "Prevents any parent policies from affecting this directory and its subdirectories"
 msgstr "Forhindrer at overordnede strategier påvirker denne katalogen og dens underkataloger"
 
-#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:152
+#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:122
 msgid "Provider"
 msgstr "Tilbyder"
 
@@ -1658,6 +1664,7 @@ msgid "removed"
 msgstr ""
 
 #: src/core/Header/Header.tsx:82
+#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:82
 msgid "Repository"
 msgstr "Oppbevaringssted"
 
@@ -1669,12 +1676,12 @@ msgstr "Oppbevaringssted beskrivelse"
 msgid "Repository disconnected"
 msgstr "Oppbevaringssted koblet fra"
 
-#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:176
+#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:146
 #: src/repo/CreateRepoSection.tsx:165
 msgid "Repository Format"
 msgstr "Oppbevaringssted Format"
 
-#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:138
+#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:108
 msgid "Repository is connected as read-only"
 msgstr "Oppbevaringssted er koblet til i lesemodus"
 
@@ -1756,6 +1763,7 @@ msgstr "SAS Token"
 #: src/preferences/modals/EmailModal.tsx:303
 #: src/preferences/modals/PushoverModal.tsx:155
 #: src/preferences/modals/WebhookModal.tsx:231
+#: src/repo/ConnectedRepoSection/RepoDescription.tsx:78
 #: src/snapshot-history/modals/PinSnapshotModal.tsx:92
 #: src/snapshot-history/modals/UpdateDescriptionModal.tsx:75
 msgid "Save"
@@ -1995,7 +2003,7 @@ msgstr "Angi komprimeringsalgoritmen som skal brukes ved øyeblikksbilder av fil
 msgid "Splitter"
 msgstr "Splitter"
 
-#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:170
+#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:140
 msgid "Splitter Algorithm"
 msgstr "Splitteralgoritme"
 
@@ -2065,7 +2073,7 @@ msgstr "Oppgaver"
 msgid "Test notification sent"
 msgstr "Test notifikasjon sendt"
 
-#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:70
+#: src/repo/ConnectedRepoSection/RepoDescription.tsx:25
 msgid "The repository description was successfully updated"
 msgstr "Beskrivelsen av oppbevaringsstedet ble oppdatert"
 
@@ -2189,10 +2197,6 @@ msgstr "Demonter"
 msgid "Upcoming Snapshots"
 msgstr "Kommende Øyeblikksbilder"
 
-#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:129
-msgid "Update"
-msgstr "Oppdater"
-
 #: src/snapshot-history/modals/UpdateDescriptionModal.tsx:50
 #: src/snapshot-history/SnapshotHistory.tsx:281
 msgid "Update description"
@@ -2255,6 +2259,10 @@ msgstr "Brukernavn"
 msgid "Value defined in policy"
 msgstr "Verdi definert i strategi"
 
+#: src/repo/ConnectedRepoSection/RepoDescription.tsx:70
+msgid "Value is too short"
+msgstr ""
+
 #: src/snapshots/SnapshotsPage.tsx:311
 msgid "View Policy"
 msgstr "Vis policy"
@@ -2310,7 +2318,7 @@ msgid "Write Sparse Files"
 msgstr "Skriv sparsomme filer"
 
 #: src/policies/modals/PolicyModal/components/InheritYesNoPolicyControl.tsx:49
-#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:202
+#: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:172
 msgid "Yes"
 msgstr "Ja"
 
