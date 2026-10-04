@@ -1208,19 +1208,19 @@ msgstr ""
 msgid "Mail From"
 msgstr "Avsender"
 
-#: src/core/Header/Header.tsx:76
+#: src/core/Header/Header.tsx:75
 msgid "Manage mounted snapshots"
 msgstr "Administrer monterte øyeblikksbilder"
 
-#: src/core/Header/Header.tsx:89
+#: src/core/Header/Header.tsx:88
 msgid "Manage repository status and configuration"
 msgstr "Administrer status og konfigurasjon på oppbevaringsstedet"
 
-#: src/core/Header/Header.tsx:96
+#: src/core/Header/Header.tsx:95
 msgid "Manage snapshot policies for this repository"
 msgstr "Administrer strategier for øyeblikksbilder"
 
-#: src/core/Header/Header.tsx:69
+#: src/core/Header/Header.tsx:68
 msgid "Manage snapshots"
 msgstr "Administrer øyeblikksbilder"
 
@@ -1313,7 +1313,7 @@ msgstr "Montert på"
 msgid "Mounted Snapshots"
 msgstr "Monterte øyeblikksbilder"
 
-#: src/core/Header/Header.tsx:73
+#: src/core/Header/Header.tsx:72
 msgid "Mounts"
 msgstr "Monteringer"
 
@@ -1608,7 +1608,7 @@ msgstr "Fest Øyeblikksbilde"
 msgid "Plain Text Format"
 msgstr "Vanlig tekstformat"
 
-#: src/core/Header/Header.tsx:93
+#: src/core/Header/Header.tsx:92
 #: src/policies/PoliciesPage.tsx:136
 msgid "Policies"
 msgstr "Strategier"
@@ -1622,7 +1622,7 @@ msgstr "Port"
 msgid "Port number (e.g., 22)"
 msgstr "Port nummer (e.g., 22)"
 
-#: src/core/Header/Header.tsx:101
+#: src/core/Header/Header.tsx:100
 #: src/preferences/PreferencesPage.tsx:13
 msgid "Preferences"
 msgstr "Preferanser"
@@ -1702,7 +1702,7 @@ msgstr ""
 msgid "Report"
 msgstr ""
 
-#: src/core/Header/Header.tsx:82
+#: src/core/Header/Header.tsx:81
 #: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:82
 msgid "Repository"
 msgstr "Oppbevaringssted"
@@ -2011,8 +2011,8 @@ msgstr "Øyeblikksbilde demontert"
 msgid "Snapshot(s) deleted"
 msgstr "Øyeblikksbilde(r) slettet"
 
-#: src/core/Header/Header.tsx:60
-#: src/core/Header/Header.tsx:66
+#: src/core/Header/Header.tsx:59
+#: src/core/Header/Header.tsx:65
 #: src/snapshot-history/components/SnapshotHistoryStats.tsx:83
 #: src/snapshot-history/SnapshotHistory.tsx:107
 #: src/snapshots/SnapshotsPage.tsx:115
@@ -2070,7 +2070,7 @@ msgstr "Start tid"
 msgid "Started"
 msgstr "Staret"
 
-#: src/core/Header/Header.tsx:87
+#: src/core/Header/Header.tsx:86
 #: src/snapshots/SnapshotsPage.tsx:256
 #: src/tasks/TasksPage.tsx:203
 msgid "Status"
@@ -2105,7 +2105,7 @@ msgstr "Oppgave Kansellert"
 msgid "Task ID"
 msgstr "Oppgave ID"
 
-#: src/core/Header/Header.tsx:100
+#: src/core/Header/Header.tsx:99
 #: src/tasks/TasksPage.tsx:99
 msgid "Tasks"
 msgstr "Oppgaver"
