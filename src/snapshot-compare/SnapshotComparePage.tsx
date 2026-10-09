@@ -1,24 +1,22 @@
 import { t } from "@lingui/core/macro";
 import {
-  ActionIcon,
   Alert,
   Anchor,
   Box,
   Button,
+  Chip,
   Code,
   Container,
   Group,
   type MantineColor,
   Paper,
-  Chip,
   Progress,
   Select,
   Stack,
   Text,
-  TextInput,
-  Title
+  TextInput
 } from "@mantine/core";
-import { IconArrowLeft, IconCheck, IconChevronRight, IconExclamationCircle, IconFolderOpen } from "@tabler/icons-react";
+import { IconCheck, IconChevronRight, IconExclamationCircle, IconFolderOpen } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import { type KeyboardEvent, type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router";
@@ -27,20 +25,22 @@ import { useServerInstanceContext } from "../core/context/ServerInstanceContext"
 import { ErrorAlert } from "../core/ErrorAlert/ErrorAlert";
 import useApiRequest from "../core/hooks/useApiRequest";
 import IconWrapper from "../core/IconWrapper";
-import { getFileIcon } from "../snapshot-directory/fileIcons";
+import { PageHeader } from "../core/PageHeader/PageHeader";
+import { PageState } from "../core/PageState/PageState";
 import type { Snapshot, Snapshots, SourceInfo } from "../core/types";
+import { getFileIcon } from "../snapshot-directory/fileIcons";
 import sizeDisplayName from "../utils/formatSize";
-import { walkTrees, type WalkProgress, type WalkResult } from "./compareWalk";
+import { type WalkProgress, type WalkResult, walkTrees } from "./compareWalk";
 import {
   autoExpandIds,
   compareEntries,
+  type DiffNode,
+  type DiffStatus,
   emptyStats,
   entrySize as entrySizeOf,
-  statusCount,
-  type DiffNode,
-  type DiffStatus
+  statusCount
 } from "./diffTree";
-import { compactDiff, diffLines, looksLikeText, sniffsAsText, type DiffLine } from "./lineDiff";
+import { compactDiff, type DiffLine, diffLines, looksLikeText, sniffsAsText } from "./lineDiff";
 
 type Filter = "all" | DiffStatus;
 type SortMode = "delta" | "type" | "path";
@@ -682,20 +682,22 @@ function SnapshotComparePage() {
     );
   };
 
+  const identical =
+    Boolean(paramA && paramB && paramA === paramB) ||
+    Boolean(stats && stats.errors === 0 && stats.delta === 0 && stats.filesTouched === 0 && visibleRoots.length === 0);
+
   return (
     <Container fluid>
       <Stack>
-        <Group>
-          <ActionIcon variant="subtle" onClick={() => navigate(-1)}>
-            <IconArrowLeft size={24} />
-          </ActionIcon>
-          <Stack gap={0}>
-            <Title order={1}>{t`Compare snapshots`}</Title>
+        <PageHeader
+          title={t`Compare snapshots`}
+          subtitle={
             <Text size="sm" c="dimmed">
               {sourceInfo.path}
             </Text>
-          </Stack>
-        </Group>
+          }
+          onBack={() => navigate(-1)}
+        />
 
         {(snapshotA || snapshotB) && (
           <Stack gap={2} miw={0}>
@@ -742,11 +744,8 @@ function SnapshotComparePage() {
             {t`No snapshot pair selected \u2014 open the snapshot list and use the compare action on a row.`}
           </Alert>
         )}
-        {paramA && paramB && paramA === paramB && (
-          <Alert color="green" icon={<IconCheck size={16} />} variant="light">
-            {t`These snapshots have identical content \u2014 nothing changed.`}
-          </Alert>
-        )}
+
+        {walking && !progress && <PageState loading />}
 
         {walking && progress && (
           <Group gap="sm" wrap="nowrap">
@@ -764,9 +763,9 @@ function SnapshotComparePage() {
           </Group>
         )}
 
-        {stats && stats.errors === 0 && stats.delta === 0 && stats.filesTouched === 0 && visibleRoots.length === 0 && (
+        {identical && (
           <Alert color="green" icon={<IconCheck size={16} />} variant="light">
-            {t`The selected snapshots are identical — nothing was added, removed or modified.`}
+            {t`These snapshots have identical content \u2014 nothing changed.`}
           </Alert>
         )}
 
@@ -858,11 +857,13 @@ function SnapshotComparePage() {
             <Group gap="sm">
               <TextInput
                 placeholder={t`Filter by path…`}
+                aria-label={t`Filter by path…`}
                 value={query}
                 onChange={(e) => setQuery(e.currentTarget.value)}
                 style={{ width: 240 }}
               />
               <Select
+                aria-label={t`Sort changed paths`}
                 data={[
                   { value: "delta", label: t`Sort: size delta` },
                   { value: "type", label: t`Sort: added, modified, removed` },

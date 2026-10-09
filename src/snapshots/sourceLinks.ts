@@ -6,3 +6,10 @@ export function sourceHistoryLink(source: SourceInfo) {
     search: `?userName=${source.userName}&host=${source.host}&path=${encodeURIComponent(source.path)}`
   };
 }
+
+export function sourcePolicyLink(source: SourceInfo) {
+  return {
+    pathname: "/policies",
+    search: `userName=${source.userName}&host=${source.host}&path=${encodeURIComponent(source.path)}&viewPolicy=true`
+  };
+}
