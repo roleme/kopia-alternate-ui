@@ -1,0 +1,25 @@
+.actions {
+  container-type: inline-size;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 0 14px 12px;
+}
+
+.action {
+  padding-inline: 6px;
+}
+
+.actionSection {
+  margin-inline-end: 6px;
+}
+
+@container (max-width: 272px) {
+  .actionSection {
+    margin-inline-end: 0;
+  }
+
+  .actionLabel {
+    display: none;
+  }
+}

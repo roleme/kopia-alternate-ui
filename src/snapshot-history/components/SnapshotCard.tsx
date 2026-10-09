@@ -1,8 +1,9 @@
 import { t } from "@lingui/core/macro";
-import { Badge, Button, Checkbox, Text, UnstyledButton } from "@mantine/core";
+import { Badge, Checkbox, Text, UnstyledButton } from "@mantine/core";
 import { IconArrowsDiff, IconFile, IconFileText, IconFolder, IconPin } from "@tabler/icons-react";
 import type { ReactNode } from "react";
 import { Link } from "react-router";
+import { CardActions, CardButton } from "../../core/CardActions";
 import { useAppContext } from "../../core/context/AppContext";
 import FormattedDate from "../../core/FormattedDate";
 import { OneLine } from "../../core/OneLine";
@@ -144,57 +145,42 @@ export function SnapshotCard({
           <Link className={classes.link} to={`/snapshots/dir/${snapshot.rootID}`} state={{ label: sourcePath }}>
             {body}
           </Link>
-          <div className={classes.actions}>
+          <CardActions>
             {canCompare && (
-              <Button
-                variant="light"
-                size="sm"
-                classNames={{ root: classes.action, section: classes.actionSection }}
-                leftSection={<IconArrowsDiff size={16} />}
-                aria-label={t`Compare with previous snapshot`}
+              <CardButton
+                icon={IconArrowsDiff}
+                label={t`Compare`}
+                ariaLabel={t`Compare with previous snapshot`}
                 onClick={onCompare}
-              >
-                <span className={classes.actionLabel}>{t`Compare`}</span>
-              </Button>
+              />
             )}
-            <Button
-              variant="light"
-              size="sm"
-              leftSection={<IconFileText size={16} />}
-              aria-label={t`Update description`}
+            <CardButton
+              icon={IconFileText}
+              label={t`Describe`}
+              ariaLabel={t`Update description`}
               onClick={onDescribe}
-            >
-              <span className={classes.actionLabel}>{t`Describe`}</span>
-            </Button>
+            />
             {snapshot.pins.length === 0 ? (
-              <Button
-                variant="light"
-                size="sm"
-                classNames={{ root: classes.action, section: classes.actionSection }}
+              <CardButton
+                icon={IconPin}
+                label={t`Pin`}
+                ariaLabel={t`Add pin to prevent snapshot deletion`}
                 color="grape"
-                leftSection={<IconPin size={16} />}
-                aria-label={t`Add pin to prevent snapshot deletion`}
                 onClick={onPin}
-              >
-                <span className={classes.actionLabel}>{t`Pin`}</span>
-              </Button>
+              />
             ) : (
               snapshot.pins.map((p) => (
-                <Button
+                <CardButton
                   key={p}
-                  variant="light"
-                  size="sm"
-                  classNames={{ root: classes.action, section: classes.actionSection }}
+                  icon={IconPin}
+                  label={snapshot.pins.length === 1 ? t`Edit pin` : p}
+                  ariaLabel={t`Edit pin ${p}`}
                   color="grape"
-                  leftSection={<IconPin size={16} />}
-                  aria-label={t`Edit pin ${p}`}
                   onClick={() => onEditPin(p)}
-                >
-                  <span className={classes.actionLabel}>{snapshot.pins.length === 1 ? t`Edit pin` : p}</span>
-                </Button>
+                />
               ))
             )}
-          </div>
+          </CardActions>
         </>
       )}
     </li>

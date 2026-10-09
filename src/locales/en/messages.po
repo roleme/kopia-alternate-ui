@@ -15,6 +15,7 @@ msgstr ""
 
 #. placeholder {0}: view.count
 #: src/snapshots/components/SourceStatusCell.tsx:58
+#: src/snapshots/components/SourceStatusLine.tsx:44
 msgid "{0, plural, one {# error} other {# errors}}"
 msgstr ""
 
@@ -48,7 +49,7 @@ msgstr ""
 msgid "{currentLength} out of {totalLength}"
 msgstr "{currentLength} out of {totalLength}"
 
-#: src/snapshot-history/components/SnapshotCard.tsx:121
+#: src/snapshot-history/components/SnapshotCard.tsx:122
 msgid "{failed} failed"
 msgstr ""
 
@@ -101,23 +102,23 @@ msgstr ""
 msgid "1 folder could not be read"
 msgstr ""
 
-#: src/snapshots/SnapshotsPage.tsx:178
+#: src/snapshots/SnapshotsPage.tsx:152
 msgid "1 minute"
 msgstr "1 minute"
 
-#: src/snapshots/SnapshotsPage.tsx:176
+#: src/snapshots/SnapshotsPage.tsx:150
 msgid "10 seconds"
 msgstr "10 seconds"
 
-#: src/snapshots/SnapshotsPage.tsx:175
+#: src/snapshots/SnapshotsPage.tsx:149
 msgid "3 seconds"
 msgstr "3 seconds"
 
-#: src/snapshots/SnapshotsPage.tsx:177
+#: src/snapshots/SnapshotsPage.tsx:151
 msgid "30 seconds"
 msgstr "30 seconds"
 
-#: src/snapshots/SnapshotsPage.tsx:179
+#: src/snapshots/SnapshotsPage.tsx:153
 msgid "5 minutes"
 msgstr "5 minutes"
 
@@ -147,7 +148,7 @@ msgstr "Active"
 msgid "Add"
 msgstr "Add"
 
-#: src/snapshot-history/components/SnapshotCard.tsx:176
+#: src/snapshot-history/components/SnapshotCard.tsx:167
 #: src/snapshot-history/SnapshotHistory.tsx:170
 msgid "Add pin to prevent snapshot deletion"
 msgstr "Add pin to prevent snapshot deletion"
@@ -184,7 +185,7 @@ msgstr "All"
 msgid "All Policies"
 msgstr "All Policies"
 
-#: src/snapshots/SnapshotsPage.tsx:187
+#: src/snapshots/SnapshotsPage.tsx:161
 msgid "All Snapshots"
 msgstr "All Snapshots"
 
@@ -374,7 +375,7 @@ msgstr "Command Mode - After"
 msgid "Command Mode - Before"
 msgstr "Command Mode - Before"
 
-#: src/snapshot-history/components/SnapshotCard.tsx:157
+#: src/snapshot-history/components/SnapshotCard.tsx:152
 msgid "Compare"
 msgstr ""
 
@@ -382,7 +383,7 @@ msgstr ""
 msgid "Compare snapshots"
 msgstr ""
 
-#: src/snapshot-history/components/SnapshotCard.tsx:154
+#: src/snapshot-history/components/SnapshotCard.tsx:153
 #: src/snapshot-history/SnapshotHistory.tsx:142
 msgid "Compare with previous snapshot"
 msgstr ""
@@ -602,7 +603,7 @@ msgstr ""
 msgid "Deprecated"
 msgstr "Deprecated"
 
-#: src/snapshot-history/components/SnapshotCard.tsx:167
+#: src/snapshot-history/components/SnapshotCard.tsx:159
 msgid "Describe"
 msgstr ""
 
@@ -661,7 +662,7 @@ msgstr "Disable ZIP compression"
 
 #: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:141
 #: src/repo/CreateRepoSection.tsx:182
-#: src/snapshots/SnapshotsPage.tsx:174
+#: src/snapshots/SnapshotsPage.tsx:148
 msgid "Disabled"
 msgstr "Disabled"
 
@@ -717,6 +718,7 @@ msgid "Download"
 msgstr "Download"
 
 #: src/snapshots/components/SourceStatusCell.tsx:72
+#: src/snapshots/components/SourceStatusLine.tsx:56
 msgid "Due <0/>"
 msgstr ""
 
@@ -746,11 +748,11 @@ msgstr "Edit existing policy"
 msgid "Edit items"
 msgstr "Edit items"
 
-#: src/snapshot-history/components/SnapshotCard.tsx:193
+#: src/snapshot-history/components/SnapshotCard.tsx:176
 msgid "Edit pin"
 msgstr ""
 
-#: src/snapshot-history/components/SnapshotCard.tsx:190
+#: src/snapshot-history/components/SnapshotCard.tsx:177
 #: src/snapshot-history/SnapshotHistory.tsx:104
 msgid "Edit pin {p}"
 msgstr ""
@@ -973,7 +975,7 @@ msgstr "File Snapshotted"
 
 #: src/policies/modals/PolicyModal/PolicyModal.tsx:213
 #: src/snapshot-directory/SnapshotDirectory.tsx:267
-#: src/snapshot-history/components/SnapshotCard.tsx:77
+#: src/snapshot-history/components/SnapshotCard.tsx:78
 #: src/snapshot-history/components/SnapshotHistoryStats.tsx:79
 #: src/snapshot-history/SnapshotHistory.tsx:321
 msgid "Files"
@@ -1001,6 +1003,7 @@ msgid "Finished in"
 msgstr "Finished in"
 
 #: src/snapshots/components/SourceStatusCell.tsx:86
+#: src/snapshots/components/SourceStatusLine.tsx:70
 msgid "First run <0/>"
 msgstr ""
 
@@ -1008,7 +1011,11 @@ msgstr ""
 msgid "Folder Actions"
 msgstr "Folder Actions"
 
-#: src/snapshot-history/components/SnapshotCard.tsx:82
+#: src/snapshots/components/SourceCardList.tsx:42
+msgid "Folder name"
+msgstr ""
+
+#: src/snapshot-history/components/SnapshotCard.tsx:83
 msgid "Folders"
 msgstr ""
 
@@ -1223,6 +1230,7 @@ msgid "Kopia stops the script if it runs longer than this"
 msgstr ""
 
 #: src/snapshot-history/components/SnapshotCardList.tsx:80
+#: src/snapshots/components/SourceCardList.tsx:43
 msgid "Largest first"
 msgstr ""
 
@@ -1230,7 +1238,7 @@ msgstr ""
 msgid "Last Modification"
 msgstr "Last Modification"
 
-#: src/snapshots/SnapshotsPage.tsx:291
+#: src/snapshots/SnapshotsPage.tsx:268
 msgid "Last Snapshot"
 msgstr "Last Snapshot"
 
@@ -1238,6 +1246,10 @@ msgstr "Last Snapshot"
 #: src/repo/CreateRepoSection.tsx:167
 msgid "Latest format"
 msgstr "Latest format"
+
+#: src/snapshots/components/SourceCardList.tsx:44
+msgid "Latest snapshot first"
+msgstr ""
 
 #: src/policies/modals/PolicyModal/constants.ts:107
 #: src/policies/modals/PolicyModal/tabs/SnapshotRetentionTab.tsx:22
@@ -1286,7 +1298,7 @@ msgstr "Local Directory or NAS"
 msgid "Local Path Policies"
 msgstr "Local Path Policies"
 
-#: src/snapshots/SnapshotsPage.tsx:188
+#: src/snapshots/SnapshotsPage.tsx:162
 msgid "Local Snapshots"
 msgstr "Local Snapshots"
 
@@ -1352,6 +1364,7 @@ msgid "Main navigation"
 msgstr ""
 
 #: src/snapshots/components/SourceStatusCell.tsx:52
+#: src/snapshots/components/SourceStatusLine.tsx:40
 msgid "Manual"
 msgstr ""
 
@@ -1485,7 +1498,7 @@ msgctxt "modal-title"
 msgid "New snapshot"
 msgstr "New snapshot"
 
-#: src/snapshots/SnapshotsPage.tsx:206
+#: src/snapshots/SnapshotsPage.tsx:180
 msgid "New Snapshot"
 msgstr "New Snapshot"
 
@@ -1496,6 +1509,10 @@ msgstr ""
 #: src/repo/ConfigureRepoSection.tsx:306
 msgid "Next"
 msgstr "Next"
+
+#: src/snapshots/components/SourceStatusLine.tsx:63
+msgid "Next <0/>"
+msgstr ""
 
 #: src/policies/modals/PolicyModal/components/InheritYesNoPolicyControl.tsx:60
 #: src/policies/modals/PolicyModal/components/useEffectiveField.ts:13
@@ -1542,7 +1559,8 @@ msgstr "No snapshots mounted"
 
 #: src/snapshot-history/components/SnapshotCardList.tsx:92
 #: src/snapshot-history/SnapshotHistory.tsx:268
-#: src/snapshots/SnapshotsPage.tsx:229
+#: src/snapshots/components/SourceCardList.tsx:52
+#: src/snapshots/SnapshotsPage.tsx:214
 msgid "No snapshots taken"
 msgstr "No snapshots taken"
 
@@ -1639,6 +1657,7 @@ msgid "Other"
 msgstr "Other"
 
 #: src/snapshots/components/SourceStatusCell.tsx:64
+#: src/snapshots/components/SourceStatusLine.tsx:49
 msgid "Overdue - due <0/>"
 msgstr ""
 
@@ -1669,7 +1688,7 @@ msgstr "Overwrite Files"
 msgid "Overwrite Symbolic Links"
 msgstr "Overwrite Symbolic Links"
 
-#: src/snapshots/SnapshotsPage.tsx:273
+#: src/snapshots/SnapshotsPage.tsx:252
 msgid "Owner"
 msgstr "Owner"
 
@@ -1718,7 +1737,7 @@ msgstr "Paste JSON credentials here"
 #: src/policies/PoliciesPage.tsx:228
 #: src/repo/sections/SFTPServerRepo.tsx:55
 #: src/repo/sections/SFTPServerRepo.tsx:189
-#: src/snapshots/SnapshotsPage.tsx:237
+#: src/snapshots/SnapshotsPage.tsx:222
 msgid "Path"
 msgstr "Path"
 
@@ -1737,6 +1756,7 @@ msgid "Path to snapshot"
 msgstr "Path to snapshot"
 
 #: src/snapshots/components/SourceStatusCell.tsx:46
+#: src/snapshots/components/SourceStatusLine.tsx:37
 msgid "Paused"
 msgstr ""
 
@@ -1748,7 +1768,7 @@ msgstr "Per-Host Policies"
 msgid "Per-User Policies"
 msgstr "Per-User Policies"
 
-#: src/snapshot-history/components/SnapshotCard.tsx:179
+#: src/snapshot-history/components/SnapshotCard.tsx:166
 msgid "Pin"
 msgstr ""
 
@@ -1766,6 +1786,10 @@ msgstr "Plain Text Format"
 #: src/policies/PoliciesPage.tsx:177
 msgid "Policies"
 msgstr "Policies"
+
+#: src/snapshots/components/SourceCard.tsx:89
+msgid "Policy"
+msgstr ""
 
 #: src/repo/sections/SFTPServerRepo.tsx:53
 #: src/repo/sections/SFTPServerRepo.tsx:166
@@ -1798,6 +1822,7 @@ msgid "Pushover App Token"
 msgstr "Pushover App Token"
 
 #: src/snapshots/components/SourceStatusCell.tsx:40
+#: src/snapshots/components/SourceStatusLine.tsx:34
 msgid "Queued"
 msgstr ""
 
@@ -1835,11 +1860,12 @@ msgstr "Records per page"
 msgid "Refresh"
 msgstr "Refresh"
 
-#: src/snapshots/SnapshotsPage.tsx:172
+#: src/snapshots/SnapshotsPage.tsx:146
 msgid "Refresh:"
 msgstr ""
 
-#: src/snapshots/SnapshotsPage.tsx:123
+#: src/snapshots/components/SourceCard.tsx:71
+#: src/snapshots/SnapshotsPage.tsx:122
 msgid "Remote"
 msgstr "Remote"
 
@@ -1883,7 +1909,7 @@ msgstr "Repository is connected as read-only"
 msgid "Repository Password"
 msgstr "Repository Password"
 
-#: src/snapshots/SnapshotsPage.tsx:109
+#: src/snapshots/SnapshotsPage.tsx:108
 msgid "Repository synchronized"
 msgstr "Repository synchronized"
 
@@ -1940,6 +1966,8 @@ msgid "Run Missed Snapshots on Startup"
 msgstr "Run Missed Snapshots on Startup"
 
 #: src/snapshots/components/SourceStatusCell.tsx:24
+#: src/snapshots/components/SourceStatusLine.tsx:25
+#: src/snapshots/components/SourceStatusLine.tsx:28
 #: src/tasks/TasksPage.tsx:148
 msgid "Running"
 msgstr "Running"
@@ -2090,6 +2118,7 @@ msgid "Show content diff"
 msgstr ""
 
 #: src/snapshot-history/components/SnapshotCardList.tsx:123
+#: src/snapshots/components/SourceCardList.tsx:70
 msgid "Show more"
 msgstr ""
 
@@ -2104,7 +2133,7 @@ msgstr ""
 #: src/snapshot-directory/SnapshotDirectory.tsx:258
 #: src/snapshot-history/components/SnapshotHistoryStats.tsx:69
 #: src/snapshot-history/SnapshotHistory.tsx:308
-#: src/snapshots/SnapshotsPage.tsx:281
+#: src/snapshots/SnapshotsPage.tsx:259
 msgid "Size"
 msgstr "Size"
 
@@ -2173,6 +2202,7 @@ msgstr "Snapshot is mounted at the following path"
 msgid "Snapshot Mounted"
 msgstr ""
 
+#: src/snapshots/components/SourceCard.tsx:81
 #: src/snapshots/components/SourceRowActions.tsx:24
 #: src/snapshots/modals/NewSnapshotModal.tsx:160
 msgid "Snapshot now"
@@ -2196,7 +2226,7 @@ msgstr "Snapshot(s) deleted"
 
 #: src/core/Sidebar/Sidebar.tsx:32
 #: src/snapshot-history/SnapshotHistory.tsx:200
-#: src/snapshots/SnapshotsPage.tsx:167
+#: src/snapshots/SnapshotsPage.tsx:141
 msgid "Snapshots"
 msgstr "Snapshots"
 
@@ -2251,7 +2281,7 @@ msgstr "Start Time"
 msgid "Started"
 msgstr "Started"
 
-#: src/snapshots/SnapshotsPage.tsx:298
+#: src/snapshots/SnapshotsPage.tsx:274
 #: src/tasks/TasksPage.tsx:238
 msgid "Status"
 msgstr "Status"
@@ -2296,7 +2326,7 @@ msgstr "Switched instance"
 msgid "Symlinks"
 msgstr "Symlinks"
 
-#: src/snapshots/SnapshotsPage.tsx:219
+#: src/snapshots/SnapshotsPage.tsx:193
 msgid "Sync"
 msgstr "Sync"
 
@@ -2345,7 +2375,7 @@ msgstr "The repository description was successfully updated"
 msgid "The repository was successfully disconnected"
 msgstr "The repository was successfully disconnected"
 
-#: src/snapshots/SnapshotsPage.tsx:110
+#: src/snapshots/SnapshotsPage.tsx:109
 msgid "The repository was synchronized successfully"
 msgstr "The repository was synchronized successfully"
 
@@ -2463,7 +2493,7 @@ msgstr ""
 msgid "Upcoming Snapshots"
 msgstr "Upcoming Snapshots"
 
-#: src/snapshot-history/components/SnapshotCard.tsx:164
+#: src/snapshot-history/components/SnapshotCard.tsx:160
 #: src/snapshot-history/modals/UpdateDescriptionModal.tsx:50
 #: src/snapshot-history/SnapshotHistory.tsx:159
 msgid "Update description"
@@ -2530,6 +2560,7 @@ msgstr ""
 msgid "Verbose"
 msgstr ""
 
+#: src/snapshots/components/SourceCard.tsx:90
 #: src/snapshots/components/SourceRowActions.tsx:32
 msgid "View Policy"
 msgstr "View Policy"

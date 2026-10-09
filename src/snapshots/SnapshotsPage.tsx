@@ -4,7 +4,6 @@ import { Anchor, Badge, Box, Button, Container, Divider, Group, Stack, Text, Tit
 import { useDisclosure, useLocalStorage } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
 import { IconCircleCheck, IconClick, IconFileDatabase, IconFolderOpen, IconRefreshAlert } from "@tabler/icons-react";
-import sortBy from "lodash.sortby";
 import type { DataTableSortStatus } from "mantine-datatable";
 import { Fragment, lazy, Suspense, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router";
@@ -16,15 +15,15 @@ import useApiRequest from "../core/hooks/useApiRequest";
 import { useInterval } from "../core/hooks/useInterval";
 import IconWrapper from "../core/IconWrapper";
 import { MenuButton } from "../core/MenuButton/MenuButton";
-import { MetaLine } from "../core/MetaLine";
 import { PageState } from "../core/PageState/PageState";
 import { RefreshButton } from "../core/RefreshButton";
 import RelativeDate from "../core/RelativeDate";
-import { ResponsiveCell } from "../core/ResponsiveCell";
 import type { SourceInfo, SourceStatus, Sources } from "../core/types";
 import { formatOwnerName } from "../utils/formatOwnerName";
 import sizeDisplayName from "../utils/formatSize";
 import { onlyUnique } from "../utils/onlyUnique";
+import { sortWithMissingLast } from "../utils/sortWithMissingLast";
+import SourceCardList from "./components/SourceCardList";
 import SourceRowActions from "./components/SourceRowActions";
 import SourceStatusCell, { EmptyCell } from "./components/SourceStatusCell";
 import { normalizeRefreshInterval } from "./refreshInterval";
@@ -71,8 +70,7 @@ function SnapshotsPage() {
         filterable = filterable.filter((x) => formatOwnerName(x.source) === filterState);
     }
 
-    const entries = sortBy(filterable, sortStatus.columnAccessor) as SourceStatus[];
-    return sortStatus.direction === "desc" ? entries.reverse() : entries;
+    return sortWithMissingLast(filterable, String(sortStatus.columnAccessor), sortStatus.direction);
   }, [data, filterState, sortStatus]);
 
   const loadAction = useApiRequest({
@@ -127,38 +125,13 @@ function SnapshotsPage() {
       `${item.source.userName}@${item.source.host}`
     );
 
-  const renderActions = (item: SourceStatus, justify: "left" | "right") => (
+  const renderActions = (item: SourceStatus) => (
     <SourceRowActions
       source={item}
       snapshotNowLoading={newSnapshotActions.loading}
       onSnapshotNow={(info) => newSnapshotActions.execute(info)}
-      justify={justify}
     />
   );
-
-  const renderNarrowDetails = (item: SourceStatus) => (
-    <Stack gap={6}>
-      <SourceStatusCell source={item} bytesStringBase2={bytesStringBase2} />
-      {renderMeta(item)}
-      {renderActions(item, "left")}
-    </Stack>
-  );
-
-  const renderMeta = (item: SourceStatus) => {
-    const size = item.lastSnapshot?.rootEntry?.summ?.size;
-    return (
-      <MetaLine
-        items={[
-          { key: "owner", content: renderOwner(item) },
-          { key: "size", content: size === undefined ? null : sizeDisplayName(size, bytesStringBase2) },
-          {
-            key: "last",
-            content: item.lastSnapshot ? <RelativeDate value={item.lastSnapshot.startTime} /> : null
-          }
-        ]}
-      />
-    );
-  };
 
   return (
     <Container fluid>
@@ -167,7 +140,7 @@ function SnapshotsPage() {
           <Trans>Snapshots</Trans>
         </Title>
         <Group justify="space-between">
-          <Group>
+          <Group gap="xs">
             <MenuButton
               prefix={t`Refresh:`}
               options={[
@@ -197,7 +170,7 @@ function SnapshotsPage() {
               />
             )}
           </Group>
-          <Group>
+          <Group gap="xs">
             <Button
               disabled={loadAction.loading && loadAction.loadingKey == "loading"}
               onClick={setShow.open}
@@ -222,93 +195,94 @@ function SnapshotsPage() {
         </Group>
         <Divider />
         <PageState hasData={data !== undefined} loading={data === undefined && !intError} error={intError}>
-          <DataGrid
-            records={visibleData}
-            loading={loadAction.loading && loadAction.loadingKey === "loading"}
-            idAccessor="source.path"
-            noRecordsText={t`No snapshots taken`}
-            noRecordsIcon={<IconWrapper icon={IconFileDatabase} size={48} />}
-            pageSize={tablePageSize}
-            sortStatus={sortStatus}
-            onSortStatusChange={setSortStatus}
-            columns={[
-              {
-                accessor: "source.path",
-                title: <Trans>Path</Trans>,
-                sortable: true,
-                render: (item) => (
-                  <ResponsiveCell
-                    hiddenFrom="md"
-                    secondary={renderNarrowDetails(item)}
-                    primary={
-                      <Group gap="5" wrap="nowrap" align="flex-start">
-                        <Box style={{ flexShrink: 0, display: "flex" }}>
-                          <IconWrapper icon={IconFolderOpen} color="yellow" size={18} />
-                        </Box>
-                        <Anchor
-                          component={Link}
-                          to={sourceHistoryLink(item.source)}
-                          td="none"
-                          fz="sm"
-                          style={{ overflowWrap: "break-word", minWidth: 0 }}
-                        >
-                          {item.source.path.split("/").map((segment, index, all) => (
-                            <Fragment key={all.slice(0, index + 1).join("/")}>
-                              {segment}
-                              {index < all.length - 1 && (
-                                <>
-                                  /<wbr />
-                                </>
-                              )}
-                            </Fragment>
-                          ))}
-                        </Anchor>
-                      </Group>
-                    }
-                  />
-                )
-              },
-              {
-                accessor: "owner",
-                title: <Trans>Owner</Trans>,
-                sortable: true,
-                visibleMediaQuery: (theme) => `(min-width: ${theme.breakpoints.md})`,
-                render: renderOwner
-              },
-              {
-                accessor: "lastSnapshot.rootEntry.summ.size",
-                sortable: true,
-                title: <Trans>Size</Trans>,
-                visibleMediaQuery: (theme) => `(min-width: ${theme.breakpoints.md})`,
-                render: (item) => {
-                  const size = item.lastSnapshot?.rootEntry?.summ?.size;
-                  return size === undefined ? <EmptyCell /> : sizeDisplayName(size, bytesStringBase2);
+          <Box hiddenFrom="lg">
+            <SourceCardList
+              sources={visibleData}
+              pageSize={tablePageSize}
+              bytesStringBase2={bytesStringBase2}
+              snapshotNowLoading={newSnapshotActions.loading}
+              onSnapshotNow={(info) => newSnapshotActions.execute(info)}
+              onSortChange={setSortStatus}
+            />
+          </Box>
+          <Box visibleFrom="lg">
+            <DataGrid
+              records={visibleData}
+              loading={loadAction.loading && loadAction.loadingKey === "loading"}
+              idAccessor="source.path"
+              noRecordsText={t`No snapshots taken`}
+              noRecordsIcon={<IconWrapper icon={IconFileDatabase} size={48} />}
+              pageSize={tablePageSize}
+              sortStatus={sortStatus}
+              onSortStatusChange={setSortStatus}
+              columns={[
+                {
+                  accessor: "source.path",
+                  title: <Trans>Path</Trans>,
+                  sortable: true,
+                  render: (item) => (
+                    <Group gap="5" wrap="nowrap" align="flex-start">
+                      <Box style={{ flexShrink: 0, display: "flex" }}>
+                        <IconWrapper icon={IconFolderOpen} color="yellow" size={18} />
+                      </Box>
+                      <Anchor
+                        component={Link}
+                        to={sourceHistoryLink(item.source)}
+                        td="none"
+                        fz="sm"
+                        style={{ overflowWrap: "break-word", minWidth: 0 }}
+                      >
+                        {item.source.path.split("/").map((segment, index, all) => (
+                          <Fragment key={all.slice(0, index + 1).join("/")}>
+                            {segment}
+                            {index < all.length - 1 && (
+                              <>
+                                /<wbr />
+                              </>
+                            )}
+                          </Fragment>
+                        ))}
+                      </Anchor>
+                    </Group>
+                  )
+                },
+                {
+                  accessor: "owner",
+                  title: <Trans>Owner</Trans>,
+                  sortable: true,
+                  render: renderOwner
+                },
+                {
+                  accessor: "lastSnapshot.rootEntry.summ.size",
+                  sortable: true,
+                  title: <Trans>Size</Trans>,
+                  render: (item) => {
+                    const size = item.lastSnapshot?.rootEntry?.summ?.size;
+                    return size === undefined ? <EmptyCell /> : sizeDisplayName(size, bytesStringBase2);
+                  }
+                },
+                {
+                  accessor: "lastSnapshot.startTime",
+                  sortable: true,
+                  title: <Trans>Last Snapshot</Trans>,
+                  render: (item) =>
+                    item.lastSnapshot ? <RelativeDate value={item.lastSnapshot.startTime} /> : <EmptyCell />
+                },
+                {
+                  accessor: "status",
+                  title: <Trans>Status</Trans>,
+                  render: (item) => <SourceStatusCell source={item} bytesStringBase2={bytesStringBase2} />
+                },
+                {
+                  accessor: "",
+                  title: <IconClick size={16} />,
+                  textAlign: "right",
+                  width: "0%",
+                  render: renderActions
                 }
-              },
-              {
-                accessor: "lastSnapshot.startTime",
-                sortable: true,
-                title: <Trans>Last Snapshot</Trans>,
-                visibleMediaQuery: (theme) => `(min-width: ${theme.breakpoints.md})`,
-                render: (item) =>
-                  item.lastSnapshot ? <RelativeDate value={item.lastSnapshot.startTime} /> : <EmptyCell />
-              },
-              {
-                accessor: "status",
-                title: <Trans>Status</Trans>,
-                visibleMediaQuery: (theme) => `(min-width: ${theme.breakpoints.md})`,
-                render: (item) => <SourceStatusCell source={item} bytesStringBase2={bytesStringBase2} />
-              },
-              {
-                accessor: "",
-                title: <IconClick size={16} />,
-                textAlign: "right",
-                width: "0%",
-                visibleMediaQuery: (theme) => `(min-width: ${theme.breakpoints.md})`,
-                render: (item) => renderActions(item, "right")
-              }
-            ]}
-          />
+              ]}
+            />
+          </Box>
         </PageState>
       </Stack>
       {show && (
