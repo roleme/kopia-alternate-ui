@@ -74,7 +74,7 @@ function AppearanceSection() {
   }, []);
 
   function submitForm(values: Preferences) {
-    setColorScheme(values.theme as "light" | "dark");
+    setColorScheme(parseColorScheme(values.theme));
     setShowStatistics(form.getValues().showStatistics);
     setPreferences.execute(values);
   }
@@ -89,6 +89,7 @@ function AppearanceSection() {
           <Select
             label={t`Theme`}
             data={[
+              { label: t`System`, value: "auto" },
               { label: t`Light`, value: "light" },
               { label: t`Dark`, value: "dark" }
             ]}

@@ -13,6 +13,7 @@ import { useAppContext } from "../context/AppContext";
 import { ConnectionInfo } from "../Footer/ConnectionInfo";
 import IconWrapper from "../IconWrapper";
 import { TaskCounts } from "../TaskCounts/TaskCounts";
+import { useTaskCounts } from "../TaskCounts/useTaskCounts";
 import { findActiveNavItem, NAV_GROUPS, type NavGroupId, type NavItemId } from "./navItems";
 import classes from "./Sidebar.module.css";
 
@@ -55,6 +56,7 @@ export function SidebarContent({ onNavigate, showBrand = true }: { onNavigate?: 
   const { repoStatus } = useAppContext();
   const location = useLocation();
   const activeId = findActiveNavItem(location.pathname);
+  const taskCounts = useTaskCounts();
 
   return (
     <div className={classes.content}>
@@ -100,10 +102,10 @@ export function SidebarContent({ onNavigate, showBrand = true }: { onNavigate?: 
       </nav>
       <div className={classes.bottom}>
         <div className={classes.bottomRow}>
-          <ConnectionInfo />
+          <ConnectionInfo busy={taskCounts.running > 0} />
         </div>
         <div className={classes.bottomRow}>
-          <TaskCounts />
+          <TaskCounts counts={taskCounts} />
         </div>
       </div>
     </div>

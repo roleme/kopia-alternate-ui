@@ -3,12 +3,12 @@ import { Anchor, Group, Text, Tooltip } from "@mantine/core";
 import { IconCircleCheck, IconCircleX, IconStopwatch } from "@tabler/icons-react";
 import { Link } from "react-router";
 import IconWrapper from "../IconWrapper";
-import { useTaskCounts } from "./useTaskCounts";
+import type { TaskCountsSummary } from "./summarizeTasks";
 
 const COUNT_LINK_STYLE = { display: "inline-flex", alignItems: "center", minHeight: 24 } as const;
 
-export function TaskCounts() {
-  const { success, failed, running } = useTaskCounts();
+export function TaskCounts({ counts }: { counts: TaskCountsSummary }) {
+  const { success, failed, running } = counts;
 
   return (
     <Group gap="sm">
