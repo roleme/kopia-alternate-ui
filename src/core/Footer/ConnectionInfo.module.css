@@ -35,3 +35,7 @@
     background-color: var(--mantine-color-dark-8);
   }
 }
+
+.serverSelect {
+  min-height: 24px;
+}

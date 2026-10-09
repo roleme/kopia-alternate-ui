@@ -32,11 +32,13 @@ import { useLocation } from "react-router-dom";
 import { useAppContext } from "../core/context/AppContext";
 import { useServerInstanceContext } from "../core/context/ServerInstanceContext";
 import { DataGrid } from "../core/DataGrid/DataGrid";
-import { ErrorAlert } from "../core/ErrorAlert/ErrorAlert";
 import FormattedDate from "../core/FormattedDate";
 import useApiRequest from "../core/hooks/useApiRequest";
 import IconWrapper from "../core/IconWrapper";
+import { MetaLine } from "../core/MetaLine";
 import { PageHeader } from "../core/PageHeader/PageHeader";
+import { PageState } from "../core/PageState/PageState";
+import { ResponsiveCell } from "../core/ResponsiveCell";
 import { RowAction } from "../core/RowAction";
 import { type DirEntry, type DirManifest, type MountedSnapshot } from "../core/types";
 import sizeDisplayName from "../utils/formatSize";
@@ -104,6 +106,30 @@ function SnapshotDirectory() {
     return entries;
   }, [data, debouncedQuery, sortStatus]);
 
+  const renderActions = (item: DirEntry) =>
+    item.type !== "d" && (
+      <RowAction
+        label={t`Download`}
+        icon={IconFileDownload}
+        color="blue.5"
+        href={kopiaService.objectUrl(item.obj, item.name)}
+      />
+    );
+
+  const renderMeta = (item: DirEntry) => (
+    <MetaLine
+      items={[
+        { key: "mtime", content: <FormattedDate value={item.mtime} /> },
+        {
+          key: "size",
+          content: sizeDisplayName(item.type === "d" ? item.summ?.size || 0 : item.size || 0, bytesStringBase2)
+        },
+        { key: "files", content: item.type === "d" && item.summ ? t`${item.summ.files} files` : null },
+        { key: "dirs", content: item.type === "d" && item.summ ? t`${item.summ.dirs} dirs` : null }
+      ]}
+    />
+  );
+
   return (
     <Container fluid>
       <Stack>
@@ -141,7 +167,6 @@ function SnapshotDirectory() {
           }
         />
         <Divider />
-        <ErrorAlert error={error} />
         {mount && (
           <Alert title={t`Snapshot Mounted`} color="grape">
             <Trans>Snapshot is mounted at the following path</Trans>:
@@ -168,7 +193,7 @@ function SnapshotDirectory() {
             />
           </Alert>
         )}
-        {!hasError && (
+        <PageState hasData={data !== undefined} loading={data === undefined && !error} error={error}>
           <DataGrid
             idAccessor={(snap: DirEntry) => `${snap.obj}-${snap.type}-${snap.name}`}
             loading={loading && loadingKey === "loading"}
@@ -181,33 +206,46 @@ function SnapshotDirectory() {
                 accessor: "name",
                 title: t`Name`,
                 sortable: true,
-                render: (item) =>
-                  item.type === "d" ? (
-                    <Group gap="5">
-                      <IconWrapper icon={IconFolderOpen} color="yellow" size={18} />
-                      <Anchor
-                        component={Link}
-                        to={`/snapshots/dir/${item.obj}`}
-                        state={{
-                          label: item.name,
-                          oid: item.obj,
-                          prevState: location.state
-                        }}
-                        td="none"
-                        fz="sm"
-                      >
-                        {item.name}
-                      </Anchor>
-                    </Group>
-                  ) : (
-                    <Group gap="5">
-                      <IconWrapper icon={getFileIcon(item.name)} color="blue" size={18} />
-                      <Text fz="sm">{item.name}</Text>
-                    </Group>
-                  )
+                render: (item) => (
+                  <ResponsiveCell
+                    hiddenFrom="md"
+                    secondary={
+                      <Stack gap={6}>
+                        {renderMeta(item)}
+                        {renderActions(item)}
+                      </Stack>
+                    }
+                    primary={
+                      item.type === "d" ? (
+                        <Group gap="5">
+                          <IconWrapper icon={IconFolderOpen} color="yellow" size={18} />
+                          <Anchor
+                            component={Link}
+                            to={`/snapshots/dir/${item.obj}`}
+                            state={{
+                              label: item.name,
+                              oid: item.obj,
+                              prevState: location.state
+                            }}
+                            td="none"
+                            fz="sm"
+                          >
+                            {item.name}
+                          </Anchor>
+                        </Group>
+                      ) : (
+                        <Group gap="5">
+                          <IconWrapper icon={getFileIcon(item.name)} color="blue" size={18} />
+                          <Text fz="sm">{item.name}</Text>
+                        </Group>
+                      )
+                    }
+                  />
+                )
               },
               {
                 accessor: "mtime",
+                visibleMediaQuery: (theme) => `(min-width: ${theme.breakpoints.md})`,
                 sortable: true,
                 sortKey: "mtime",
                 title: t`Last Modification`,
@@ -216,6 +254,7 @@ function SnapshotDirectory() {
 
               {
                 accessor: "size",
+                visibleMediaQuery: (theme) => `(min-width: ${theme.breakpoints.md})`,
                 title: t`Size`,
                 textAlign: "right",
                 render: (item) =>
@@ -223,12 +262,14 @@ function SnapshotDirectory() {
               },
               {
                 accessor: "summ.files",
+                visibleMediaQuery: (theme) => `(min-width: ${theme.breakpoints.md})`,
                 sortable: true,
                 title: t`Files`,
                 textAlign: "center"
               },
               {
                 accessor: "summ.dirs",
+                visibleMediaQuery: (theme) => `(min-width: ${theme.breakpoints.md})`,
                 sortable: true,
                 title: t`Dirs`,
                 textAlign: "center"
@@ -236,23 +277,16 @@ function SnapshotDirectory() {
               {
                 accessor: "actions",
                 title: <IconClick size={16} />,
+                visibleMediaQuery: (theme) => `(min-width: ${theme.breakpoints.md})`,
                 width: "0%",
                 textAlign: "right",
-                render: (item) =>
-                  item.type !== "d" && (
-                    <RowAction
-                      label={t`Download`}
-                      icon={IconFileDownload}
-                      color="blue.5"
-                      href={kopiaService.objectUrl(item.obj, item.name)}
-                    />
-                  )
+                render: renderActions
               }
             ]}
             sortStatus={sortStatus}
             onSortStatusChange={setSortStatus}
           />
-        )}
+        </PageState>
       </Stack>
       {show && oid && (
         <RestoreModal

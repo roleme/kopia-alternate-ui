@@ -9,15 +9,16 @@ type Props = {
   source: SourceStatus;
   snapshotNowLoading: boolean;
   onSnapshotNow: (source: SourceInfo) => void;
+  justify?: "left" | "right";
 };
 
-export default function SourceRowActions({ source, snapshotNowLoading, onSnapshotNow }: Props) {
+export default function SourceRowActions({ source, snapshotNowLoading, onSnapshotNow, justify = "right" }: Props) {
   const status = source.status;
   if (status !== "IDLE" && status !== "PAUSED" && status !== "REMOTE") return null;
   const info = source.source;
 
   return (
-    <Group gap={4} justify="right" wrap="nowrap">
+    <Group gap={4} justify={justify} wrap="nowrap">
       {status !== "REMOTE" && (
         <RowAction
           label={t`Snapshot now`}

@@ -71,7 +71,9 @@ export function DataGrid<T>({
       onPageChange={(p) => setPage(p)}
       recordsPerPageOptions={PAGE_SIZES}
       onRecordsPerPageChange={setPageSize}
-      paginationSize="xs"
+      paginationSize="sm"
+      selectionCheckboxProps={{ size: "md" }}
+      allRecordsSelectionCheckboxProps={{ size: "md", "aria-label": t`Select all rows` }}
       noRecordsText={noRecordsText}
       noRecordsIcon={noRecordsIcon}
       fetching={loading}

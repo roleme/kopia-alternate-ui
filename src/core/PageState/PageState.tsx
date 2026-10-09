@@ -12,9 +12,19 @@ type Props = PropsWithChildren<{
   empty?: boolean;
   emptyText?: ReactNode;
   emptyIcon?: ReactNode;
+  hasData?: boolean;
 }>;
 
-export function PageState({ loading, error, empty, emptyText, emptyIcon, children }: Props) {
+export function PageState({ loading, error, empty, emptyText, emptyIcon, hasData, children }: Props) {
+  if (hasData) {
+    return (
+      <>
+        <ErrorAlert error={error} />
+        {children}
+      </>
+    );
+  }
+
   if (loading) {
     return (
       <Stack gap="xs" role="status" aria-busy="true">

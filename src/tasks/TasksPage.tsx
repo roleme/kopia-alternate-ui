@@ -18,14 +18,16 @@ import { confirmAction } from "../core/confirmAction";
 import { useAppContext } from "../core/context/AppContext";
 import { useServerInstanceContext } from "../core/context/ServerInstanceContext";
 import { DataGrid } from "../core/DataGrid/DataGrid";
-import { ErrorAlert } from "../core/ErrorAlert/ErrorAlert";
 import useApiRequest from "../core/hooks/useApiRequest";
 import IconWrapper from "../core/IconWrapper";
 import { MenuButton } from "../core/MenuButton/MenuButton";
+import { MetaLine } from "../core/MetaLine";
 import { PageHeader } from "../core/PageHeader/PageHeader";
+import { PageState } from "../core/PageState/PageState";
 import RelativeDate from "../core/RelativeDate";
+import { ResponsiveCell } from "../core/ResponsiveCell";
 import { RowAction } from "../core/RowAction";
-import type { TaskList } from "../core/types";
+import type { Task, TaskList } from "../core/types";
 import { onlyUnique } from "../utils/onlyUnique";
 import TaskKindDisplay from "./components/TaskKindDisplay";
 import TaskStatusDisplay from "./components/TaskStatusDisplay";
@@ -80,6 +82,38 @@ function TasksPage() {
 
     return items;
   }, [data, kindFilter, statusFilter, debouncedQuery]);
+
+  const renderActions = (item: Task) =>
+    item.status === "RUNNING" && (
+      <RowAction
+        label={t({
+          context: "cancel-operation",
+          message: "Cancel Task"
+        })}
+        icon={IconBan}
+        color="red.5"
+        loading={cancelTaskAction.loading && cancelTaskAction.loadingKey === item.id}
+        onClick={() =>
+          confirmAction({
+            title: t`Cancel this task?`,
+            message: item.description,
+            confirmLabel: t`Cancel task`,
+            cancelLabel: t`Keep running`,
+            onConfirm: () => cancelTaskAction.execute(item.id, item.id)
+          })
+        }
+      />
+    );
+
+  const renderMeta = (item: Task) => (
+    <MetaLine
+      items={[
+        { key: "id", content: `#${item.id}` },
+        { key: "kind", content: <TaskKindDisplay kind={item.kind} /> },
+        { key: "description", content: item.description }
+      ]}
+    />
+  );
 
   return (
     <Container fluid>
@@ -160,73 +194,73 @@ function TasksPage() {
         </Group>
         <Divider />
 
-        <ErrorAlert error={loadAction.error} />
-
-        <DataGrid
-          loading={loadAction.loading && loadAction.loadingKey === "loading"}
-          records={visibleTasks}
-          noRecordsText={t`No tasks found`}
-          noRecordsIcon={<IconWrapper icon={IconSettingsAutomation} size={48} />}
-          pageSize={tablePageSize}
-          columns={[
-            {
-              accessor: "id",
-              title: t`Task ID`,
-              width: 75
-            },
-            {
-              accessor: "startTime",
-              title: t`Start Time`,
-              render: (item) => (
-                <Anchor component={Link} to={`/tasks/${item.id}`} td="none">
-                  <RelativeDate value={item.startTime} />
-                </Anchor>
-              )
-            },
-            {
-              accessor: "status",
-              title: t`Status`,
-              render: (item) => <TaskStatusDisplay task={item} />
-            },
-            {
-              accessor: "kind",
-              title: t`Kind`,
-              render: (item) => <TaskKindDisplay kind={item.kind} />
-            },
-            {
-              accessor: "description",
-              title: t`Description`,
-              visibleMediaQuery: (theme) => `(min-width: ${theme.breakpoints.md})`
-            },
-            {
-              accessor: "actions",
-              title: <IconClick size={16} />,
-              width: "0%",
-              textAlign: "right",
-              render: (item) =>
-                item.status === "RUNNING" && (
-                  <RowAction
-                    label={t({
-                      context: "cancel-operation",
-                      message: "Cancel Task"
-                    })}
-                    icon={IconBan}
-                    color="red.5"
-                    loading={cancelTaskAction.loading && cancelTaskAction.loadingKey === item.id}
-                    onClick={() =>
-                      confirmAction({
-                        title: t`Cancel this task?`,
-                        message: item.description,
-                        confirmLabel: t`Cancel task`,
-                        cancelLabel: t`Keep running`,
-                        onConfirm: () => cancelTaskAction.execute(item.id, item.id)
-                      })
+        <PageState
+          hasData={data !== undefined}
+          loading={data === undefined && !loadAction.error}
+          error={loadAction.error}
+        >
+          <DataGrid
+            loading={loadAction.loading && loadAction.loadingKey === "loading"}
+            records={visibleTasks}
+            noRecordsText={t`No tasks found`}
+            noRecordsIcon={<IconWrapper icon={IconSettingsAutomation} size={48} />}
+            pageSize={tablePageSize}
+            columns={[
+              {
+                accessor: "id",
+                title: t`Task ID`,
+                visibleMediaQuery: (theme) => `(min-width: ${theme.breakpoints.md})`,
+                width: 75
+              },
+              {
+                accessor: "startTime",
+                title: t`Start Time`,
+                render: (item) => (
+                  <ResponsiveCell
+                    hiddenFrom="md"
+                    secondary={
+                      <Stack gap={6}>
+                        <TaskStatusDisplay task={item} />
+                        {renderMeta(item)}
+                        {renderActions(item)}
+                      </Stack>
+                    }
+                    primary={
+                      <Anchor component={Link} to={`/tasks/${item.id}`} td="none">
+                        <RelativeDate value={item.startTime} />
+                      </Anchor>
                     }
                   />
                 )
-            }
-          ]}
-        />
+              },
+              {
+                accessor: "status",
+                title: t`Status`,
+                visibleMediaQuery: (theme) => `(min-width: ${theme.breakpoints.md})`,
+                render: (item) => <TaskStatusDisplay task={item} />
+              },
+              {
+                accessor: "kind",
+                title: t`Kind`,
+                visibleMediaQuery: (theme) => `(min-width: ${theme.breakpoints.md})`,
+                render: (item) => <TaskKindDisplay kind={item.kind} />
+              },
+              {
+                accessor: "description",
+                title: t`Description`,
+                visibleMediaQuery: (theme) => `(min-width: ${theme.breakpoints.md})`
+              },
+              {
+                accessor: "actions",
+                title: <IconClick size={16} />,
+                visibleMediaQuery: (theme) => `(min-width: ${theme.breakpoints.md})`,
+                width: "0%",
+                textAlign: "right",
+                render: renderActions
+              }
+            ]}
+          />
+        </PageState>
       </Stack>
     </Container>
   );

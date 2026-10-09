@@ -5,6 +5,8 @@ import { Link } from "react-router";
 import IconWrapper from "../IconWrapper";
 import { useTaskCounts } from "./useTaskCounts";
 
+const COUNT_LINK_STYLE = { display: "inline-flex", alignItems: "center", minHeight: 24 } as const;
+
 export function TaskCounts() {
   const { success, failed, running } = useTaskCounts();
 
@@ -12,7 +14,14 @@ export function TaskCounts() {
     <Group gap="sm">
       {success > 0 && (
         <Tooltip label={t`${success} task(s) completed`}>
-          <Anchor component={Link} to="/tasks" c="inherit" td="none" aria-label={t`${success} task(s) completed`}>
+          <Anchor
+            component={Link}
+            to="/tasks"
+            c="inherit"
+            td="none"
+            style={COUNT_LINK_STYLE}
+            aria-label={t`${success} task(s) completed`}
+          >
             <Group gap={5}>
               <IconWrapper icon={IconCircleCheck} color="green" size={16} />
               <Text fz="sm" ff="monospace">
@@ -29,6 +38,7 @@ export function TaskCounts() {
             to="/tasks"
             c="inherit"
             td="none"
+            style={COUNT_LINK_STYLE}
             aria-label={t`${failed} task(s) failed in the last 24 hours`}
           >
             <Group gap={5}>
@@ -42,7 +52,14 @@ export function TaskCounts() {
       )}
       {running > 0 && (
         <Tooltip label={t`${running} task(s) in progress`}>
-          <Anchor component={Link} to="/tasks" c="inherit" td="none" aria-label={t`${running} task(s) in progress`}>
+          <Anchor
+            component={Link}
+            to="/tasks"
+            c="inherit"
+            td="none"
+            style={COUNT_LINK_STYLE}
+            aria-label={t`${running} task(s) in progress`}
+          >
             <Group gap={5}>
               <IconWrapper icon={IconStopwatch} color="teal" size={18} />
               <Text fz="sm" ff="monospace">

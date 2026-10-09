@@ -1,12 +1,25 @@
-import { type CSSVariablesResolver, createTheme } from "@mantine/core";
+import { Checkbox, type CSSVariablesResolver, createTheme, Modal } from "@mantine/core";
 
-export const theme = createTheme({
-  fontFamily: '"Nunito Variable", sans-serif',
-  autoContrast: true,
-  luminanceThreshold: 0.179,
-  primaryShade: { light: 8, dark: 8 },
-  respectReducedMotion: true
-});
+export function buildTheme(closeLabel: string) {
+  return createTheme({
+    fontFamily: '"Nunito Variable", sans-serif',
+    autoContrast: true,
+    luminanceThreshold: 0.179,
+    primaryShade: { light: 8, dark: 8 },
+    respectReducedMotion: true,
+    headings: {
+      sizes: {
+        h1: { fontSize: "1.75rem", lineHeight: "1.25" }
+      }
+    },
+    components: {
+      Checkbox: Checkbox.extend({ defaultProps: { size: "md" } }),
+      Modal: Modal.extend({
+        defaultProps: { closeButtonProps: { "aria-label": closeLabel } }
+      })
+    }
+  });
+}
 
 export const cssVariablesResolver: CSSVariablesResolver = () => ({
   variables: {},

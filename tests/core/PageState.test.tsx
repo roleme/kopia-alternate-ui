@@ -45,6 +45,29 @@ describe("PageState", () => {
     expect(getByText("Nothing to show")).toBeTruthy();
   });
 
+  test("with data, an error is shown above the content instead of replacing it", () => {
+    const { queryByText, queryByRole } = render(
+      <PageState hasData loading error={error}>
+        <div>content</div>
+      </PageState>
+    );
+
+    expect(queryByText("Boom")).toBeTruthy();
+    expect(queryByText("content")).toBeTruthy();
+    expect(queryByRole("status")).toBeNull();
+  });
+
+  test("with data and no error, only the content is shown", () => {
+    const { queryByText, queryByRole } = render(
+      <PageState hasData>
+        <div>content</div>
+      </PageState>
+    );
+
+    expect(queryByText("content")).toBeTruthy();
+    expect(queryByRole("status")).toBeNull();
+  });
+
   test("loading state is announced", () => {
     const { getByRole } = render(<PageState loading />);
 

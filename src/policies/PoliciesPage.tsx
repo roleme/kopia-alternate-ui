@@ -9,11 +9,13 @@ import { newActionProps } from "../core/commonButtons";
 import { useAppContext } from "../core/context/AppContext";
 import { useServerInstanceContext } from "../core/context/ServerInstanceContext";
 import { DataGrid } from "../core/DataGrid/DataGrid";
-import { ErrorAlert } from "../core/ErrorAlert/ErrorAlert";
 import useApiRequest from "../core/hooks/useApiRequest";
 import IconWrapper from "../core/IconWrapper";
 import { MenuButton } from "../core/MenuButton/MenuButton";
+import { MetaLine } from "../core/MetaLine";
 import { PageHeader } from "../core/PageHeader/PageHeader";
+import { PageState } from "../core/PageState/PageState";
+import { ResponsiveCell } from "../core/ResponsiveCell";
 import { RowAction } from "../core/RowAction";
 import { type ItemAction, type PolicyRef, type SourceInfo, type Sources } from "../core/types";
 import { formatOwnerName } from "../utils/formatOwnerName";
@@ -35,6 +37,7 @@ function PoliciesPage() {
   const { kopiaService } = useServerInstanceContext();
   const { pageSize: tablePageSize } = useAppContext();
   const [data, setData] = useState<PolicyRef[]>([]);
+  const [loaded, setLoaded] = useState(false);
   const [sources, setSources] = useState<Sources>();
   const [searchParams] = useSearchParams();
   const [action, setAction] = useState<ItemAction<{ isNew: boolean; target: SourceInfo }, "edit" | "new">>();
@@ -43,6 +46,7 @@ function PoliciesPage() {
     action: () => kopiaService.getPolicies(),
     onReturn(resp) {
       setData(resp.policies);
+      setLoaded(true);
     }
   });
   const { execute: executeSources } = useApiRequest({
@@ -131,6 +135,41 @@ function PoliciesPage() {
     return dta;
   }, [data, filterState, localSourceName, sources]);
 
+  const renderDefined = (item: PolicyRef) => (
+    <Group gap="xs">
+      {getNonEmptyPolicies(item)
+        .sort()
+        .map((x) => (
+          <PolicyFeatureBadge policyFeature={x} key={x} />
+        ))}
+    </Group>
+  );
+
+  const renderActions = (item: PolicyRef) => (
+    <RowAction
+      label={t`Edit policy`}
+      icon={IconPencil}
+      color="yellow.5"
+      onClick={() =>
+        setAction({
+          action: "edit",
+          item: {
+            isNew: false,
+            target: item.target
+          }
+        })
+      }
+    />
+  );
+
+  const renderTargetMeta = (item: PolicyRef) => (
+    <Stack gap={4}>
+      <MetaLine items={[{ key: "owner", content: `${item.target.userName || "*"}@${item.target.host || "*"}` }]} />
+      {renderDefined(item)}
+      {renderActions(item)}
+    </Stack>
+  );
+
   return (
     <Container fluid>
       <Stack>
@@ -163,68 +202,55 @@ function PoliciesPage() {
           disabled={loading}
         />
         <Divider />
-        <ErrorAlert error={error} />
-        <DataGrid
-          idAccessor="id"
-          records={visibleData}
-          loading={loading && loadingKey === "loading"}
-          noRecordsText={t`No policies found`}
-          noRecordsIcon={<IconWrapper icon={IconFileCertificate} size={48} />}
-          pageSize={tablePageSize}
-          columns={[
-            {
-              accessor: "target.username",
-              title: t`Username`,
-              render: (item) => item.target.userName || "*"
-            },
-            {
-              accessor: "target.host",
-              title: t`Host`,
-              render: (item) => item.target.host || "*"
-            },
-            {
-              accessor: "target.path",
-              title: t`Path`,
-              render: (item) => item.target.path || "*"
-            },
-            {
-              accessor: "defined",
-              title: t`Defined`,
-              visibleMediaQuery: (theme) => `(min-width: ${theme.breakpoints.md})`,
-              render: (item) => (
-                <Group gap="xs">
-                  {getNonEmptyPolicies(item)
-                    .sort()
-                    .map((x) => (
-                      <PolicyFeatureBadge policyFeature={x} key={x} />
-                    ))}
-                </Group>
-              )
-            },
-            {
-              accessor: "actions",
-              title: <IconClick size={16} />,
-              width: "0%",
-              textAlign: "right",
-              render: (item) => (
-                <RowAction
-                  label={t`Edit policy`}
-                  icon={IconPencil}
-                  color="yellow.5"
-                  onClick={() =>
-                    setAction({
-                      action: "edit",
-                      item: {
-                        isNew: false,
-                        target: item.target
-                      }
-                    })
-                  }
-                />
-              )
-            }
-          ]}
-        />
+        <PageState hasData={loaded} loading={!loaded && !error} error={error}>
+          <DataGrid
+            idAccessor="id"
+            records={visibleData}
+            loading={loading && loadingKey === "loading"}
+            noRecordsText={t`No policies found`}
+            noRecordsIcon={<IconWrapper icon={IconFileCertificate} size={48} />}
+            pageSize={tablePageSize}
+            columns={[
+              {
+                accessor: "target.username",
+                title: t`Username`,
+                visibleMediaQuery: (theme) => `(min-width: ${theme.breakpoints.md})`,
+                render: (item) => item.target.userName || "*"
+              },
+              {
+                accessor: "target.host",
+                title: t`Host`,
+                visibleMediaQuery: (theme) => `(min-width: ${theme.breakpoints.md})`,
+                render: (item) => item.target.host || "*"
+              },
+              {
+                accessor: "target.path",
+                title: t`Path`,
+                render: (item) => (
+                  <ResponsiveCell
+                    hiddenFrom="md"
+                    secondary={renderTargetMeta(item)}
+                    primary={item.target.path || "*"}
+                  />
+                )
+              },
+              {
+                accessor: "defined",
+                title: t`Defined`,
+                visibleMediaQuery: (theme) => `(min-width: ${theme.breakpoints.md})`,
+                render: renderDefined
+              },
+              {
+                accessor: "actions",
+                title: <IconClick size={16} />,
+                visibleMediaQuery: (theme) => `(min-width: ${theme.breakpoints.md})`,
+                width: "0%",
+                textAlign: "right",
+                render: renderActions
+              }
+            ]}
+          />
+        </PageState>
       </Stack>
       {action && action.action === "edit" && (
         <PolicyModal
