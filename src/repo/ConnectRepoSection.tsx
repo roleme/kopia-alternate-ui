@@ -98,7 +98,12 @@ function ConnectRepoSection({ form, goBack }: Props) {
   return (
     <Stack>
       <ErrorAlert error={connectRepoAction.error} />
-      <TextInput label={t`Connect as`} defaultValue={`${form.values.username}@${form.values.hostname}`} />
+      <TextInput
+        label={t`Connect as`}
+        description={t`Change this under Advanced Options`}
+        readOnly
+        value={`${form.values.username}@${form.values.hostname}`}
+      />
       {form.values.provider !== "_token" && form.values.provider !== "_server" && (
         <PasswordInput
           label={t`Repository Password`}

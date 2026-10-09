@@ -141,7 +141,7 @@ function ConfigureRepoSection() {
             if (values.password !== values.confirmPassword) {
               return context.createError({
                 path: "confirmPassword",
-                message: "Passwords does not match"
+                message: t`Passwords do not match`
               });
             }
           }

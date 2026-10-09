@@ -17,6 +17,7 @@ type PreferencesForm = {
   pageSize: string;
   locale: string;
   defaultSnapshotViewAll: boolean;
+  showStatistics: boolean;
 };
 
 function AppearanceSection() {
@@ -50,7 +51,8 @@ function AppearanceSection() {
         pageSize: resp.pageSize.toString() === "0" ? "20" : resp.pageSize.toString(),
         theme: parseColorScheme(resp.theme),
         locale: resp.locale || "en",
-        defaultSnapshotViewAll: resp.defaultSnapshotViewAll
+        defaultSnapshotViewAll: resp.defaultSnapshotViewAll,
+        showStatistics
       });
     }
   });
@@ -73,6 +75,7 @@ function AppearanceSection() {
 
   function submitForm(values: Preferences) {
     setColorScheme(values.theme as "light" | "dark");
+    setShowStatistics(form.getValues().showStatistics);
     setPreferences.execute(values);
   }
   if (loadPreferences.loading) {
@@ -150,9 +153,10 @@ function AppearanceSection() {
         />
         <Checkbox
           label={t`Show snapshot statistics`}
-          description={t`Charts at the top of the snapshot history page. Applies immediately and is stored in this browser only.`}
-          checked={showStatistics}
-          onChange={(e) => setShowStatistics(e.currentTarget.checked)}
+          description={t`Charts at the top of the snapshot history page. Stored in this browser only.`}
+          {...form.getInputProps("showStatistics", {
+            type: "checkbox"
+          })}
         />
         <Group justify="flex-end" p="sm">
           <Button type="submit" color="green">
