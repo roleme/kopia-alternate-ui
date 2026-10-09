@@ -12,12 +12,10 @@ import {
   Stack,
   Text,
   TextInput,
-  Title,
   Tooltip
 } from "@mantine/core";
 import { useDebouncedValue, useDisclosure, useInputState, usePrevious } from "@mantine/hooks";
 import {
-  IconArrowLeft,
   IconCheck,
   IconClick,
   IconCopy,
@@ -31,7 +29,6 @@ import type { DataTableSortStatus } from "mantine-datatable";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import { useLocation } from "react-router-dom";
-import { refreshButtonProps } from "../core/commonButtons";
 import { useAppContext } from "../core/context/AppContext";
 import { useServerInstanceContext } from "../core/context/ServerInstanceContext";
 import { DataGrid } from "../core/DataGrid/DataGrid";
@@ -39,6 +36,8 @@ import { ErrorAlert } from "../core/ErrorAlert/ErrorAlert";
 import FormattedDate from "../core/FormattedDate";
 import useApiRequest from "../core/hooks/useApiRequest";
 import IconWrapper from "../core/IconWrapper";
+import { PageHeader } from "../core/PageHeader/PageHeader";
+import { RowAction } from "../core/RowAction";
 import { type DirEntry, type DirManifest, type MountedSnapshot } from "../core/types";
 import sizeDisplayName from "../utils/formatSize";
 import { onlyUnique } from "../utils/onlyUnique";
@@ -108,59 +107,58 @@ function SnapshotDirectory() {
   return (
     <Container fluid>
       <Stack>
-        <Group justify="space-between">
-          <Group>
-            <ActionIcon variant="subtle" onClick={() => navigate(-1)}>
-              <IconArrowLeft size={24} />
-            </ActionIcon>
-            <Stack gap={0}>
-              <Title order={1}>
-                <Trans>Snapshot</Trans>: {oid}
-              </Title>
-              <DirectoryCrumbs />
-            </Stack>
-          </Group>
-
-          <Group>
-            <TextInput
-              size="sm"
-              placeholder={t`Search files or folder (current level)`}
-              leftSection={<IconSearch size={18} />}
-              value={query}
-              onChange={setQuery}
-            />
-            <Button
-              size="xs"
-              color="green"
-              leftSection={<IconFileDelta size={16} />}
-              onClick={setShow.open}
-              disabled={hasError}
-            >
-              <Trans>Restore</Trans>
-            </Button>
-            {oid && <MountButton mount={mount} rootID={oid} onMounted={(mnt) => setMount(mnt)} disabled={hasError} />}
-            <Button
-              loading={loading && loadingKey === "refresh"}
-              onClick={() => execute(undefined, "refresh")}
-              {...refreshButtonProps}
-            >
-              <Trans>Refresh</Trans>
-            </Button>
-          </Group>
-        </Group>
+        <PageHeader
+          title={
+            <>
+              <Trans>Snapshot</Trans>: {oid}
+            </>
+          }
+          subtitle={<DirectoryCrumbs />}
+          onBack={() => navigate(-1)}
+          onRefresh={() => execute(undefined, "refresh")}
+          refreshing={loading && loadingKey === "refresh"}
+          actions={
+            <>
+              <TextInput
+                size="sm"
+                placeholder={t`Search files or folder (current level)`}
+                aria-label={t`Search files or folder (current level)`}
+                leftSection={<IconSearch size={18} />}
+                value={query}
+                onChange={setQuery}
+              />
+              <Button
+                size="xs"
+                color="green"
+                leftSection={<IconFileDelta size={16} />}
+                onClick={setShow.open}
+                disabled={hasError}
+              >
+                <Trans>Restore</Trans>
+              </Button>
+              {oid && <MountButton mount={mount} rootID={oid} onMounted={(mnt) => setMount(mnt)} disabled={hasError} />}
+            </>
+          }
+        />
         <Divider />
         <ErrorAlert error={error} />
         {mount && (
-          <Alert title="Snapshot Mounted" color="grape">
+          <Alert title={t`Snapshot Mounted`} color="grape">
             <Trans>Snapshot is mounted at the following path</Trans>:
             <TextInput
               readOnly
+              aria-label={t`Mount path`}
               defaultValue={mount.path}
               rightSection={
                 <CopyButton value={mount.path} timeout={2000}>
                   {({ copied, copy }) => (
-                    <Tooltip label={copied ? "Copied" : "Copy"} withArrow position="right">
-                      <ActionIcon color={copied ? "teal.5" : "gray.5"} variant="subtle" onClick={copy}>
+                    <Tooltip label={copied ? t`Copied` : t`Copy`} withArrow position="right">
+                      <ActionIcon
+                        color={copied ? "teal.5" : "gray.5"}
+                        variant="subtle"
+                        aria-label={copied ? t`Copied` : t`Copy`}
+                        onClick={copy}
+                      >
                         {copied ? <IconCheck size={16} /> : <IconCopy size={16} />}
                       </ActionIcon>
                     </Tooltip>
@@ -175,7 +173,7 @@ function SnapshotDirectory() {
             idAccessor={(snap: DirEntry) => `${snap.obj}-${snap.type}-${snap.name}`}
             loading={loading && loadingKey === "loading"}
             records={visibleItems}
-            noRecordsText={debouncedQuery !== "" ? t`No entires matching your search` : t`No entries in folder`}
+            noRecordsText={debouncedQuery !== "" ? t`No entries matching your search` : t`No entries in folder`}
             noRecordsIcon={<IconWrapper icon={IconFolderOpen} size={48} />}
             pageSize={tablePageSize}
             columns={[
@@ -242,16 +240,12 @@ function SnapshotDirectory() {
                 textAlign: "right",
                 render: (item) =>
                   item.type !== "d" && (
-                    <Tooltip label={t`Download`}>
-                      <ActionIcon
-                        variant="subtle"
-                        color="blue.5"
-                        component="a"
-                        href={kopiaService.objectUrl(item.obj, item.name)}
-                      >
-                        <IconFileDownload size={18} />
-                      </ActionIcon>
-                    </Tooltip>
+                    <RowAction
+                      label={t`Download`}
+                      icon={IconFileDownload}
+                      color="blue.5"
+                      href={kopiaService.objectUrl(item.obj, item.name)}
+                    />
                   )
               }
             ]}

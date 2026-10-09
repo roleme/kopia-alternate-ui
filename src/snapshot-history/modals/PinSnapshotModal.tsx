@@ -85,7 +85,7 @@ export default function PinSnapshotModal({ snapshot, pin, onCancel, onUpdated }:
         <Group>
           {pin && (
             <Button size="xs" type="submit" color="red" loading={intLoading} onClick={() => deletePin()}>
-              <Trans>Delete</Trans>
+              <Trans>Remove pin</Trans>
             </Button>
           )}
           <Button size="xs" type="submit" form="pin-snapshot-form" loading={intLoading} disabled={!form.isValid()}>

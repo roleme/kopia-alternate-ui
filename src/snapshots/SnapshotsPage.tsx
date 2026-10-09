@@ -17,6 +17,7 @@ import useApiRequest from "../core/hooks/useApiRequest";
 import { useInterval } from "../core/hooks/useInterval";
 import IconWrapper from "../core/IconWrapper";
 import { MenuButton } from "../core/MenuButton/MenuButton";
+import { RefreshButton } from "../core/RefreshButton";
 import RelativeDate from "../core/RelativeDate";
 import type { SourceInfo, SourceStatus, Sources } from "../core/types";
 import { formatOwnerName } from "../utils/formatOwnerName";
@@ -25,6 +26,8 @@ import { onlyUnique } from "../utils/onlyUnique";
 import SourceRowActions from "./components/SourceRowActions";
 import SourceStatusCell, { EmptyCell } from "./components/SourceStatusCell";
 import NewSnapshotModal from "./modals/NewSnapshotModal";
+import { normalizeRefreshInterval } from "./refreshInterval";
+import { sourceHistoryLink } from "./sourceLinks";
 
 function SnapshotsPage() {
   const { kopiaService } = useServerInstanceContext();
@@ -36,11 +39,12 @@ function SnapshotsPage() {
     columnAccessor: "source.path",
     direction: "asc"
   });
-  const [refreshInterval, setRefreshInterval] = useLocalStorage<number | null>({
+  const [storedRefreshInterval, setRefreshInterval] = useLocalStorage<number | null>({
     key: "kopia-alt-ui-snapshot-refresh",
     defaultValue: 3000,
     getInitialValueInEffect: false
   });
+  const refreshInterval = normalizeRefreshInterval(storedRefreshInterval);
 
   const activeRefreshInterval = useMemo(() => {
     if (data?.sources !== undefined && data.sources.some((x) => x.status === "PENDING" || x.status === "UPLOADING")) {
@@ -117,11 +121,11 @@ function SnapshotsPage() {
         <Group justify="space-between">
           <Group>
             <MenuButton
-              prefix="Refresh:"
+              prefix={t`Refresh:`}
               options={[
                 { label: t`Disabled`, value: "" },
                 { label: t`3 seconds`, value: "3000" },
-                { label: t`10 seconds`, value: "15000" },
+                { label: t`10 seconds`, value: "10000" },
                 { label: t`30 seconds`, value: "30000" },
                 { label: t`1 minute`, value: "60000" },
                 { label: t`5 minutes`, value: "300000" }
@@ -153,13 +157,10 @@ function SnapshotsPage() {
             >
               <Trans>New Snapshot</Trans>
             </Button>
-            <Button
+            <RefreshButton
               loading={loadAction.loading && loadAction.loadingKey === "refresh"}
               onClick={() => loadAction.execute(undefined, "refresh")}
-              {...refreshButtonProps}
-            >
-              <Trans>Refresh</Trans>
-            </Button>
+            />
             <Button
               loading={syncAction.loading}
               onClick={() => syncAction.execute()}
@@ -177,7 +178,7 @@ function SnapshotsPage() {
           records={visibleData}
           loading={loadAction.loading && loadAction.loadingKey === "loading"}
           idAccessor="source.path"
-          noRecordsText="No snapshots taken"
+          noRecordsText={t`No snapshots taken`}
           noRecordsIcon={<IconWrapper icon={IconFileDatabase} size={48} />}
           pageSize={tablePageSize}
           sortStatus={sortStatus}
@@ -194,10 +195,7 @@ function SnapshotsPage() {
                   </Box>
                   <Anchor
                     component={Link}
-                    to={{
-                      pathname: "/snapshots/single-source",
-                      search: `?userName=${item.source.userName}&host=${item.source.host}&path=${encodeURIComponent(item.source.path)}`
-                    }}
+                    to={sourceHistoryLink(item.source)}
                     td="none"
                     fz="sm"
                     style={{ overflowWrap: "break-word", minWidth: 0 }}

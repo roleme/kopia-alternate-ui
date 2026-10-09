@@ -38,7 +38,7 @@ export default function DeleteSnapshotModal({ onCancel, onDeleted, isAll, snapsh
 
   return (
     <Modal
-      title="Delete snapshot?"
+      title={snapshots.length === 1 ? t`Delete snapshot?` : t`Delete snapshots?`}
       onClose={onCancel}
       opened
       styles={modalBaseStyles}
@@ -63,6 +63,9 @@ export default function DeleteSnapshotModal({ onCancel, onDeleted, isAll, snapsh
             </Trans>
           </Text>
         )}
+        <Text fz="sm">
+          <Trans>This cannot be undone.</Trans>
+        </Text>
         {isAll && (
           <Checkbox
             label={t`Wipe all snapshots and the policy for this source`}
