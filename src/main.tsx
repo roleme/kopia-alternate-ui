@@ -4,21 +4,22 @@ import "@mantine/dates/styles.layer.css";
 import "@mantine/notifications/styles.layer.css";
 import "mantine-datatable/styles.layer.css";
 import "@mantine/charts/styles.layer.css";
-import { StrictMode } from "react";
+import { lazy, StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 import BaseLayout from "./BaseLayout.tsx";
 import "./index.css";
-import PoliciesPage from "./policies/PoliciesPage.tsx";
-import PreferencesPage from "./preferences/PreferencesPage.tsx";
-import RepoPage from "./repo/RepoPage.tsx";
-import SnapshotComparePage from "./snapshot-compare/SnapshotComparePage.tsx";
-import SnapshotDirectory from "./snapshot-directory/SnapshotDirectory.tsx";
-import SnapshotHistory from "./snapshot-history/SnapshotHistory.tsx";
-import SnapshotMountsPage from "./snapshot-mounts/SnapshotMountsPage.tsx";
-import SnapshotsPage from "./snapshots/SnapshotsPage.tsx";
-import TaskDetailsPage from "./tasks/TaskDetailsPage.tsx";
-import TasksPage from "./tasks/TasksPage.tsx";
+
+const PoliciesPage = lazy(() => import("./policies/PoliciesPage.tsx"));
+const PreferencesPage = lazy(() => import("./preferences/PreferencesPage.tsx"));
+const RepoPage = lazy(() => import("./repo/RepoPage.tsx"));
+const SnapshotComparePage = lazy(() => import("./snapshot-compare/SnapshotComparePage.tsx"));
+const SnapshotDirectory = lazy(() => import("./snapshot-directory/SnapshotDirectory.tsx"));
+const SnapshotHistory = lazy(() => import("./snapshot-history/SnapshotHistory.tsx"));
+const SnapshotMountsPage = lazy(() => import("./snapshot-mounts/SnapshotMountsPage.tsx"));
+const SnapshotsPage = lazy(() => import("./snapshots/SnapshotsPage.tsx"));
+const TaskDetailsPage = lazy(() => import("./tasks/TaskDetailsPage.tsx"));
+const TasksPage = lazy(() => import("./tasks/TasksPage.tsx"));
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

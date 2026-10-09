@@ -4,10 +4,11 @@ import { useLingui } from "@lingui/react/macro";
 import { AppShell, MantineProvider } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
 import { Notifications } from "@mantine/notifications";
-import { type PropsWithChildren, useEffect, useMemo } from "react";
+import { type PropsWithChildren, Suspense, useEffect, useMemo } from "react";
 import { Outlet } from "react-router-dom";
 import { AppContextProvider } from "./core/context/AppContext";
 import { ServerInstanceContextProvider } from "./core/context/ServerInstanceContext";
+import { PageState } from "./core/PageState/PageState";
 import { MobileHeader } from "./core/Sidebar/MobileHeader";
 import { Sidebar } from "./core/Sidebar/Sidebar";
 import { SHELL_PROPS } from "./core/Sidebar/shellLayout";
@@ -20,7 +21,7 @@ function ThemedProvider({ children }: PropsWithChildren) {
   const theme = useMemo(() => buildTheme(t`Close`), [t]);
 
   return (
-    <MantineProvider defaultColorScheme="dark" theme={theme} cssVariablesResolver={cssVariablesResolver}>
+    <MantineProvider defaultColorScheme="auto" theme={theme} cssVariablesResolver={cssVariablesResolver}>
       {children}
     </MantineProvider>
   );
@@ -43,7 +44,9 @@ function BaseLayout() {
                 <MobileHeader />
                 <Sidebar />
                 <AppShell.Main id={MAIN_CONTENT_ID} tabIndex={-1}>
-                  <Outlet />
+                  <Suspense fallback={<PageState loading />}>
+                    <Outlet />
+                  </Suspense>
                 </AppShell.Main>
               </AppShell>
             </AppContextProvider>

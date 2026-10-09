@@ -18,7 +18,7 @@ import { useServerInstanceContext } from "../context/ServerInstanceContext";
 import IconWrapper from "../IconWrapper";
 import classes from "./ConnectionInfo.module.css";
 
-export function ConnectionInfo() {
+export function ConnectionInfo({ busy = false }: { busy?: boolean }) {
   const { repoStatus } = useAppContext();
   const { servers, currentServer, setServer, logoutFromServer } = useServerInstanceContext();
 
@@ -28,7 +28,7 @@ export function ConnectionInfo() {
         <UnstyledButton className={classes.serverSelect}>
           <Indicator
             position="middle-start"
-            processing={repoStatus.connected}
+            processing={repoStatus.connected && busy}
             color={repoStatus.connected ? "green" : "red"}
           >
             <Text ml="xs" fz="xs" p="2">
