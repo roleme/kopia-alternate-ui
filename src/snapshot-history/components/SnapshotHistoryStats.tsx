@@ -1,6 +1,6 @@
 import { t } from "@lingui/core/macro";
 import { SimpleGrid } from "@mantine/core";
-import { IconCalendar, IconFiles, IconServer } from "@tabler/icons-react";
+import { IconFiles, IconServer } from "@tabler/icons-react";
 import { useEffect, useMemo, useState } from "react";
 import { useAppContext } from "../../core/context/AppContext";
 import { useServerInstanceContext } from "../../core/context/ServerInstanceContext";
@@ -37,24 +37,10 @@ export default function SnapshotHistoryStats({ sourceInfo }: Props) {
     }
   }, [showStatistics]);
 
-  const groupedByDate = useMemo(() => {
-    const grouped = groupBy(data, (s) => formatLocalDate(s.startTime, locale, "L"));
-    return grouped;
-  }, [data, locale]);
   const groupedByDateAndTime = useMemo(() => {
     const grouped = groupBy(data, (s) => formatLocalDate(s.startTime, locale, "L LT"));
     return grouped;
   }, [data, locale]);
-
-  const snapshotsByDate = useMemo(() => {
-    const keys = Array.from(groupedByDate.keys());
-    return keys.map((k) => {
-      return {
-        date: k,
-        items: groupedByDate.get(k).length
-      };
-    });
-  }, [groupedByDate]);
 
   const filesAndDirsAndSizeByDate = useMemo(() => {
     const keys = Array.from(groupedByDateAndTime.keys());
@@ -74,15 +60,7 @@ export default function SnapshotHistoryStats({ sourceInfo }: Props) {
   if (!showStatistics) return null;
 
   return (
-    <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }}>
-      <AreaChartStats
-        icon={IconCalendar}
-        title={t`Snapshots by date`}
-        data={snapshotsByDate}
-        dataKey="date"
-        series={[{ name: "items", color: "violet.6", label: t`Snapshots` }]}
-        loading={loadSnapshots.loading}
-      />
+    <SimpleGrid cols={{ base: 1, md: 2 }}>
       <AreaChartStats
         icon={IconServer}
         title={t`Size over time`}

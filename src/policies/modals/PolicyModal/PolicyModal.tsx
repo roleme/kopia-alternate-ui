@@ -1,6 +1,7 @@
 import { Trans } from "@lingui/react/macro";
 import { Button, Group, LoadingOverlay, Modal, Tabs, TabsList, TabsTab } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { useMediaQuery } from "@mantine/hooks";
 import {
   IconAlertTriangle,
   IconCalendarX,
@@ -62,6 +63,7 @@ export default function PolicyModal({
   saveOnSubmit = true
 }: Props) {
   const { kopiaService } = useServerInstanceContext();
+  const narrow = useMediaQuery("(max-width: 48em)", false, { getInitialValueInEffect: false });
   const [resolved, setResolved] = useState<ResolvedPolicy>();
   const isGlobal = target.host === "" && target.userName === "" && target.path === "";
 
@@ -186,6 +188,7 @@ export default function PolicyModal({
       styles={modalBaseStyles}
       className={modalClasses.modalWrapper}
       closeOnClickOutside={false}
+      fullScreen={narrow}
       size="xl"
     >
       <form id="update-policy-form" onSubmit={form.onSubmit(submitForm)} className={modalClasses.container}>
@@ -194,12 +197,12 @@ export default function PolicyModal({
           <ErrorAlert error={loadError || resolveError} />
           <Tabs
             defaultValue="snapshot-retention"
-            orientation="vertical"
+            orientation={narrow ? "horizontal" : "vertical"}
             variant="outline"
             styles={{ tabLabel: { textAlign: "left" } }}
             keepMounted={false}
           >
-            <TabsList ta="left">
+            <TabsList ta="left" style={narrow ? { flexWrap: "nowrap", overflowX: "auto" } : undefined}>
               <TabsTab
                 value="snapshot-retention"
                 leftSection={<IconWrapper icon={IconCalendarX} size={18} color="teal" />}
