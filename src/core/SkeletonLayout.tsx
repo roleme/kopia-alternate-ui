@@ -1,9 +1,10 @@
 import { Trans } from "@lingui/react/macro";
 import { AppShell, Container, Group, Skeleton, Stack, VisuallyHidden } from "@mantine/core";
 import type { PropsWithChildren } from "react";
-import classes from "./SkeletonLayout.module.css";
-import { SHELL_PROPS } from "./Sidebar/shellLayout";
 import { MobileHeaderSkeleton, SidebarSkeleton } from "./Sidebar/SidebarSkeleton";
+import { SHELL_PROPS } from "./Sidebar/shellLayout";
+import classes from "./SkeletonLayout.module.css";
+import { MAIN_CONTENT_ID } from "./SkipLink/SkipLink";
 
 const ROWS = [
   { id: "a", path: 70 },
@@ -58,7 +59,7 @@ function SkeletonLayout({ children }: PropsWithChildren) {
     <AppShell {...SHELL_PROPS}>
       <MobileHeaderSkeleton />
       <SidebarSkeleton />
-      <AppShell.Main>
+      <AppShell.Main id={MAIN_CONTENT_ID}>
         {children ?? (
           <div role="status" aria-busy="true">
             <VisuallyHidden>

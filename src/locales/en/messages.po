@@ -1156,7 +1156,7 @@ msgstr "List of additional files containing ignore rules (each file configures i
 msgid "List of file and directory names to ignore."
 msgstr "List of file and directory names to ignore."
 
-#: src/core/SkeletonLayout.tsx:65
+#: src/core/SkeletonLayout.tsx:66
 msgid "Loading"
 msgstr ""
 
@@ -1946,6 +1946,10 @@ msgstr "Size over time"
 #: src/snapshot-directory/modals/RestoreModal.tsx:171
 msgid "Skip previously restored files and symlinks"
 msgstr "Skip previously restored files and symlinks"
+
+#: src/core/SkipLink/SkipLink.tsx:9
+msgid "Skip to main content"
+msgstr ""
 
 #: src/preferences/modals/EmailModal.tsx:221
 msgid "SMTP Port"

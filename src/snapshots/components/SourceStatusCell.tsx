@@ -60,7 +60,7 @@ export default function SourceStatusCell({ source, bytesStringBase2 }: Props) {
       );
     case "overdue":
       return (
-        <Text fz="sm" c="yellow.8" style={{ whiteSpace: "nowrap" }}>
+        <Text fz="sm" c="yellow.6" style={{ whiteSpace: "nowrap" }}>
           <Trans>
             Overdue - due <RelativeDate value={view.dueAt} />
           </Trans>
