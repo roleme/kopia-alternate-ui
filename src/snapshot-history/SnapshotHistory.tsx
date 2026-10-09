@@ -1,6 +1,6 @@
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { Anchor, Badge, Button, Container, Group, Stack, Text, Tooltip } from "@mantine/core";
+import { Anchor, Badge, Box, Button, Container, Group, Stack, Text, Tooltip } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import { IconArrowsDiff, IconClick, IconFileDatabase, IconFileText, IconPin, IconTrash } from "@tabler/icons-react";
 import sortBy from "lodash.sortby";
@@ -13,21 +13,21 @@ import { DataGrid } from "../core/DataGrid/DataGrid";
 import FormattedDate from "../core/FormattedDate";
 import useApiRequest from "../core/hooks/useApiRequest";
 import IconWrapper from "../core/IconWrapper";
-import { MetaLine } from "../core/MetaLine";
 import { PageHeader } from "../core/PageHeader/PageHeader";
 import { PageState } from "../core/PageState/PageState";
-import { ResponsiveCell } from "../core/ResponsiveCell";
 import { RowAction } from "../core/RowAction";
 import type { ItemAction, Snapshot, Snapshots, SourceInfo } from "../core/types";
 import signedSizeDisplayName from "../utils/formatSignedSize";
 import sizeDisplayName from "../utils/formatSize";
 import RetentionBadge from "./components/RetentionBadge";
+import { SNAPSHOT_DATE_FORMAT } from "./components/SnapshotCard";
+import SnapshotCardList from "./components/SnapshotCardList";
 import SnapshotCountControl from "./components/SnapshotCountControl";
 import SnapshotHistoryStats from "./components/SnapshotHistoryStats";
 import DeleteSnapshotModal from "./modals/DeleteSnapshotModal";
 import PinSnapshotModal from "./modals/PinSnapshotModal";
 import UpdateDescriptionModal from "./modals/UpdateDescriptionModal";
-import { sizeChangesById } from "./sizeChanges";
+import { countChangesById, sizeChangesById } from "./sizeChanges";
 
 function SnapshotHistory() {
   const { kopiaService } = useServerInstanceContext();
@@ -61,6 +61,7 @@ function SnapshotHistory() {
   };
 
   const sizeChanges = useMemo(() => sizeChangesById(data?.snapshots ?? []), [data]);
+  const countChanges = useMemo(() => countChangesById(data?.snapshots ?? []), [data]);
 
   const visibleData = useMemo(() => {
     if (data?.snapshots === undefined) return [];
@@ -177,16 +178,18 @@ function SnapshotHistory() {
     </Group>
   );
 
-  const renderMeta = (item: Snapshot) => (
-    <MetaLine
-      items={[
-        { key: "size", content: sizeDisplayName(item.summary.size, bytesStringBase2) },
-        { key: "change", content: renderChange(item, "xs") },
-        { key: "files", content: t`${item.summary.files} files` },
-        { key: "dirs", content: t`${item.summary.dirs} dirs` }
-      ]}
-    />
-  );
+  const compareWithPrevious = (item: Snapshot) => {
+    const older = previousSnapshot(item);
+    if (!older) return;
+    const params = new URLSearchParams({
+      host: sourceInfo.host ?? "",
+      userName: sourceInfo.userName ?? "",
+      path: sourceInfo.path ?? "",
+      a: older.rootID,
+      b: item.rootID
+    });
+    navigate(`/snapshots/compare?${params.toString()}`);
+  };
 
   return (
     <Container fluid>
@@ -202,16 +205,18 @@ function SnapshotHistory() {
           refreshing={loading && loadingKey === "refresh"}
           actions={
             selectedRecords.length > 0 && (
-              <Button
-                size="xs"
-                leftSection={<IconTrash size={16} />}
-                color="red"
-                onClick={() => {
-                  setItemAction({ action: "delete" });
-                }}
-              >
-                <Trans>Delete Selected</Trans> ({selectedRecords.length})
-              </Button>
+              <Box visibleFrom="lg">
+                <Button
+                  size="xs"
+                  leftSection={<IconTrash size={16} />}
+                  color="red"
+                  onClick={() => {
+                    setItemAction({ action: "delete" });
+                  }}
+                >
+                  <Trans>Delete Selected</Trans> ({selectedRecords.length})
+                </Button>
+              </Box>
             )
           }
         />
@@ -229,106 +234,110 @@ function SnapshotHistory() {
 
         <SnapshotHistoryStats sourceInfo={sourceInfo} />
         <PageState hasData={data !== undefined} loading={data === undefined && !error} error={error}>
-          <DataGrid
-            selectedRecords={selectedRecords}
-            onSelectedRecordsChange={setSelectedRecords}
-            loading={loading && loadingKey === "loading"}
-            records={visibleData}
-            noRecordsText={t`No snapshots taken`}
-            noRecordsIcon={<IconWrapper icon={IconFileDatabase} size={48} />}
-            pageSize={tablePageSize}
-            sortStatus={sortStatus}
-            onSortStatusChange={setSortStatus}
-            columns={[
-              {
-                accessor: "startTime",
-                title: t`Start Time`,
-                sortable: true,
-                render: (item) => (
-                  <ResponsiveCell
-                    hiddenFrom="lg"
-                    secondary={item.retention.length + item.pins.length > 0 ? renderBadges(item) : undefined}
-                    primary={
-                      <ResponsiveCell
-                        hiddenFrom="md"
-                        secondary={
-                          <Stack gap={6}>
-                            {renderMeta(item)}
-                            {renderActions(item, "left")}
-                          </Stack>
-                        }
-                        primary={
-                          <Stack gap={2}>
-                            <Tooltip label={`${t`Root`}: ${item.rootID}`}>
-                              <Anchor
-                                component={Link}
-                                to={`/snapshots/dir/${item.rootID}`}
-                                state={{ label: searchParams.get("path") }}
-                                td="none"
-                                fz="sm"
-                              >
-                                <FormattedDate value={item.startTime} />
-                              </Anchor>
-                            </Tooltip>
-                            {item.description && (
-                              <Tooltip label={item.description}>
-                                <Text truncate fz="xs" c="dimmed" maw={280}>
-                                  {item.description}
-                                </Text>
-                              </Tooltip>
-                            )}
-                          </Stack>
-                        }
-                      />
-                    }
-                  />
-                )
-              },
-              {
-                accessor: "retention",
-                title: t`Retention`,
-                visibleMediaQuery: (theme) => `(min-width: ${theme.breakpoints.lg})`,
-                render: renderBadges
-              },
-              {
-                accessor: "summary.size",
-                title: t`Size`,
-                visibleMediaQuery: (theme) => `(min-width: ${theme.breakpoints.md})`,
-                sortable: true,
-                textAlign: "center",
-                render: (item) => sizeDisplayName(item.summary.size, bytesStringBase2)
-              },
-              {
-                accessor: "change",
-                title: t`Change`,
-                visibleMediaQuery: (theme) => `(min-width: ${theme.breakpoints.md})`,
-                textAlign: "right",
-                render: (item) => renderChange(item)
-              },
-              {
-                accessor: "summary.files",
-                title: t`Files`,
-                visibleMediaQuery: (theme) => `(min-width: ${theme.breakpoints.md})`,
-                sortable: true,
-                textAlign: "center"
-              },
-              {
-                accessor: "summary.dirs",
-                title: t`Dirs`,
-                visibleMediaQuery: (theme) => `(min-width: ${theme.breakpoints.md})`,
-                sortable: true,
-                textAlign: "center"
-              },
-              {
-                accessor: "actions",
-                title: <IconClick size={16} />,
-                visibleMediaQuery: (theme) => `(min-width: ${theme.breakpoints.md})`,
-                width: "0%",
-                textAlign: "right",
-                render: (item) => renderActions(item, "right")
-              }
-            ]}
-          />
+          <Box hiddenFrom="lg">
+            <SnapshotCardList
+              snapshots={visibleData}
+              pageSize={tablePageSize}
+              sourcePath={sourceInfo.path}
+              bytesStringBase2={bytesStringBase2}
+              sizeChanges={sizeChanges}
+              countChanges={countChanges}
+              hasPrevious={(snapshot) => previousSnapshot(snapshot) !== undefined}
+              selected={selectedRecords}
+              onSelectedChange={setSelectedRecords}
+              onDeleteSelected={() => setItemAction({ action: "delete" })}
+              onSortChange={setSortStatus}
+              onCompare={compareWithPrevious}
+              onDescribe={(item) => setItemAction({ item, action: "description" })}
+              onPin={(item) => {
+                setPinAction(undefined);
+                setItemAction({ item, action: "pin" });
+              }}
+              onEditPin={(item, pin) => {
+                setPinAction({ item: pin, action: "pin" });
+                setItemAction({ item, action: "pin" });
+              }}
+            />
+          </Box>
+          <Box visibleFrom="lg">
+            <DataGrid
+              selectedRecords={selectedRecords}
+              onSelectedRecordsChange={setSelectedRecords}
+              loading={loading && loadingKey === "loading"}
+              records={visibleData}
+              noRecordsText={t`No snapshots taken`}
+              noRecordsIcon={<IconWrapper icon={IconFileDatabase} size={48} />}
+              pageSize={tablePageSize}
+              sortStatus={sortStatus}
+              onSortStatusChange={setSortStatus}
+              columns={[
+                {
+                  accessor: "startTime",
+                  title: t`Start Time`,
+                  sortable: true,
+                  render: (item) => (
+                    <Stack gap={2}>
+                      <Tooltip label={`${t`Root`}: ${item.rootID}`}>
+                        <Anchor
+                          component={Link}
+                          to={`/snapshots/dir/${item.rootID}`}
+                          state={{ label: searchParams.get("path") }}
+                          td="none"
+                          fz="sm"
+                        >
+                          <FormattedDate value={item.startTime} format={SNAPSHOT_DATE_FORMAT} />
+                        </Anchor>
+                      </Tooltip>
+                      {item.description && (
+                        <Tooltip label={item.description}>
+                          <Text truncate fz="xs" c="dimmed" maw={280}>
+                            {item.description}
+                          </Text>
+                        </Tooltip>
+                      )}
+                    </Stack>
+                  )
+                },
+                {
+                  accessor: "retention",
+                  title: t`Retention`,
+                  render: renderBadges
+                },
+                {
+                  accessor: "summary.size",
+                  title: t`Size`,
+                  sortable: true,
+                  textAlign: "center",
+                  render: (item) => sizeDisplayName(item.summary.size, bytesStringBase2)
+                },
+                {
+                  accessor: "change",
+                  title: t`Change`,
+                  textAlign: "right",
+                  render: (item) => renderChange(item)
+                },
+                {
+                  accessor: "summary.files",
+                  title: t`Files`,
+                  sortable: true,
+                  textAlign: "center"
+                },
+                {
+                  accessor: "summary.dirs",
+                  title: t`Dirs`,
+                  sortable: true,
+                  textAlign: "center"
+                },
+                {
+                  accessor: "actions",
+                  title: <IconClick size={16} />,
+                  width: "0%",
+                  textAlign: "right",
+                  render: (item) => renderActions(item, "right")
+                }
+              ]}
+            />
+          </Box>
         </PageState>
       </Stack>
       {itemAction?.action === "description" && itemAction?.item && (

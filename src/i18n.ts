@@ -7,6 +7,7 @@ export async function dynamicActivate() {
   const { messages: nbMessages } = await import("./locales/nb/messages.po");
   i18n.load({
     en: enMessages,
+    "en-GB": enMessages,
     nb: nbMessages
   });
   i18n.activate("en");

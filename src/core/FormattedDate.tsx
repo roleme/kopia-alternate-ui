@@ -3,9 +3,10 @@ import formatLocalDate from "./dates/formatLocalDate";
 
 type Props = {
   value: string;
+  format?: string;
 };
 
-export default function FormattedDate({ value }: Props) {
+export default function FormattedDate({ value, format = "L LTS" }: Props) {
   const { locale } = useAppContext();
-  return formatLocalDate(value, locale, "L LTS");
+  return formatLocalDate(value, locale, format);
 }
