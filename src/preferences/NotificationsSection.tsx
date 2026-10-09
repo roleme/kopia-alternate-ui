@@ -48,7 +48,7 @@ function NotificationsSection() {
     onReturn: () => {
       showNotification({
         title: t`Test notification sent`,
-        message: t`A test notification was send using the defined profile`,
+        message: t`A test notification was sent using the defined profile`,
         color: "green",
         icon: <IconCircleCheck size={16} />
       });

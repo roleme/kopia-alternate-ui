@@ -12,7 +12,7 @@ export function TaskCounts() {
     <Group gap="sm">
       {success > 0 && (
         <Tooltip label={t`${success} task(s) completed`}>
-          <Anchor component={Link} to="/tasks" c="inherit" td="none">
+          <Anchor component={Link} to="/tasks" c="inherit" td="none" aria-label={t`${success} task(s) completed`}>
             <Group gap={5}>
               <IconWrapper icon={IconCircleCheck} color="green" size={16} />
               <Text fz="sm" ff="monospace">
@@ -24,7 +24,13 @@ export function TaskCounts() {
       )}
       {failed > 0 && (
         <Tooltip label={t`${failed} task(s) failed in the last 24 hours`}>
-          <Anchor component={Link} to="/tasks" c="inherit" td="none">
+          <Anchor
+            component={Link}
+            to="/tasks"
+            c="inherit"
+            td="none"
+            aria-label={t`${failed} task(s) failed in the last 24 hours`}
+          >
             <Group gap={5}>
               <IconWrapper icon={IconCircleX} color="red" size={16} />
               <Text fz="sm" ff="monospace">
@@ -36,7 +42,7 @@ export function TaskCounts() {
       )}
       {running > 0 && (
         <Tooltip label={t`${running} task(s) in progress`}>
-          <Anchor component={Link} to="/tasks" c="inherit" td="none">
+          <Anchor component={Link} to="/tasks" c="inherit" td="none" aria-label={t`${running} task(s) in progress`}>
             <Group gap={5}>
               <IconWrapper icon={IconStopwatch} color="teal" size={18} />
               <Text fz="sm" ff="monospace">

@@ -249,7 +249,7 @@ export default function EmailModal({ onCancel, onSaved, profile }: Props) {
           <Fieldset legend={<Trans context="email-to">To</Trans>}>
             {toFields.length === 0 && (
               <Text c="dimmed" ta="center">
-                <Trans>No recepients defined</Trans>
+                <Trans>No recipients defined</Trans>
               </Text>
             )}
 
@@ -272,7 +272,7 @@ export default function EmailModal({ onCancel, onSaved, profile }: Props) {
           <Fieldset legend="Cc">
             {ccFields.length === 0 && (
               <Text c="dimmed" ta="center">
-                <Trans>No recepients defined</Trans>
+                <Trans>No recipients defined</Trans>
               </Text>
             )}
 

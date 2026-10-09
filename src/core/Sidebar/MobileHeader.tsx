@@ -1,5 +1,6 @@
 import { t } from "@lingui/core/macro";
-import { AppShellHeader, Burger, Drawer, Group, Text } from "@mantine/core";
+import { Trans } from "@lingui/react/macro";
+import { AppShellHeader, Burger, Drawer, Group, Text, VisuallyHidden } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useEffect } from "react";
 import { Link, useLocation } from "react-router";
@@ -41,9 +42,9 @@ export function MobileHeader() {
         hiddenFrom="md"
         size={260}
         title={
-          <Text fw="bold" fz="lg">
-            Kopia UI
-          </Text>
+          <VisuallyHidden>
+            <Trans>Navigation</Trans>
+          </VisuallyHidden>
         }
         closeButtonProps={{ "aria-label": t`Close navigation` }}
         classNames={{ body: classes.drawerBody }}
