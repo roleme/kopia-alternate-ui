@@ -152,12 +152,12 @@ msgstr "After Folder"
 msgid "After Snapshot"
 msgstr "After Snapshot"
 
-#: src/tasks/TasksPage.tsx:112
-#: src/tasks/TasksPage.tsx:145
+#: src/tasks/TasksPage.tsx:103
+#: src/tasks/TasksPage.tsx:136
 msgid "All"
 msgstr "All"
 
-#: src/policies/PoliciesPage.tsx:143
+#: src/policies/PoliciesPage.tsx:151
 msgid "All Policies"
 msgstr "All Policies"
 
@@ -178,11 +178,11 @@ msgstr "Annual"
 msgid "Appearance"
 msgstr "Appearance"
 
-#: src/policies/PoliciesPage.tsx:141
+#: src/policies/PoliciesPage.tsx:149
 msgid "Applicable Policies"
 msgstr "Applicable Policies"
 
-#: src/policies/modals/PolicyModal/components/DeletePolicyButton.tsx:30
+#: src/policies/modals/PolicyModal/components/DeletePolicyButton.tsx:28
 msgid "Are you sure you want to delete this policy?"
 msgstr "Are you sure you want to delete this policy?"
 
@@ -259,6 +259,7 @@ msgstr "Cache Miss"
 
 #: src/policies/modals/CreatePolicyModal/CreatePolicyModal.tsx:126
 #: src/policies/modals/PolicyListModal/PolicyListModal.tsx:113
+#: src/policies/modals/PolicyModal/components/DeletePolicyButton.tsx:30
 #: src/policies/modals/PolicyModal/PolicyModal.tsx:264
 #: src/policies/modals/PolicyTodModal/PolicyTodModal.tsx:124
 #: src/preferences/modals/EmailModal.tsx:300
@@ -270,25 +271,37 @@ msgstr "Cache Miss"
 #: src/snapshot-history/modals/DeleteSnapshotModal.tsx:81
 #: src/snapshot-history/modals/PinSnapshotModal.tsx:83
 #: src/snapshot-history/modals/UpdateDescriptionModal.tsx:72
+#: src/snapshot-mounts/SnapshotMountsPage.tsx:98
 #: src/snapshots/modals/NewSnapshotModal.tsx:135
 #: src/snapshots/modals/TaskEstimationModal.tsx:92
 msgid "Cancel"
 msgstr "Cancel"
 
-#: src/tasks/TasksPage.tsx:224
+#: src/tasks/TasksPage.tsx:220
+msgid "Cancel task"
+msgstr ""
+
+#: src/tasks/TasksPage.tsx:209
 msgctxt "cancel-operation"
 msgid "Cancel Task"
 msgstr "Cancel Task"
 
+#: src/tasks/TasksPage.tsx:218
+msgid "Cancel this task?"
+msgstr ""
+
 #: src/tasks/components/TaskStatusDisplay.tsx:56
-#: src/tasks/components/TaskSummaryDisplay.tsx:55
 msgid "Canceled after"
 msgstr "Canceled after"
 
 #: src/tasks/components/TaskStatusDisplay.tsx:47
-#: src/tasks/components/TaskSummaryDisplay.tsx:66
 msgid "Canceling for"
 msgstr "Canceling for"
+
+#: src/tasks/components/TaskSummaryDisplay.tsx:25
+#: src/tasks/TasksPage.tsx:55
+msgid "Canceling task"
+msgstr ""
 
 #: src/snapshot-history/SnapshotHistory.tsx:221
 msgid "Change"
@@ -300,6 +313,13 @@ msgstr "Change policy parameters"
 
 #: src/preferences/AppearanceSection.tsx:153
 msgid "Charts at the top of the snapshot history page. Applies immediately and is stored in this browser only."
+msgstr ""
+
+#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:55
+#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:97
+#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:59
+#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:102
+msgid "Choose whether a failing script stops the backup, is ignored, or runs in the background without being waited for"
 msgstr ""
 
 #: src/snapshot-compare/SnapshotComparePage.tsx:893
@@ -321,15 +341,11 @@ msgstr ""
 
 #: src/policies/modals/PolicyModal/constants.ts:172
 #: src/policies/modals/PolicyModal/constants.ts:186
-#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:96
-#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:101
 msgid "Command Mode - After"
 msgstr "Command Mode - After"
 
 #: src/policies/modals/PolicyModal/constants.ts:165
 #: src/policies/modals/PolicyModal/constants.ts:179
-#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:54
-#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:58
 msgid "Command Mode - Before"
 msgstr "Command Mode - Before"
 
@@ -520,18 +536,18 @@ msgstr "Default page size"
 #: src/policies/modals/PolicyModal/policy-inputs/PolicyTextInput.tsx:65
 #: src/policies/modals/PolicyModal/policy-inputs/PolicyTextListInput.tsx:70
 #: src/policies/modals/PolicyModal/policy-inputs/PolicyTimeOfDayInput.tsx:47
-#: src/policies/PoliciesPage.tsx:197
+#: src/policies/PoliciesPage.tsx:192
 msgid "Defined"
 msgstr "Defined"
 
-#: src/policies/modals/PolicyModal/components/DeletePolicyButton.tsx:41
+#: src/policies/modals/PolicyModal/components/DeletePolicyButton.tsx:36
 #: src/preferences/components/NotificationCard.tsx:86
 #: src/snapshot-history/modals/DeleteSnapshotModal.tsx:85
 msgid "Delete"
 msgstr "Delete"
 
 #: src/policies/modals/PolicyModal/components/DeletePolicyButton.tsx:27
-#: src/policies/modals/PolicyModal/components/DeletePolicyButton.tsx:33
+#: src/policies/modals/PolicyModal/components/DeletePolicyButton.tsx:29
 msgid "Delete policy"
 msgstr "Delete policy"
 
@@ -553,7 +569,7 @@ msgstr "Deprecated"
 
 #: src/repo/ConnectedRepoSection/RepoDescription.tsx:61
 #: src/snapshot-history/modals/UpdateDescriptionModal.tsx:62
-#: src/tasks/TasksPage.tsx:213
+#: src/tasks/TasksPage.tsx:198
 msgid "Description"
 msgstr "Description"
 
@@ -596,10 +612,6 @@ msgstr "Directory to create policy for"
 msgid "Dirs"
 msgstr "Dirs"
 
-#: src/policies/modals/PolicyModal/tabs/OtherTab.tsx:32
-msgid "Disable Parent Policy"
-msgstr "Disable Parent Policy"
-
 #: src/policies/modals/PolicyModal/tabs/OtherTab.tsx:26
 msgid "Disable Parent Policy Evaluation"
 msgstr "Disable Parent Policy Evaluation"
@@ -631,13 +643,9 @@ msgstr "Displaying {textToDisplay} snapshots of"
 msgid "Do not compress when restoring to a ZIP file (faster)."
 msgstr "Do not compress when restoring to a ZIP file (faster)."
 
-#: src/policies/modals/PolicyModal/tabs/FilesTab.tsx:85
+#: src/policies/modals/PolicyModal/tabs/FilesTab.tsx:87
 msgid "Do not cross filesystem boundaries when creating a snapshot"
 msgstr "Do not cross filesystem boundaries when creating a snapshot"
-
-#: src/policies/modals/PolicyModal/tabs/SnapshotRetentionTab.tsx:83
-msgid "Do NOT save a snapshot when no files have been changed"
-msgstr "Do NOT save a snapshot when no files have been changed"
 
 #: src/repo/sections/AmazonS3Repo.tsx:45
 #: src/repo/sections/AmazonS3Repo.tsx:88
@@ -653,6 +661,18 @@ msgstr "Do you want to delete the selected <0>{0} snapshots</0>?"
 msgid "Do you want to delete the selected snapshot?"
 msgstr "Do you want to delete the selected snapshot?"
 
+#: src/policies/modals/PolicyModal/tabs/FilesTab.tsx:40
+msgid "Don't inherit ignore rules from parent folders"
+msgstr ""
+
+#: src/policies/modals/PolicyModal/tabs/FilesTab.tsx:57
+msgid "Don't inherit rule files from parent folders"
+msgstr ""
+
+#: src/policies/modals/PolicyModal/tabs/OtherTab.tsx:32
+msgid "Don't inherit settings from parent policies"
+msgstr ""
+
 #: src/snapshot-directory/SnapshotDirectory.tsx:244
 msgid "Download"
 msgstr "Download"
@@ -661,11 +681,10 @@ msgstr "Download"
 msgid "Due <0/>"
 msgstr ""
 
-#: src/tasks/TaskDetailsPage.tsx:87
+#: src/tasks/TaskDetailsPage.tsx:84
 msgid "Duration"
 msgstr "Duration"
 
-#: src/policies/PoliciesPage.tsx:215
 #: src/preferences/components/NotificationCard.tsx:76
 msgid "Edit"
 msgstr "Edit"
@@ -690,6 +709,10 @@ msgstr "Edit items"
 
 #: src/snapshot-history/SnapshotHistory.tsx:102
 msgid "Edit pin {p}"
+msgstr ""
+
+#: src/policies/PoliciesPage.tsx:211
+msgid "Edit policy"
 msgstr ""
 
 #: src/preferences/modals/PushoverModal.tsx:97
@@ -871,13 +894,6 @@ msgstr "Error Handling"
 msgid "errors"
 msgstr ""
 
-#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:55
-#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:97
-#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:59
-#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:102
-msgid "Essential (must succeed; default behavior), optional (failures are tolerated), or async (Kopia will start the action but not wait for it to finish)"
-msgstr "Essential (must succeed; default behavior), optional (failures are tolerated), or async (Kopia will start the action but not wait for it to finish)"
-
 #: src/snapshots/modals/NewSnapshotModal.tsx:145
 msgid "Estimate"
 msgstr "Estimate"
@@ -891,16 +907,15 @@ msgid "Every"
 msgstr "Every"
 
 #: src/snapshot-history/components/SnapshotHistoryStats.tsx:104
-#: src/tasks/TasksPage.tsx:134
+#: src/tasks/TasksPage.tsx:125
 msgid "Failed"
 msgstr "Failed"
 
 #: src/tasks/components/TaskStatusDisplay.tsx:37
-#: src/tasks/components/TaskSummaryDisplay.tsx:42
 msgid "Failed after"
 msgstr "Failed after"
 
-#: src/policies/PoliciesPage.tsx:88
+#: src/policies/PoliciesPage.tsx:90
 msgid "Failed to find policy"
 msgstr "Failed to find policy"
 
@@ -932,12 +947,11 @@ msgstr "Files whose size exceeds the provided value will not be compressed"
 msgid "Filter by path…"
 msgstr ""
 
-#: src/tasks/TaskDetailsPage.tsx:74
+#: src/tasks/TaskDetailsPage.tsx:71
 msgid "Finished"
 msgstr "Finished"
 
 #: src/tasks/components/TaskStatusDisplay.tsx:27
-#: src/tasks/components/TaskSummaryDisplay.tsx:30
 msgid "Finished in"
 msgstr "Finished in"
 
@@ -957,7 +971,7 @@ msgstr "From now"
 msgid "General Options"
 msgstr "General Options"
 
-#: src/policies/PoliciesPage.tsx:145
+#: src/policies/PoliciesPage.tsx:153
 msgid "Global Policy"
 msgstr "Global Policy"
 
@@ -975,7 +989,7 @@ msgid "Helps to distinguish between multiple connected repositories"
 msgstr "Helps to distinguish between multiple connected repositories"
 
 #: src/policies/modals/PolicyModal/components/PolicyEffectiveLabel.tsx:45
-#: src/policies/PoliciesPage.tsx:187
+#: src/policies/PoliciesPage.tsx:182
 #: src/repo/sections/SFTPServerRepo.tsx:52
 #: src/repo/sections/SFTPServerRepo.tsx:160
 msgid "Host"
@@ -1024,7 +1038,23 @@ msgstr "HTML Format"
 msgid "HTTP Method"
 msgstr "HTTP Method"
 
-#: src/policies/modals/PolicyModal/tabs/FilesTab.tsx:66
+#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:96
+msgid "If the after folder script fails"
+msgstr ""
+
+#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:101
+msgid "If the after snapshot script fails"
+msgstr ""
+
+#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:54
+msgid "If the before folder script fails"
+msgstr ""
+
+#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:58
+msgid "If the before snapshot script fails"
+msgstr ""
+
+#: src/policies/modals/PolicyModal/tabs/FilesTab.tsx:68
 msgid "Ignore directories containing CACHEDIR.TAG and similar"
 msgstr "Ignore directories containing CACHEDIR.TAG and similar"
 
@@ -1032,13 +1062,6 @@ msgstr "Ignore directories containing CACHEDIR.TAG and similar"
 #: src/policies/modals/PolicyModal/tabs/ErrorHandlingTab.tsx:21
 msgid "Ignore Directory Errors"
 msgstr "Ignore Directory Errors"
-
-#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:58
-#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:100
-#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:62
-#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:105
-msgid "Ignore failures"
-msgstr "Ignore failures"
 
 #: src/policies/modals/PolicyModal/constants.ts:125
 #: src/policies/modals/PolicyModal/tabs/ErrorHandlingTab.tsx:30
@@ -1051,7 +1074,7 @@ msgid "Ignore Files"
 msgstr "Ignore Files"
 
 #: src/policies/modals/PolicyModal/constants.ts:121
-#: src/policies/modals/PolicyModal/tabs/FilesTab.tsx:75
+#: src/policies/modals/PolicyModal/tabs/FilesTab.tsx:77
 msgid "Ignore Files larger than"
 msgstr "Ignore Files larger than"
 
@@ -1066,12 +1089,10 @@ msgid "Ignore Rule Files"
 msgstr "Ignore Rule Files"
 
 #: src/policies/modals/PolicyModal/constants.ts:119
-#: src/policies/modals/PolicyModal/tabs/FilesTab.tsx:57
 msgid "Ignore Rule Files From Parent Directories"
 msgstr "Ignore Rule Files From Parent Directories"
 
 #: src/policies/modals/PolicyModal/constants.ts:117
-#: src/policies/modals/PolicyModal/tabs/FilesTab.tsx:40
 msgid "Ignore Rules From Parent Directories"
 msgstr "Ignore Rules From Parent Directories"
 
@@ -1081,7 +1102,7 @@ msgid "Ignore Unknown Directory Entries"
 msgstr "Ignore Unknown Directory Entries"
 
 #: src/policies/modals/PolicyModal/constants.ts:120
-#: src/policies/modals/PolicyModal/tabs/FilesTab.tsx:65
+#: src/policies/modals/PolicyModal/tabs/FilesTab.tsx:67
 msgid "Ignore Well-Known Cache Directories"
 msgstr "Ignore Well-Known Cache Directories"
 
@@ -1105,6 +1126,17 @@ msgstr "Internal Compression"
 msgid "JSON Representation"
 msgstr "JSON Representation"
 
+#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:58
+#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:100
+#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:62
+#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:105
+msgid "Keep going"
+msgstr ""
+
+#: src/tasks/TasksPage.tsx:221
+msgid "Keep running"
+msgstr ""
+
 #: src/repo/sections/BackblazeB2Repo.tsx:32
 #: src/repo/sections/BackblazeB2Repo.tsx:73
 msgid "Key"
@@ -1120,8 +1152,8 @@ msgstr "Key Data"
 msgid "Key ID"
 msgstr "Key ID"
 
-#: src/tasks/TasksPage.tsx:143
-#: src/tasks/TasksPage.tsx:208
+#: src/tasks/TasksPage.tsx:134
+#: src/tasks/TasksPage.tsx:193
 msgid "Kind"
 msgstr "Kind"
 
@@ -1133,6 +1165,13 @@ msgstr "Known Hosts Data"
 #: src/repo/sections/KopiaRepoServerRepo.tsx:34
 msgid "Kopia Repository Server"
 msgstr "Kopia Repository Server"
+
+#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:46
+#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:88
+#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:50
+#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:93
+msgid "Kopia stops the script if it runs longer than this"
+msgstr ""
 
 #: src/snapshot-directory/SnapshotDirectory.tsx:213
 msgid "Last Modification"
@@ -1191,7 +1230,7 @@ msgstr ""
 msgid "Local Directory or NAS"
 msgstr "Local Directory or NAS"
 
-#: src/policies/PoliciesPage.tsx:142
+#: src/policies/PoliciesPage.tsx:150
 msgid "Local Path Policies"
 msgstr "Local Path Policies"
 
@@ -1336,11 +1375,11 @@ msgstr "Mount"
 msgid "Mount path"
 msgstr ""
 
-#: src/snapshot-mounts/SnapshotMountsPage.tsx:85
+#: src/snapshot-mounts/SnapshotMountsPage.tsx:80
 msgid "Mounted at"
 msgstr "Mounted at"
 
-#: src/snapshot-mounts/SnapshotMountsPage.tsx:52
+#: src/snapshot-mounts/SnapshotMountsPage.tsx:53
 msgid "Mounted Snapshots"
 msgstr "Mounted Snapshots"
 
@@ -1351,13 +1390,6 @@ msgstr "Mounts"
 #: src/policies/modals/PolicyModal/tabs/UploadTab.tsx:23
 msgid "must be specified using global, user, or host policy"
 msgstr "must be specified using global, user, or host policy"
-
-#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:57
-#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:99
-#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:61
-#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:104
-msgid "Must Succeed"
-msgstr "Must Succeed"
 
 #: src/preferences/modals/EmailModal.tsx:192
 #: src/preferences/modals/PushoverModal.tsx:110
@@ -1379,7 +1411,7 @@ msgstr "Never Compress Extensions"
 msgid "Never compress the following file extensions (one extension per line)"
 msgstr "Never compress the following file extensions (one extension per line)"
 
-#: src/policies/PoliciesPage.tsx:159
+#: src/policies/PoliciesPage.tsx:143
 msgid "New Policy"
 msgstr "New Policy"
 
@@ -1406,10 +1438,6 @@ msgstr "No"
 msgid "No changed paths match the current filter."
 msgstr ""
 
-#: src/policies/modals/PolicyModal/components/DeletePolicyButton.tsx:33
-msgid "No don't delete it"
-msgstr "No don't delete it"
-
 #: src/snapshot-directory/SnapshotDirectory.tsx:176
 msgid "No entries in folder"
 msgstr "No entries in folder"
@@ -1426,7 +1454,7 @@ msgstr "No headers defined"
 msgid "No notifications defined"
 msgstr "No notifications defined"
 
-#: src/policies/PoliciesPage.tsx:176
+#: src/policies/PoliciesPage.tsx:171
 msgid "No policies found"
 msgstr "No policies found"
 
@@ -1439,7 +1467,7 @@ msgstr "No recepients defined"
 msgid "No snapshot pair selected — open the snapshot list and use the compare action on a row."
 msgstr ""
 
-#: src/snapshot-mounts/SnapshotMountsPage.tsx:69
+#: src/snapshot-mounts/SnapshotMountsPage.tsx:64
 msgid "No snapshots mounted"
 msgstr "No snapshots mounted"
 
@@ -1447,6 +1475,10 @@ msgstr "No snapshots mounted"
 #: src/snapshots/SnapshotsPage.tsx:181
 msgid "No snapshots taken"
 msgstr "No snapshots taken"
+
+#: src/tasks/TasksPage.tsx:168
+msgid "No tasks found"
+msgstr ""
 
 #: src/policies/modals/PolicyModal/policy-inputs/PolicyCompressionInput.tsx:50
 #: src/policies/modals/PolicyModal/tabs/SchedulingTab.tsx:63
@@ -1512,6 +1544,10 @@ msgstr "Only one of Password, Path to key file or Key Data must be set"
 #: src/repo/sections/SFTPServerRepo.tsx:116
 msgid "Only one of Path to known_hosts File or Known Hosts Data must be set"
 msgstr "Only one of Path to known_hosts File or Known Hosts Data must be set"
+
+#: src/policies/modals/PolicyModal/tabs/FilesTab.tsx:41
+msgid "Only the ignore rules listed here apply to this folder and its subfolders"
+msgstr ""
 
 #: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:36
 #: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:78
@@ -1597,7 +1633,7 @@ msgstr "Paste JSON credentials here"
 
 #: src/policies/modals/CreatePolicyModal/CreatePolicyModal.tsx:115
 #: src/policies/modals/PolicyModal/components/PolicyEffectiveLabel.tsx:52
-#: src/policies/PoliciesPage.tsx:192
+#: src/policies/PoliciesPage.tsx:187
 #: src/repo/sections/SFTPServerRepo.tsx:55
 #: src/repo/sections/SFTPServerRepo.tsx:189
 #: src/snapshots/SnapshotsPage.tsx:189
@@ -1622,11 +1658,11 @@ msgstr "Path to snapshot"
 msgid "Paused"
 msgstr ""
 
-#: src/policies/PoliciesPage.tsx:147
+#: src/policies/PoliciesPage.tsx:155
 msgid "Per-Host Policies"
 msgstr "Per-Host Policies"
 
-#: src/policies/PoliciesPage.tsx:146
+#: src/policies/PoliciesPage.tsx:154
 msgid "Per-User Policies"
 msgstr "Per-User Policies"
 
@@ -1641,7 +1677,7 @@ msgid "Plain Text Format"
 msgstr "Plain Text Format"
 
 #: src/core/Sidebar/Sidebar.tsx:37
-#: src/policies/PoliciesPage.tsx:136
+#: src/policies/PoliciesPage.tsx:138
 msgid "Policies"
 msgstr "Policies"
 
@@ -1714,9 +1750,6 @@ msgid "Records per page"
 msgstr "Records per page"
 
 #: src/core/RefreshButton.tsx:13
-#: src/policies/PoliciesPage.tsx:166
-#: src/snapshot-mounts/SnapshotMountsPage.tsx:59
-#: src/tasks/TasksPage.tsx:172
 msgid "Refresh"
 msgstr "Refresh"
 
@@ -1807,12 +1840,16 @@ msgstr ""
 msgid "Root"
 msgstr "Root"
 
+#: src/policies/modals/PolicyModal/tabs/FilesTab.tsx:58
+msgid "Rule files such as .kopiaignore in parent folders are not used"
+msgstr ""
+
 #: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:60
 #: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:102
 #: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:64
 #: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:107
-msgid "Run asynchronously, ignore failures"
-msgstr "Run asynchronously, ignore failures"
+msgid "Run in the background and keep going"
+msgstr ""
 
 #: src/policies/modals/PolicyModal/constants.ts:142
 #: src/policies/modals/PolicyModal/tabs/SchedulingTab.tsx:101
@@ -1820,12 +1857,11 @@ msgid "Run Missed Snapshots on Startup"
 msgstr "Run Missed Snapshots on Startup"
 
 #: src/snapshots/components/SourceStatusCell.tsx:24
-#: src/tasks/TasksPage.tsx:123
+#: src/tasks/TasksPage.tsx:114
 msgid "Running"
 msgstr "Running"
 
 #: src/tasks/components/TaskStatusDisplay.tsx:18
-#: src/tasks/components/TaskSummaryDisplay.tsx:19
 msgid "Running for"
 msgstr "Running for"
 
@@ -1848,7 +1884,7 @@ msgid "Save"
 msgstr "Save"
 
 #: src/policies/modals/PolicyModal/constants.ts:122
-#: src/policies/modals/PolicyModal/tabs/FilesTab.tsx:84
+#: src/policies/modals/PolicyModal/tabs/FilesTab.tsx:86
 msgid "Scan only one filesystem"
 msgstr "Scan only one filesystem"
 
@@ -1877,7 +1913,8 @@ msgstr "Script to run before snapshot"
 msgid "Search files or folder (current level)"
 msgstr "Search files or folder (current level)"
 
-#: src/tasks/TasksPage.tsx:162
+#: src/tasks/TasksPage.tsx:153
+#: src/tasks/TasksPage.tsx:154
 msgid "Search tasks"
 msgstr "Search tasks"
 
@@ -1981,6 +2018,10 @@ msgstr "Size"
 msgid "Size over time"
 msgstr "Size over time"
 
+#: src/policies/modals/PolicyModal/tabs/SnapshotRetentionTab.tsx:83
+msgid "Skip creating a snapshot when nothing has changed since the previous one"
+msgstr ""
+
 #: src/snapshot-directory/modals/RestoreModal.tsx:171
 msgid "Skip previously restored files and symlinks"
 msgstr "Skip previously restored files and symlinks"
@@ -2026,7 +2067,7 @@ msgstr "Snapshot Actions"
 msgid "Snapshot Frequency"
 msgstr "Snapshot Frequency"
 
-#: src/snapshot-mounts/SnapshotMountsPage.tsx:75
+#: src/snapshot-mounts/SnapshotMountsPage.tsx:70
 msgid "Snapshot ID"
 msgstr "Snapshot ID"
 
@@ -2051,7 +2092,7 @@ msgstr "Snapshot Retention"
 msgid "Snapshot schedules using UNIX crontab syntax:"
 msgstr "Snapshot schedules using UNIX crontab syntax:"
 
-#: src/snapshot-mounts/SnapshotMountsPage.tsx:35
+#: src/snapshot-mounts/SnapshotMountsPage.tsx:37
 msgid "Snapshot unmounted"
 msgstr "Snapshot unmounted"
 
@@ -2113,18 +2154,41 @@ msgid "SSH host name (e.g., example.com)"
 msgstr "SSH host name (e.g., example.com)"
 
 #: src/snapshot-history/SnapshotHistory.tsx:175
-#: src/tasks/TasksPage.tsx:194
+#: src/tasks/TasksPage.tsx:179
 msgid "Start Time"
 msgstr "Start Time"
 
-#: src/tasks/TaskDetailsPage.tsx:61
+#: src/tasks/TaskDetailsPage.tsx:58
 msgid "Started"
 msgstr "Started"
 
 #: src/snapshots/SnapshotsPage.tsx:254
-#: src/tasks/TasksPage.tsx:203
+#: src/tasks/TasksPage.tsx:188
 msgid "Status"
 msgstr "Status"
+
+#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:87
+msgid "Stop the after folder script after (seconds)"
+msgstr ""
+
+#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:92
+msgid "Stop the after snapshot script after (seconds)"
+msgstr ""
+
+#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:57
+#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:99
+#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:61
+#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:104
+msgid "Stop the backup"
+msgstr ""
+
+#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:45
+msgid "Stop the before folder script after (seconds)"
+msgstr ""
+
+#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:49
+msgid "Stop the before snapshot script after (seconds)"
+msgstr ""
 
 #: src/repo/sections/AzureBlobStorageRepo.tsx:35
 #: src/repo/sections/AzureBlobStorageRepo.tsx:66
@@ -2147,16 +2211,32 @@ msgstr "Symlinks"
 msgid "Sync"
 msgstr "Sync"
 
-#: src/tasks/TasksPage.tsx:66
-msgid "Task cancelled"
-msgstr "Task cancelled"
+#: src/tasks/TaskDetailsPage.tsx:48
+msgid "Task"
+msgstr ""
 
-#: src/tasks/TasksPage.tsx:189
+#: src/tasks/components/TaskSummaryDisplay.tsx:23
+msgid "Task canceled"
+msgstr ""
+
+#: src/tasks/components/TaskSummaryDisplay.tsx:18
+msgid "Task failed"
+msgstr ""
+
+#: src/tasks/TasksPage.tsx:174
 msgid "Task ID"
 msgstr "Task ID"
 
+#: src/tasks/components/TaskSummaryDisplay.tsx:13
+msgid "Task in progress"
+msgstr ""
+
+#: src/tasks/components/TaskSummaryDisplay.tsx:15
+msgid "Task succeeded"
+msgstr ""
+
 #: src/core/Sidebar/Sidebar.tsx:35
-#: src/tasks/TasksPage.tsx:99
+#: src/tasks/TasksPage.tsx:88
 msgid "Tasks"
 msgstr "Tasks"
 
@@ -2176,17 +2256,17 @@ msgstr "The repository was successfully disconnected"
 msgid "The repository was synchronized successfully"
 msgstr "The repository was synchronized successfully"
 
+#: src/snapshot-mounts/SnapshotMountsPage.tsx:38
+msgid "The snapshot was unmounted from the host"
+msgstr ""
+
 #: src/snapshot-history/SnapshotHistory.tsx:339
 msgid "The snapshot(s) were deleted successfully"
 msgstr ""
 
-#: src/snapshot-mounts/SnapshotMountsPage.tsx:36
-msgid "The snapshout was unmounted from the host"
-msgstr "The snapshout was unmounted from the host"
-
-#: src/tasks/TasksPage.tsx:67
-msgid "The task was cancelled"
-msgstr "The task was cancelled"
+#: src/tasks/TasksPage.tsx:56
+msgid "The task was asked to stop"
+msgstr ""
 
 #: src/preferences/AppearanceSection.tsx:87
 msgid "Theme"
@@ -2211,24 +2291,13 @@ msgstr "Time Of Day"
 
 #: src/policies/modals/PolicyModal/constants.ts:171
 #: src/policies/modals/PolicyModal/constants.ts:185
-#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:87
-#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:92
 msgid "Timeout - After"
 msgstr "Timeout - After"
 
 #: src/policies/modals/PolicyModal/constants.ts:164
 #: src/policies/modals/PolicyModal/constants.ts:178
-#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:45
-#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:49
 msgid "Timeout - Before"
 msgstr "Timeout - Before"
-
-#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:46
-#: src/policies/modals/PolicyModal/tabs/FolderActionsTab.tsx:88
-#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:50
-#: src/policies/modals/PolicyModal/tabs/SnapshotActionsTab.tsx:93
-msgid "Timeout in seconds before Kopia kills the process"
-msgstr "Timeout in seconds before Kopia kills the process"
 
 #: src/policies/modals/PolicyModal/tabs/SchedulingTab.tsx:120
 msgid "Times of upcoming snapshots calculated based on policy parameters"
@@ -2284,9 +2353,14 @@ msgid "Unique name for this notification profile"
 msgstr "Unique name for this notification profile"
 
 #: src/snapshot-directory/components/MountButton.tsx:52
-#: src/snapshot-mounts/SnapshotMountsPage.tsx:93
+#: src/snapshot-mounts/SnapshotMountsPage.tsx:89
+#: src/snapshot-mounts/SnapshotMountsPage.tsx:97
 msgid "Unmount"
 msgstr "Unmount"
+
+#: src/snapshot-mounts/SnapshotMountsPage.tsx:95
+msgid "Unmount snapshot?"
+msgstr ""
 
 #: src/policies/modals/PolicyModal/tabs/SchedulingTab.tsx:119
 msgid "Upcoming Snapshots"
@@ -2336,7 +2410,7 @@ msgstr "User"
 #: src/core/context/LoginModal.tsx:60
 #: src/core/context/LoginModal.tsx:62
 #: src/policies/modals/PolicyModal/components/PolicyEffectiveLabel.tsx:39
-#: src/policies/PoliciesPage.tsx:182
+#: src/policies/PoliciesPage.tsx:177
 #: src/repo/ConnectRepoSection.tsx:138
 #: src/repo/CreateRepoSection.tsx:203
 #: src/repo/sections/SFTPServerRepo.tsx:176
@@ -2388,17 +2462,9 @@ msgstr "Weekly"
 msgid "When a restore error occurs, attempt to continue instead of failing fast"
 msgstr "When a restore error occurs, attempt to continue instead of failing fast"
 
-#: src/policies/modals/PolicyModal/tabs/FilesTab.tsx:41
-msgid "When set, ignore rules from the parent directory are ignored"
-msgstr "When set, ignore rules from the parent directory are ignored"
-
-#: src/policies/modals/PolicyModal/tabs/FilesTab.tsx:76
+#: src/policies/modals/PolicyModal/tabs/FilesTab.tsx:78
 msgid "When set, the files larger than the specified size are ignored (specified in bytes)"
 msgstr "When set, the files larger than the specified size are ignored (specified in bytes)"
-
-#: src/policies/modals/PolicyModal/tabs/FilesTab.tsx:58
-msgid "When set, the files specifying ignore rules (.kopiaignore, etc.) from the parent directory are ignored"
-msgstr "When set, the files specifying ignore rules (.kopiaignore, etc.) from the parent directory are ignored"
 
 #: src/snapshot-history/modals/DeleteSnapshotModal.tsx:71
 msgid "Wipe all snapshots and the policy for this source"

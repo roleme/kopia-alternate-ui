@@ -37,8 +37,8 @@ export default function FilesTab({ form, resolvedValue, definition }: Props) {
             effectiveDefinedIn={definition?.files?.ignore}
           >
             <Switch
-              label={t`Ignore Rules From Parent Directories`}
-              description={t`When set, ignore rules from the parent directory are ignored`}
+              label={t`Don't inherit ignore rules from parent folders`}
+              description={t`Only the ignore rules listed here apply to this folder and its subfolders`}
               {...form.getInputProps("files.noParentIgnore", {
                 type: "checkbox"
               })}
@@ -54,9 +54,11 @@ export default function FilesTab({ form, resolvedValue, definition }: Props) {
             effectiveDefinedIn={definition?.files?.ignoreDotFiles}
           >
             <Switch
-              label={t`Ignore Rule Files From Parent Directories`}
-              description={t`When set, the files specifying ignore rules (.kopiaignore, etc.) from the parent directory are ignored`}
-              {...form.getInputProps("files.noParentDotFiles")}
+              label={t`Don't inherit rule files from parent folders`}
+              description={t`Rule files such as .kopiaignore in parent folders are not used`}
+              {...form.getInputProps("files.noParentDotFiles", {
+                type: "checkbox"
+              })}
             />
           </PolicyTextListInput>
 

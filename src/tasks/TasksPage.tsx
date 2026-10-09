@@ -1,19 +1,6 @@
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import {
-  ActionIcon,
-  Anchor,
-  Button,
-  Center,
-  Container,
-  Divider,
-  Group,
-  SegmentedControl,
-  Stack,
-  TextInput,
-  Title,
-  Tooltip
-} from "@mantine/core";
+import { Anchor, Center, Container, Divider, Group, SegmentedControl, Stack, TextInput } from "@mantine/core";
 import { useDebouncedValue, useInputState } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
 import {
@@ -27,7 +14,7 @@ import {
 } from "@tabler/icons-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router";
-import { refreshButtonProps } from "../core/commonButtons";
+import { confirmAction } from "../core/confirmAction";
 import { useAppContext } from "../core/context/AppContext";
 import { useServerInstanceContext } from "../core/context/ServerInstanceContext";
 import { DataGrid } from "../core/DataGrid/DataGrid";
@@ -35,7 +22,9 @@ import { ErrorAlert } from "../core/ErrorAlert/ErrorAlert";
 import useApiRequest from "../core/hooks/useApiRequest";
 import IconWrapper from "../core/IconWrapper";
 import { MenuButton } from "../core/MenuButton/MenuButton";
+import { PageHeader } from "../core/PageHeader/PageHeader";
 import RelativeDate from "../core/RelativeDate";
+import { RowAction } from "../core/RowAction";
 import type { TaskList } from "../core/types";
 import { onlyUnique } from "../utils/onlyUnique";
 import TaskKindDisplay from "./components/TaskKindDisplay";
@@ -63,8 +52,8 @@ function TasksPage() {
     onReturn() {
       loadAction.execute(undefined, "refresh");
       showNotification({
-        title: t`Task cancelled`,
-        message: t`The task was cancelled`,
+        title: t`Canceling task`,
+        message: t`The task was asked to stop`,
         color: "green"
       });
     }
@@ -95,9 +84,11 @@ function TasksPage() {
   return (
     <Container fluid>
       <Stack>
-        <Title order={1}>
-          <Trans>Tasks</Trans>
-        </Title>
+        <PageHeader
+          title={<Trans>Tasks</Trans>}
+          onRefresh={() => loadAction.execute(undefined, "refresh")}
+          refreshing={loadAction.loading && loadAction.loadingKey === "refresh"}
+        />
         <Group justify="space-between" align="flex-end">
           <Group>
             <SegmentedControl
@@ -160,17 +151,11 @@ function TasksPage() {
             <TextInput
               size="sm"
               placeholder={t`Search tasks`}
+              aria-label={t`Search tasks`}
               leftSection={<IconSearch size={18} />}
               value={query}
               onChange={setQuery}
             />
-            <Button
-              loading={loadAction.loading && loadAction.loadingKey === "refresh"}
-              onClick={() => loadAction.execute(undefined, "refresh")}
-              {...refreshButtonProps}
-            >
-              <Trans>Refresh</Trans>
-            </Button>
           </Group>
         </Group>
         <Divider />
@@ -180,7 +165,7 @@ function TasksPage() {
         <DataGrid
           loading={loadAction.loading && loadAction.loadingKey === "loading"}
           records={visibleTasks}
-          noRecordsText="No tasks found"
+          noRecordsText={t`No tasks found`}
           noRecordsIcon={<IconWrapper icon={IconSettingsAutomation} size={48} />}
           pageSize={tablePageSize}
           columns={[
@@ -220,21 +205,24 @@ function TasksPage() {
               textAlign: "right",
               render: (item) =>
                 item.status === "RUNNING" && (
-                  <Tooltip
+                  <RowAction
                     label={t({
                       context: "cancel-operation",
                       message: "Cancel Task"
                     })}
-                  >
-                    <ActionIcon
-                      variant="subtle"
-                      color="red.5"
-                      onClick={() => cancelTaskAction.execute(item.id, item.id)}
-                      loading={cancelTaskAction.loading && cancelTaskAction.loadingKey === item.id}
-                    >
-                      <IconBan size={18} />
-                    </ActionIcon>
-                  </Tooltip>
+                    icon={IconBan}
+                    color="red.5"
+                    loading={cancelTaskAction.loading && cancelTaskAction.loadingKey === item.id}
+                    onClick={() =>
+                      confirmAction({
+                        title: t`Cancel this task?`,
+                        message: item.description,
+                        confirmLabel: t`Cancel task`,
+                        cancelLabel: t`Keep running`,
+                        onConfirm: () => cancelTaskAction.execute(item.id, item.id)
+                      })
+                    }
+                  />
                 )
             }
           ]}
