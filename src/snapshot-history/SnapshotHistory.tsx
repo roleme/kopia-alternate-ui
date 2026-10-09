@@ -1,21 +1,12 @@
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { ActionIcon, Anchor, Badge, Button, Container, Group, Stack, Text, Title, Tooltip } from "@mantine/core";
+import { Anchor, Badge, Button, Container, Group, Stack, Text, Tooltip } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
-import {
-  IconArrowLeft,
-  IconArrowsDiff,
-  IconClick,
-  IconFileDatabase,
-  IconFileText,
-  IconPin,
-  IconTrash
-} from "@tabler/icons-react";
+import { IconArrowsDiff, IconClick, IconFileDatabase, IconFileText, IconPin, IconTrash } from "@tabler/icons-react";
 import sortBy from "lodash.sortby";
 import type { DataTableSortStatus } from "mantine-datatable";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router";
-import { refreshButtonProps } from "../core/commonButtons";
 import { useAppContext } from "../core/context/AppContext";
 import { useServerInstanceContext } from "../core/context/ServerInstanceContext";
 import { DataGrid } from "../core/DataGrid/DataGrid";
@@ -23,7 +14,9 @@ import { ErrorAlert } from "../core/ErrorAlert/ErrorAlert";
 import FormattedDate from "../core/FormattedDate";
 import useApiRequest from "../core/hooks/useApiRequest";
 import IconWrapper from "../core/IconWrapper";
+import { PageHeader } from "../core/PageHeader/PageHeader";
 import { ResponsiveCell } from "../core/ResponsiveCell";
+import { RowAction } from "../core/RowAction";
 import type { ItemAction, Snapshot, Snapshots, SourceInfo } from "../core/types";
 import signedSizeDisplayName from "../utils/formatSignedSize";
 import sizeDisplayName from "../utils/formatSize";
@@ -104,8 +97,12 @@ function SnapshotHistory() {
       {item.pins.map((p) => (
         <Badge
           key={p}
+          component="button"
+          type="button"
+          aria-label={t`Edit pin ${p}`}
           tt="none"
           radius={5}
+          style={{ cursor: "pointer" }}
           rightSection={<IconPin size={14} />}
           onClick={() => {
             setPinAction({
@@ -124,17 +121,17 @@ function SnapshotHistory() {
   return (
     <Container fluid>
       <Stack>
-        <Group justify="space-between">
-          <Group>
-            <ActionIcon variant="subtle" onClick={() => navigate(-1)}>
-              <IconArrowLeft size={24} />
-            </ActionIcon>
-            <Title order={1}>
+        <PageHeader
+          title={
+            <>
               <Trans>Snapshots</Trans>: {sourceInfo.path}
-            </Title>
-          </Group>
-          <Group>
-            {selectedRecords.length > 0 && (
+            </>
+          }
+          onBack={() => navigate(-1)}
+          onRefresh={() => execute(undefined, "refresh")}
+          refreshing={loading && loadingKey === "refresh"}
+          actions={
+            selectedRecords.length > 0 && (
               <Button
                 size="xs"
                 leftSection={<IconTrash size={16} />}
@@ -145,16 +142,9 @@ function SnapshotHistory() {
               >
                 <Trans>Delete Selected</Trans> ({selectedRecords.length})
               </Button>
-            )}
-            <Button
-              loading={loading && loadingKey === "refresh"}
-              onClick={() => execute(undefined, "refresh")}
-              {...refreshButtonProps}
-            >
-              <Trans>Refresh</Trans>
-            </Button>
-          </Group>
-        </Group>
+            )
+          }
+        />
 
         {data && (
           <SnapshotCountControl
@@ -265,46 +255,43 @@ function SnapshotHistory() {
               render: (item) => (
                 <Group gap={4} justify="right" wrap="nowrap">
                   {previousSnapshot(item) && (
-                    <Tooltip label={t`Compare with previous snapshot`}>
-                      <ActionIcon
-                        variant="subtle"
-                        color="blue.5"
-                        aria-label={t`Compare with previous snapshot`}
-                        onClick={() => {
-                          const older = previousSnapshot(item)!;
-                          const params = new URLSearchParams({
-                            host: sourceInfo.host ?? "",
-                            userName: sourceInfo.userName ?? "",
-                            path: sourceInfo.path ?? "",
-                            a: older.rootID,
-                            b: item.rootID
-                          });
-                          navigate(`/snapshots/compare?${params.toString()}`);
-                        }}
-                      >
-                        <IconArrowsDiff size={18} />
-                      </ActionIcon>
-                    </Tooltip>
-                  )}
-                  <Tooltip label={t`Update description`}>
-                    <ActionIcon
-                      variant="subtle"
+                    <RowAction
+                      label={t`Compare with previous snapshot`}
+                      icon={IconArrowsDiff}
                       color="blue.5"
-                      onClick={() =>
-                        setItemAction({
-                          item,
-                          action: "description"
-                        })
-                      }
-                    >
-                      <IconFileText size={18} />
-                    </ActionIcon>
-                  </Tooltip>
-                  <Tooltip label={t`Add pin to prevent snapshot deletion`}>
-                    <ActionIcon variant="subtle" color="grape.5" onClick={() => setItemAction({ item, action: "pin" })}>
-                      <IconPin size={18} />
-                    </ActionIcon>
-                  </Tooltip>
+                      onClick={() => {
+                        const older = previousSnapshot(item)!;
+                        const params = new URLSearchParams({
+                          host: sourceInfo.host ?? "",
+                          userName: sourceInfo.userName ?? "",
+                          path: sourceInfo.path ?? "",
+                          a: older.rootID,
+                          b: item.rootID
+                        });
+                        navigate(`/snapshots/compare?${params.toString()}`);
+                      }}
+                    />
+                  )}
+                  <RowAction
+                    label={t`Update description`}
+                    icon={IconFileText}
+                    color="blue.5"
+                    onClick={() =>
+                      setItemAction({
+                        item,
+                        action: "description"
+                      })
+                    }
+                  />
+                  <RowAction
+                    label={t`Add pin to prevent snapshot deletion`}
+                    icon={IconPin}
+                    color="grape.5"
+                    onClick={() => {
+                      setPinAction(undefined);
+                      setItemAction({ item, action: "pin" });
+                    }}
+                  />
                 </Group>
               )
             }
@@ -349,7 +336,7 @@ function SnapshotHistory() {
             setItemAction(undefined);
             showNotification({
               title: t`Snapshot(s) deleted`,
-              message: t`The snapshot(s) was delete successfully`,
+              message: t`The snapshot(s) were deleted successfully`,
               color: "green"
             });
             setSelectedRecords([]);
