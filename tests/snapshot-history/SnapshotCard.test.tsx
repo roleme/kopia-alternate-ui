@@ -1,3 +1,4 @@
+import userEvent from "@testing-library/user-event";
 import { describe, expect, test, vi } from "vitest";
 import type { Snapshot } from "../../src/core/types";
 import { SnapshotCard } from "../../src/snapshot-history/components/SnapshotCard";
@@ -74,12 +75,46 @@ describe("SnapshotCard", () => {
 
     expect(container.querySelector("a")).toBeNull();
     expect(getByRole("checkbox", { checked: true })).toBeTruthy();
-    expect(queryByRole("button", { name: "Snapshot actions" })).toBeNull();
+    expect(queryByRole("button", { name: "Update description" })).toBeNull();
   });
 
-  test("the actions menu is available when not selecting", () => {
+  test("the actions are buttons on the card when not selecting", () => {
     const { getByRole } = render(<SnapshotCard snapshot={snapshot()} {...props} />);
 
-    expect(getByRole("button", { name: "Snapshot actions" })).toBeTruthy();
+    expect(getByRole("button", { name: "Compare with previous snapshot" })).toBeTruthy();
+    expect(getByRole("button", { name: "Update description" })).toBeTruthy();
+    expect(getByRole("button", { name: "Add pin to prevent snapshot deletion" })).toBeTruthy();
+  });
+
+  test("compare is left out when there is no previous snapshot", () => {
+    const { queryByRole } = render(<SnapshotCard snapshot={snapshot()} {...props} canCompare={false} />);
+
+    expect(queryByRole("button", { name: "Compare with previous snapshot" })).toBeNull();
+  });
+
+  test("a pinned snapshot offers to edit its pin instead of adding one", () => {
+    const { getByRole, queryByRole } = render(
+      <SnapshotCard snapshot={snapshot({ pins: ["do-not-delete"] })} {...props} />
+    );
+
+    expect(getByRole("button", { name: "Edit pin do-not-delete" })).toBeTruthy();
+    expect(queryByRole("button", { name: "Add pin to prevent snapshot deletion" })).toBeNull();
+  });
+
+  test("the buttons call their handlers", async () => {
+    const onCompare = vi.fn();
+    const onDescribe = vi.fn();
+    const onPin = vi.fn();
+    const { getByRole } = render(
+      <SnapshotCard snapshot={snapshot()} {...props} onCompare={onCompare} onDescribe={onDescribe} onPin={onPin} />
+    );
+
+    await userEvent.click(getByRole("button", { name: "Compare with previous snapshot" }));
+    await userEvent.click(getByRole("button", { name: "Update description" }));
+    await userEvent.click(getByRole("button", { name: "Add pin to prevent snapshot deletion" }));
+
+    expect(onCompare).toHaveBeenCalledTimes(1);
+    expect(onDescribe).toHaveBeenCalledTimes(1);
+    expect(onPin).toHaveBeenCalledTimes(1);
   });
 });
