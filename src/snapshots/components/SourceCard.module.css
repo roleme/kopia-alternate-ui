@@ -1,5 +1,4 @@
 .root {
-  position: relative;
   border-top: 1px solid var(--mantine-color-default-border);
 
   &:nth-child(even) {
@@ -9,10 +8,8 @@
 
 .link {
   display: block;
-  width: 100%;
-  padding: 12px 14px;
+  padding: 12px 14px 10px;
   color: inherit;
-  text-align: left;
   text-decoration: none;
   cursor: pointer;
 
@@ -21,58 +18,51 @@
   }
 }
 
-.selecting {
-  display: grid;
-  grid-template-columns: 24px minmax(0, 1fr);
-  column-gap: 10px;
-  padding-right: 14px;
-}
-
-.checkbox {
-  grid-row: 1 / span 3;
-  align-self: start;
-  pointer-events: none;
-}
-
 .top {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  column-gap: 10px;
-  row-gap: 3px;
-  align-items: center;
+  grid-template-columns: 20px minmax(0, 1fr) auto;
+  column-gap: 8px;
+  align-items: start;
 }
 
-.date {
+.path {
   color: var(--mantine-color-anchor);
   font-weight: 700;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
 }
 
 .size {
-  text-align: right;
   font-weight: 800;
+  font-size: var(--mantine-font-size-md);
+  line-height: 1.35;
+  text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-.counts {
+.statusRow {
   display: flex;
-  flex-wrap: wrap;
-  min-width: 0;
-  gap: 2px 12px;
   align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 6px 0 0 28px;
+}
+
+.when {
   color: var(--mantine-color-dimmed);
   font-size: var(--mantine-font-size-xs);
-  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
-.count {
-  display: inline-flex;
+.progress {
+  margin: 6px 0 0 28px;
+}
+
+.owner {
+  display: flex;
   align-items: center;
-  gap: 5px;
-}
-
-.change {
-  text-align: right;
+  gap: 8px;
+  margin: 4px 0 0 28px;
+  color: var(--mantine-color-dimmed);
   font-size: var(--mantine-font-size-xs);
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
 }
