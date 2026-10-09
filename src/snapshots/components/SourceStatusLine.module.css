@@ -1,0 +1,29 @@
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  font-size: var(--mantine-font-size-sm);
+  font-weight: 700;
+  color: var(--mantine-color-dimmed);
+
+  &[data-tone="error"] {
+    color: var(--mantine-color-red-6);
+  }
+
+  &[data-tone="late"] {
+    color: var(--mantine-color-yellow-6);
+  }
+
+  &[data-tone="running"] {
+    color: var(--mantine-color-anchor);
+  }
+}
+
+.dot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
