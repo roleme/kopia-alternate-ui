@@ -1,9 +1,10 @@
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
+import { useLingui } from "@lingui/react/macro";
 import { AppShell, MantineProvider } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
 import { Notifications } from "@mantine/notifications";
-import { useEffect } from "react";
+import { type PropsWithChildren, useEffect, useMemo } from "react";
 import { Outlet } from "react-router-dom";
 import { AppContextProvider } from "./core/context/AppContext";
 import { ServerInstanceContextProvider } from "./core/context/ServerInstanceContext";
@@ -12,7 +13,18 @@ import { Sidebar } from "./core/Sidebar/Sidebar";
 import { SHELL_PROPS } from "./core/Sidebar/shellLayout";
 import { MAIN_CONTENT_ID, SkipLink } from "./core/SkipLink/SkipLink";
 import { dynamicActivate } from "./i18n";
-import { cssVariablesResolver, theme } from "./theme";
+import { buildTheme, cssVariablesResolver } from "./theme";
+
+function ThemedProvider({ children }: PropsWithChildren) {
+  const { t } = useLingui();
+  const theme = useMemo(() => buildTheme(t`Close`), [t]);
+
+  return (
+    <MantineProvider defaultColorScheme="dark" theme={theme} cssVariablesResolver={cssVariablesResolver}>
+      {children}
+    </MantineProvider>
+  );
+}
 
 function BaseLayout() {
   useEffect(() => {
@@ -21,7 +33,7 @@ function BaseLayout() {
 
   return (
     <I18nProvider i18n={i18n}>
-      <MantineProvider defaultColorScheme="dark" theme={theme} cssVariablesResolver={cssVariablesResolver}>
+      <ThemedProvider>
         <ModalsProvider>
           <ServerInstanceContextProvider>
             <AppContextProvider>
@@ -37,7 +49,7 @@ function BaseLayout() {
             </AppContextProvider>
           </ServerInstanceContextProvider>
         </ModalsProvider>
-      </MantineProvider>
+      </ThemedProvider>
     </I18nProvider>
   );
 }

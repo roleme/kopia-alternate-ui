@@ -10,11 +10,12 @@ import { Link, useNavigate, useSearchParams } from "react-router";
 import { useAppContext } from "../core/context/AppContext";
 import { useServerInstanceContext } from "../core/context/ServerInstanceContext";
 import { DataGrid } from "../core/DataGrid/DataGrid";
-import { ErrorAlert } from "../core/ErrorAlert/ErrorAlert";
 import FormattedDate from "../core/FormattedDate";
 import useApiRequest from "../core/hooks/useApiRequest";
 import IconWrapper from "../core/IconWrapper";
+import { MetaLine } from "../core/MetaLine";
 import { PageHeader } from "../core/PageHeader/PageHeader";
+import { PageState } from "../core/PageState/PageState";
 import { ResponsiveCell } from "../core/ResponsiveCell";
 import { RowAction } from "../core/RowAction";
 import type { ItemAction, Snapshot, Snapshots, SourceInfo } from "../core/types";
@@ -118,6 +119,75 @@ function SnapshotHistory() {
     </Group>
   );
 
+  const renderChange = (item: Snapshot, fz: "xs" | "sm" = "sm") => {
+    const change = sizeChanges.get(item.id);
+    if (change === undefined) return null;
+    return (
+      <Text
+        ff="monospace"
+        fz={fz}
+        style={{ whiteSpace: "nowrap" }}
+        c={change > 0 ? "green.6" : change < 0 ? "red.6" : "dimmed"}
+      >
+        {signedSizeDisplayName(change, bytesStringBase2)}
+      </Text>
+    );
+  };
+
+  const renderActions = (item: Snapshot, justify: "left" | "right") => (
+    <Group gap={4} justify={justify} wrap="nowrap">
+      {previousSnapshot(item) && (
+        <RowAction
+          label={t`Compare with previous snapshot`}
+          icon={IconArrowsDiff}
+          color="blue.5"
+          onClick={() => {
+            const older = previousSnapshot(item)!;
+            const params = new URLSearchParams({
+              host: sourceInfo.host ?? "",
+              userName: sourceInfo.userName ?? "",
+              path: sourceInfo.path ?? "",
+              a: older.rootID,
+              b: item.rootID
+            });
+            navigate(`/snapshots/compare?${params.toString()}`);
+          }}
+        />
+      )}
+      <RowAction
+        label={t`Update description`}
+        icon={IconFileText}
+        color="blue.5"
+        onClick={() =>
+          setItemAction({
+            item,
+            action: "description"
+          })
+        }
+      />
+      <RowAction
+        label={t`Add pin to prevent snapshot deletion`}
+        icon={IconPin}
+        color="grape.5"
+        onClick={() => {
+          setPinAction(undefined);
+          setItemAction({ item, action: "pin" });
+        }}
+      />
+    </Group>
+  );
+
+  const renderMeta = (item: Snapshot) => (
+    <MetaLine
+      items={[
+        { key: "size", content: sizeDisplayName(item.summary.size, bytesStringBase2) },
+        { key: "change", content: renderChange(item, "xs") },
+        { key: "files", content: t`${item.summary.files} files` },
+        { key: "dirs", content: t`${item.summary.dirs} dirs` }
+      ]}
+    />
+  );
+
   return (
     <Container fluid>
       <Stack>
@@ -157,146 +227,109 @@ function SnapshotHistory() {
           />
         )}
 
-        <ErrorAlert error={error} />
         <SnapshotHistoryStats sourceInfo={sourceInfo} />
-        <DataGrid
-          selectedRecords={selectedRecords}
-          onSelectedRecordsChange={setSelectedRecords}
-          loading={loading && loadingKey === "loading"}
-          records={visibleData}
-          noRecordsText={t`No snapshots taken`}
-          noRecordsIcon={<IconWrapper icon={IconFileDatabase} size={48} />}
-          pageSize={tablePageSize}
-          sortStatus={sortStatus}
-          onSortStatusChange={setSortStatus}
-          columns={[
-            {
-              accessor: "startTime",
-              title: t`Start Time`,
-              sortable: true,
-              render: (item) => (
-                <ResponsiveCell
-                  hiddenFrom="lg"
-                  secondary={item.retention.length + item.pins.length > 0 ? renderBadges(item) : undefined}
-                  primary={
-                    <Stack gap={2}>
-                      <Tooltip label={`${t`Root`}: ${item.rootID}`}>
-                        <Anchor
-                          component={Link}
-                          to={`/snapshots/dir/${item.rootID}`}
-                          state={{ label: searchParams.get("path") }}
-                          td="none"
-                          fz="sm"
-                        >
-                          <FormattedDate value={item.startTime} />
-                        </Anchor>
-                      </Tooltip>
-                      {item.description && (
-                        <Tooltip label={item.description}>
-                          <Text truncate fz="xs" c="dimmed" maw={280}>
-                            {item.description}
-                          </Text>
-                        </Tooltip>
-                      )}
-                    </Stack>
-                  }
-                />
-              )
-            },
-            {
-              accessor: "retention",
-              title: t`Retention`,
-              visibleMediaQuery: (theme) => `(min-width: ${theme.breakpoints.lg})`,
-              render: renderBadges
-            },
-            {
-              accessor: "summary.size",
-              title: t`Size`,
-              sortable: true,
-              textAlign: "center",
-              render: (item) => sizeDisplayName(item.summary.size, bytesStringBase2)
-            },
-            {
-              accessor: "change",
-              title: t`Change`,
-              textAlign: "right",
-              render: (item) => {
-                const change = sizeChanges.get(item.id);
-                if (change === undefined) return null;
-                return (
-                  <Text
-                    ff="monospace"
-                    fz="sm"
-                    style={{ whiteSpace: "nowrap" }}
-                    c={change > 0 ? "green.6" : change < 0 ? "red.6" : "dimmed"}
-                  >
-                    {signedSizeDisplayName(change, bytesStringBase2)}
-                  </Text>
-                );
-              }
-            },
-            {
-              accessor: "summary.files",
-              title: t`Files`,
-              sortable: true,
-              textAlign: "center"
-            },
-            {
-              accessor: "summary.dirs",
-              title: t`Dirs`,
-              sortable: true,
-              textAlign: "center"
-            },
-            {
-              accessor: "actions",
-              title: <IconClick size={16} />,
-              width: "0%",
-              textAlign: "right",
-              render: (item) => (
-                <Group gap={4} justify="right" wrap="nowrap">
-                  {previousSnapshot(item) && (
-                    <RowAction
-                      label={t`Compare with previous snapshot`}
-                      icon={IconArrowsDiff}
-                      color="blue.5"
-                      onClick={() => {
-                        const older = previousSnapshot(item)!;
-                        const params = new URLSearchParams({
-                          host: sourceInfo.host ?? "",
-                          userName: sourceInfo.userName ?? "",
-                          path: sourceInfo.path ?? "",
-                          a: older.rootID,
-                          b: item.rootID
-                        });
-                        navigate(`/snapshots/compare?${params.toString()}`);
-                      }}
-                    />
-                  )}
-                  <RowAction
-                    label={t`Update description`}
-                    icon={IconFileText}
-                    color="blue.5"
-                    onClick={() =>
-                      setItemAction({
-                        item,
-                        action: "description"
-                      })
+        <PageState hasData={data !== undefined} loading={data === undefined && !error} error={error}>
+          <DataGrid
+            selectedRecords={selectedRecords}
+            onSelectedRecordsChange={setSelectedRecords}
+            loading={loading && loadingKey === "loading"}
+            records={visibleData}
+            noRecordsText={t`No snapshots taken`}
+            noRecordsIcon={<IconWrapper icon={IconFileDatabase} size={48} />}
+            pageSize={tablePageSize}
+            sortStatus={sortStatus}
+            onSortStatusChange={setSortStatus}
+            columns={[
+              {
+                accessor: "startTime",
+                title: t`Start Time`,
+                sortable: true,
+                render: (item) => (
+                  <ResponsiveCell
+                    hiddenFrom="lg"
+                    secondary={item.retention.length + item.pins.length > 0 ? renderBadges(item) : undefined}
+                    primary={
+                      <ResponsiveCell
+                        hiddenFrom="md"
+                        secondary={
+                          <Stack gap={6}>
+                            {renderMeta(item)}
+                            {renderActions(item, "left")}
+                          </Stack>
+                        }
+                        primary={
+                          <Stack gap={2}>
+                            <Tooltip label={`${t`Root`}: ${item.rootID}`}>
+                              <Anchor
+                                component={Link}
+                                to={`/snapshots/dir/${item.rootID}`}
+                                state={{ label: searchParams.get("path") }}
+                                td="none"
+                                fz="sm"
+                              >
+                                <FormattedDate value={item.startTime} />
+                              </Anchor>
+                            </Tooltip>
+                            {item.description && (
+                              <Tooltip label={item.description}>
+                                <Text truncate fz="xs" c="dimmed" maw={280}>
+                                  {item.description}
+                                </Text>
+                              </Tooltip>
+                            )}
+                          </Stack>
+                        }
+                      />
                     }
                   />
-                  <RowAction
-                    label={t`Add pin to prevent snapshot deletion`}
-                    icon={IconPin}
-                    color="grape.5"
-                    onClick={() => {
-                      setPinAction(undefined);
-                      setItemAction({ item, action: "pin" });
-                    }}
-                  />
-                </Group>
-              )
-            }
-          ]}
-        />
+                )
+              },
+              {
+                accessor: "retention",
+                title: t`Retention`,
+                visibleMediaQuery: (theme) => `(min-width: ${theme.breakpoints.lg})`,
+                render: renderBadges
+              },
+              {
+                accessor: "summary.size",
+                title: t`Size`,
+                visibleMediaQuery: (theme) => `(min-width: ${theme.breakpoints.md})`,
+                sortable: true,
+                textAlign: "center",
+                render: (item) => sizeDisplayName(item.summary.size, bytesStringBase2)
+              },
+              {
+                accessor: "change",
+                title: t`Change`,
+                visibleMediaQuery: (theme) => `(min-width: ${theme.breakpoints.md})`,
+                textAlign: "right",
+                render: (item) => renderChange(item)
+              },
+              {
+                accessor: "summary.files",
+                title: t`Files`,
+                visibleMediaQuery: (theme) => `(min-width: ${theme.breakpoints.md})`,
+                sortable: true,
+                textAlign: "center"
+              },
+              {
+                accessor: "summary.dirs",
+                title: t`Dirs`,
+                visibleMediaQuery: (theme) => `(min-width: ${theme.breakpoints.md})`,
+                sortable: true,
+                textAlign: "center"
+              },
+              {
+                accessor: "actions",
+                title: <IconClick size={16} />,
+                visibleMediaQuery: (theme) => `(min-width: ${theme.breakpoints.md})`,
+                width: "0%",
+                textAlign: "right",
+                render: (item) => renderActions(item, "right")
+              }
+            ]}
+          />
+        </PageState>
       </Stack>
       {itemAction?.action === "description" && itemAction?.item && (
         <UpdateDescriptionModal

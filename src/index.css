@@ -16,3 +16,42 @@ h1 {
   --badge-fz-sm: var(--mantine-font-size-xs);
   --badge-fz-md: var(--mantine-font-size-xs);
 }
+
+:focus-visible {
+  outline: 2px solid var(--mantine-primary-color-filled);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--mantine-primary-color-filled) 30%, transparent);
+}
+
+table {
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 48em) {
+  .mantine-Title-root[data-order="1"] {
+    font-size: 1.5rem;
+  }
+}
+
+@media (pointer: coarse) {
+  .mantine-ActionIcon-root {
+    min-width: 2.25rem;
+    min-height: 2.25rem;
+  }
+}
+
+td a {
+  display: inline-block;
+  min-height: 24px;
+  line-height: 24px;
+}
+
+@media (pointer: coarse) {
+  td a {
+    padding-block: 6px;
+    line-height: 1.5;
+  }
+}
