@@ -1,0 +1,18 @@
+.link {
+  position: absolute;
+  left: var(--mantine-spacing-xs);
+  top: var(--mantine-spacing-xs);
+  z-index: 1000;
+  padding: var(--mantine-spacing-xs) var(--mantine-spacing-md);
+  border-radius: var(--mantine-radius-sm);
+  border: 2px solid var(--mantine-color-text);
+  background: var(--mantine-color-body);
+  color: var(--mantine-color-text);
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateY(calc(-100% - var(--mantine-spacing-md)));
+
+  &:focus-visible {
+    transform: none;
+  }
+}

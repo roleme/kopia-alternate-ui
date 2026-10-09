@@ -112,7 +112,7 @@ export function SidebarContent({ onNavigate, showBrand = true }: { onNavigate?: 
 
 export function Sidebar() {
   return (
-    <AppShellNavbar p="xs" visibleFrom="md">
+    <AppShellNavbar p="xs" visibleFrom="md" role="none">
       <SidebarContent />
     </AppShellNavbar>
   );

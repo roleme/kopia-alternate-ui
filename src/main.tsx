@@ -1,3 +1,4 @@
+import "@fontsource-variable/nunito";
 import "@mantine/core/styles.layer.css";
 import "@mantine/dates/styles.layer.css";
 import "@mantine/notifications/styles.layer.css";
@@ -11,10 +12,10 @@ import "./index.css";
 import PoliciesPage from "./policies/PoliciesPage.tsx";
 import PreferencesPage from "./preferences/PreferencesPage.tsx";
 import RepoPage from "./repo/RepoPage.tsx";
+import SnapshotComparePage from "./snapshot-compare/SnapshotComparePage.tsx";
 import SnapshotDirectory from "./snapshot-directory/SnapshotDirectory.tsx";
 import SnapshotHistory from "./snapshot-history/SnapshotHistory.tsx";
 import SnapshotMountsPage from "./snapshot-mounts/SnapshotMountsPage.tsx";
-import SnapshotComparePage from "./snapshot-compare/SnapshotComparePage.tsx";
 import SnapshotsPage from "./snapshots/SnapshotsPage.tsx";
 import TaskDetailsPage from "./tasks/TaskDetailsPage.tsx";
 import TasksPage from "./tasks/TasksPage.tsx";

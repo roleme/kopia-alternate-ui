@@ -1,5 +1,18 @@
-@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap");
-
 h1 {
   overflow-wrap: anywhere;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mantine-Indicator-indicator,
+  .mantine-Indicator-indicator::before,
+  .mantine-Indicator-indicator::after,
+  .mantine-Progress-section {
+    animation: none;
+  }
+}
+
+.mantine-Badge-root {
+  --badge-fz-xs: var(--mantine-font-size-xs);
+  --badge-fz-sm: var(--mantine-font-size-xs);
+  --badge-fz-md: var(--mantine-font-size-xs);
 }

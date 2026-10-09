@@ -34,7 +34,7 @@ export default function PolicyAccordionControl({
             {isConfigured ? (
               <Group gap={2} justify="end" mr="md">
                 <IconWrapper icon={IconCircleCheckFilled} color="green" size={18} />
-                <Text fz="xs" c="green">
+                <Text fz="xs" c="green.6">
                   <Trans>Configured</Trans>
                 </Text>
               </Group>
