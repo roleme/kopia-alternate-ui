@@ -1,0 +1,1 @@
+import{c as e}from"./AppContext-e4YuXNLk.js";var t=e(`outline`,`asterisk`,`Asterisk`,[[`path`,{d:`M12 12l8 -4.5`,key:`svg-0`}],[`path`,{d:`M12 12v9`,key:`svg-1`}],[`path`,{d:`M12 12l-8 -4.5`,key:`svg-2`}],[`path`,{d:`M12 12l8 4.5`,key:`svg-3`}],[`path`,{d:`M12 3v9`,key:`svg-4`}],[`path`,{d:`M12 12l-8 4.5`,key:`svg-5`}]]);export{t};

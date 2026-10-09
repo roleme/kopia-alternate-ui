@@ -1,0 +1,1 @@
+function e(e,t,n){return n.indexOf(e)===t}export{e as t};

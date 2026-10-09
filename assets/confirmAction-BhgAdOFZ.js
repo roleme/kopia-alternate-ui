@@ -1,0 +1,1 @@
+import{Jn as e,U as t}from"./AppContext-e4YuXNLk.js";import{l as n}from"./index-nq48M5ex.js";var r=e();function i({title:e,message:i,confirmLabel:a,cancelLabel:o,onConfirm:s}){n.openConfirmModal({title:e,children:(0,r.jsx)(t,{size:`sm`,children:i}),labels:{confirm:a,cancel:o},confirmProps:{color:`red`,size:`xs`},cancelProps:{size:`xs`},onConfirm:s})}export{i as t};

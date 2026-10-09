@@ -1,0 +1,1 @@
+var e=[``,`K`,`M`,`G`,`T`],t=[``,`Ki`,`Mi`,`Gi`,`Ti`];function n(e){return Math.round(e*10)/10+``}function r(e,t,r,i){for(let a=0;a<r.length;a++){if(e<.9*t)return n(e)+` `+r[a]+i;e/=t}return n(e)+` `+r[r.length-1]+i}function i(n,i){return n===void 0?``:i?r(n,1024,t,`B`):r(n,1e3,e,`B`)}export{i as t};

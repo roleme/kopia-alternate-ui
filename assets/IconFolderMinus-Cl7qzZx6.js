@@ -1,0 +1,1 @@
+import{c as e}from"./AppContext-e4YuXNLk.js";var t=e(`outline`,`folder-minus`,`FolderMinus`,[[`path`,{d:`M12 19h-7a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2h4l3 3h7a2 2 0 0 1 2 2v6`,key:`svg-0`}],[`path`,{d:`M16 19h6`,key:`svg-1`}]]);export{t};
