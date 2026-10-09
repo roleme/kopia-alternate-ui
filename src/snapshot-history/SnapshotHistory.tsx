@@ -4,12 +4,12 @@ import { ActionIcon, Anchor, Badge, Button, Container, Group, Stack, Text, Title
 import { showNotification } from "@mantine/notifications";
 import {
   IconArrowLeft,
+  IconArrowsDiff,
   IconClick,
   IconFileDatabase,
   IconFileText,
   IconPin,
-  IconTrash,
-  IconArrowsDiff
+  IconTrash
 } from "@tabler/icons-react";
 import sortBy from "lodash.sortby";
 import type { DataTableSortStatus } from "mantine-datatable";
@@ -23,16 +23,17 @@ import { ErrorAlert } from "../core/ErrorAlert/ErrorAlert";
 import FormattedDate from "../core/FormattedDate";
 import useApiRequest from "../core/hooks/useApiRequest";
 import IconWrapper from "../core/IconWrapper";
+import { ResponsiveCell } from "../core/ResponsiveCell";
 import type { ItemAction, Snapshot, Snapshots, SourceInfo } from "../core/types";
-import sizeDisplayName from "../utils/formatSize";
 import signedSizeDisplayName from "../utils/formatSignedSize";
+import sizeDisplayName from "../utils/formatSize";
 import RetentionBadge from "./components/RetentionBadge";
 import SnapshotCountControl from "./components/SnapshotCountControl";
-import { sizeChangesById } from "./sizeChanges";
 import SnapshotHistoryStats from "./components/SnapshotHistoryStats";
 import DeleteSnapshotModal from "./modals/DeleteSnapshotModal";
 import PinSnapshotModal from "./modals/PinSnapshotModal";
 import UpdateDescriptionModal from "./modals/UpdateDescriptionModal";
+import { sizeChangesById } from "./sizeChanges";
 
 function SnapshotHistory() {
   const { kopiaService } = useServerInstanceContext();
@@ -94,6 +95,31 @@ function SnapshotHistory() {
   useEffect(() => {
     execute(undefined, "loading");
   }, [showAll]);
+
+  const renderBadges = (item: Snapshot) => (
+    <Group gap="xs">
+      {item.retention.map((z) => (
+        <RetentionBadge retention={z} key={z} />
+      ))}
+      {item.pins.map((p) => (
+        <Badge
+          key={p}
+          tt="none"
+          radius={5}
+          rightSection={<IconPin size={14} />}
+          onClick={() => {
+            setPinAction({
+              item: p,
+              action: "pin"
+            });
+            setItemAction({ item: item, action: "pin" });
+          }}
+        >
+          {p}
+        </Badge>
+      ))}
+    </Group>
+  );
 
   return (
     <Container fluid>
@@ -159,57 +185,39 @@ function SnapshotHistory() {
               title: t`Start Time`,
               sortable: true,
               render: (item) => (
-                <Stack gap={2}>
-                  <Tooltip label={`${t`Root`}: ${item.rootID}`}>
-                    <Anchor
-                      component={Link}
-                      to={`/snapshots/dir/${item.rootID}`}
-                      state={{ label: searchParams.get("path") }}
-                      td="none"
-                      fz="sm"
-                    >
-                      <FormattedDate value={item.startTime} />
-                    </Anchor>
-                  </Tooltip>
-                  {item.description && (
-                    <Tooltip label={item.description}>
-                      <Text truncate fz="xs" c="dimmed" maw={280}>
-                        {item.description}
-                      </Text>
-                    </Tooltip>
-                  )}
-                </Stack>
+                <ResponsiveCell
+                  hiddenFrom="lg"
+                  secondary={item.retention.length + item.pins.length > 0 ? renderBadges(item) : undefined}
+                  primary={
+                    <Stack gap={2}>
+                      <Tooltip label={`${t`Root`}: ${item.rootID}`}>
+                        <Anchor
+                          component={Link}
+                          to={`/snapshots/dir/${item.rootID}`}
+                          state={{ label: searchParams.get("path") }}
+                          td="none"
+                          fz="sm"
+                        >
+                          <FormattedDate value={item.startTime} />
+                        </Anchor>
+                      </Tooltip>
+                      {item.description && (
+                        <Tooltip label={item.description}>
+                          <Text truncate fz="xs" c="dimmed" maw={280}>
+                            {item.description}
+                          </Text>
+                        </Tooltip>
+                      )}
+                    </Stack>
+                  }
+                />
               )
             },
             {
               accessor: "retention",
               title: t`Retention`,
               visibleMediaQuery: (theme) => `(min-width: ${theme.breakpoints.lg})`,
-              render: (item) => {
-                return (
-                  <Group gap="xs">
-                    {item.retention.map((z) => (
-                      <RetentionBadge retention={z} key={z} />
-                    ))}
-                    {item.pins.map((p) => (
-                      <Badge
-                        tt="none"
-                        radius={5}
-                        rightSection={<IconPin size={14} />}
-                        onClick={() => {
-                          setPinAction({
-                            item: p,
-                            action: "pin"
-                          });
-                          setItemAction({ item: item, action: "pin" });
-                        }}
-                      >
-                        {p}
-                      </Badge>
-                    ))}
-                  </Group>
-                );
-              }
+              render: renderBadges
             },
             {
               accessor: "summary.size",

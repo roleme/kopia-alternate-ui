@@ -125,7 +125,7 @@ msgstr "Active"
 msgid "Add"
 msgstr "Add"
 
-#: src/snapshot-history/SnapshotHistory.tsx:295
+#: src/snapshot-history/SnapshotHistory.tsx:303
 msgid "Add pin to prevent snapshot deletion"
 msgstr "Add pin to prevent snapshot deletion"
 
@@ -199,6 +199,7 @@ msgstr "Azure Blob Storage"
 msgid "Azure Storage Domain"
 msgstr "Azure Storage Domain"
 
+#: src/core/PageHeader/PageHeader.tsx:21
 #: src/repo/ConfigureRepoSection.tsx:303
 #: src/repo/ConnectRepoSection.tsx:154
 #: src/repo/CreateRepoSection.tsx:219
@@ -289,7 +290,7 @@ msgstr "Canceled after"
 msgid "Canceling for"
 msgstr "Canceling for"
 
-#: src/snapshot-history/SnapshotHistory.tsx:223
+#: src/snapshot-history/SnapshotHistory.tsx:231
 msgid "Change"
 msgstr ""
 
@@ -336,8 +337,8 @@ msgstr "Command Mode - Before"
 msgid "Compare snapshots"
 msgstr ""
 
-#: src/snapshot-history/SnapshotHistory.tsx:260
-#: src/snapshot-history/SnapshotHistory.tsx:264
+#: src/snapshot-history/SnapshotHistory.tsx:268
+#: src/snapshot-history/SnapshotHistory.tsx:272
 msgid "Compare with previous snapshot"
 msgstr ""
 
@@ -510,7 +511,7 @@ msgstr "Default page size"
 #: src/policies/modals/PolicyModal/policy-inputs/PolicyTextInput.tsx:65
 #: src/policies/modals/PolicyModal/policy-inputs/PolicyTextListInput.tsx:70
 #: src/policies/modals/PolicyModal/policy-inputs/PolicyTimeOfDayInput.tsx:47
-#: src/policies/PoliciesPage.tsx:203
+#: src/policies/PoliciesPage.tsx:197
 msgid "Defined"
 msgstr "Defined"
 
@@ -526,7 +527,7 @@ msgstr "Delete"
 msgid "Delete policy"
 msgstr "Delete policy"
 
-#: src/snapshot-history/SnapshotHistory.tsx:120
+#: src/snapshot-history/SnapshotHistory.tsx:146
 msgid "Delete Selected"
 msgstr "Delete Selected"
 
@@ -575,7 +576,7 @@ msgid "Directory to create policy for"
 msgstr "Directory to create policy for"
 
 #: src/snapshot-directory/SnapshotDirectory.tsx:235
-#: src/snapshot-history/SnapshotHistory.tsx:248
+#: src/snapshot-history/SnapshotHistory.tsx:256
 msgid "Dirs"
 msgstr "Dirs"
 
@@ -648,7 +649,7 @@ msgstr ""
 msgid "Duration"
 msgstr "Duration"
 
-#: src/policies/PoliciesPage.tsx:221
+#: src/policies/PoliciesPage.tsx:215
 #: src/preferences/components/NotificationCard.tsx:76
 msgid "Edit"
 msgstr "Edit"
@@ -894,7 +895,7 @@ msgstr "File Snapshotted"
 #: src/policies/modals/PolicyModal/PolicyModal.tsx:210
 #: src/snapshot-directory/SnapshotDirectory.tsx:229
 #: src/snapshot-history/components/SnapshotHistoryStats.tsx:101
-#: src/snapshot-history/SnapshotHistory.tsx:242
+#: src/snapshot-history/SnapshotHistory.tsx:250
 msgid "Files"
 msgstr "Files"
 
@@ -953,7 +954,7 @@ msgid "Helps to distinguish between multiple connected repositories"
 msgstr "Helps to distinguish between multiple connected repositories"
 
 #: src/policies/modals/PolicyModal/components/PolicyEffectiveLabel.tsx:45
-#: src/policies/PoliciesPage.tsx:193
+#: src/policies/PoliciesPage.tsx:187
 #: src/repo/sections/SFTPServerRepo.tsx:52
 #: src/repo/sections/SFTPServerRepo.tsx:160
 msgid "Host"
@@ -1156,6 +1157,7 @@ msgstr "List of additional files containing ignore rules (each file configures i
 msgid "List of file and directory names to ignore."
 msgstr "List of file and directory names to ignore."
 
+#: src/core/PageState/PageState.tsx:22
 #: src/core/SkeletonLayout.tsx:66
 msgid "Loading"
 msgstr ""
@@ -1352,7 +1354,7 @@ msgstr "Never Compress Extensions"
 msgid "Never compress the following file extensions (one extension per line)"
 msgstr "Never compress the following file extensions (one extension per line)"
 
-#: src/policies/PoliciesPage.tsx:165
+#: src/policies/PoliciesPage.tsx:159
 msgid "New Policy"
 msgstr "New Policy"
 
@@ -1400,7 +1402,7 @@ msgstr "No headers defined"
 msgid "No notifications defined"
 msgstr "No notifications defined"
 
-#: src/policies/PoliciesPage.tsx:182
+#: src/policies/PoliciesPage.tsx:176
 msgid "No policies found"
 msgstr "No policies found"
 
@@ -1417,7 +1419,7 @@ msgstr ""
 msgid "No snapshots mounted"
 msgstr "No snapshots mounted"
 
-#: src/snapshot-history/SnapshotHistory.tsx:151
+#: src/snapshot-history/SnapshotHistory.tsx:177
 msgid "No snapshots taken"
 msgstr "No snapshots taken"
 
@@ -1436,6 +1438,10 @@ msgstr "Not configured"
 #: src/policies/modals/PolicyModal/policy-inputs/PolicyTimeOfDayInput.tsx:90
 msgid "Not defined"
 msgstr "Not defined"
+
+#: src/core/PageState/PageState.tsx:39
+msgid "Nothing to show"
+msgstr ""
 
 #: src/preferences/modals/EmailModal.tsx:239
 #: src/preferences/modals/WebhookModal.tsx:187
@@ -1566,7 +1572,7 @@ msgstr "Paste JSON credentials here"
 
 #: src/policies/modals/CreatePolicyModal/CreatePolicyModal.tsx:115
 #: src/policies/modals/PolicyModal/components/PolicyEffectiveLabel.tsx:52
-#: src/policies/PoliciesPage.tsx:198
+#: src/policies/PoliciesPage.tsx:192
 #: src/repo/sections/SFTPServerRepo.tsx:55
 #: src/repo/sections/SFTPServerRepo.tsx:189
 #: src/snapshots/SnapshotsPage.tsx:188
@@ -1682,9 +1688,10 @@ msgstr "Recipient User Key or Group Key"
 msgid "Records per page"
 msgstr "Records per page"
 
-#: src/policies/PoliciesPage.tsx:172
+#: src/core/RefreshButton.tsx:13
+#: src/policies/PoliciesPage.tsx:166
 #: src/snapshot-directory/SnapshotDirectory.tsx:147
-#: src/snapshot-history/SnapshotHistory.tsx:128
+#: src/snapshot-history/SnapshotHistory.tsx:154
 #: src/snapshot-mounts/SnapshotMountsPage.tsx:59
 #: src/snapshots/SnapshotsPage.tsx:161
 #: src/tasks/TasksPage.tsx:172
@@ -1758,7 +1765,7 @@ msgstr "Restore files and directories"
 msgid "Results are partial — counts cover what was read."
 msgstr ""
 
-#: src/snapshot-history/SnapshotHistory.tsx:186
+#: src/snapshot-history/SnapshotHistory.tsx:218
 msgid "Retention"
 msgstr "Retention"
 
@@ -1766,7 +1773,7 @@ msgstr "Retention"
 msgid "Retry"
 msgstr ""
 
-#: src/snapshot-history/SnapshotHistory.tsx:163
+#: src/snapshot-history/SnapshotHistory.tsx:193
 msgid "Root"
 msgstr "Root"
 
@@ -1934,7 +1941,7 @@ msgstr ""
 
 #: src/snapshot-directory/SnapshotDirectory.tsx:221
 #: src/snapshot-history/components/SnapshotHistoryStats.tsx:91
-#: src/snapshot-history/SnapshotHistory.tsx:216
+#: src/snapshot-history/SnapshotHistory.tsx:224
 #: src/snapshots/SnapshotsPage.tsx:239
 msgid "Size"
 msgstr "Size"
@@ -2016,13 +2023,13 @@ msgstr "Snapshot schedules using UNIX crontab syntax:"
 msgid "Snapshot unmounted"
 msgstr "Snapshot unmounted"
 
-#: src/snapshot-history/SnapshotHistory.tsx:343
+#: src/snapshot-history/SnapshotHistory.tsx:351
 msgid "Snapshot(s) deleted"
 msgstr "Snapshot(s) deleted"
 
 #: src/core/Sidebar/Sidebar.tsx:31
 #: src/snapshot-history/components/SnapshotHistoryStats.tsx:83
-#: src/snapshot-history/SnapshotHistory.tsx:107
+#: src/snapshot-history/SnapshotHistory.tsx:133
 #: src/snapshots/SnapshotsPage.tsx:115
 msgid "Snapshots"
 msgstr "Snapshots"
@@ -2069,7 +2076,7 @@ msgstr "SSH Command"
 msgid "SSH host name (e.g., example.com)"
 msgstr "SSH host name (e.g., example.com)"
 
-#: src/snapshot-history/SnapshotHistory.tsx:159
+#: src/snapshot-history/SnapshotHistory.tsx:185
 #: src/tasks/TasksPage.tsx:194
 msgid "Start Time"
 msgstr "Start Time"
@@ -2137,7 +2144,7 @@ msgstr "The repository was synchronized successfully"
 msgid "The selected snapshots are identical — nothing was added, removed or modified."
 msgstr ""
 
-#: src/snapshot-history/SnapshotHistory.tsx:344
+#: src/snapshot-history/SnapshotHistory.tsx:352
 msgid "The snapshot(s) was delete successfully"
 msgstr "The snapshot(s) was delete successfully"
 
@@ -2250,7 +2257,7 @@ msgid "Upcoming Snapshots"
 msgstr "Upcoming Snapshots"
 
 #: src/snapshot-history/modals/UpdateDescriptionModal.tsx:50
-#: src/snapshot-history/SnapshotHistory.tsx:281
+#: src/snapshot-history/SnapshotHistory.tsx:289
 msgid "Update description"
 msgstr "Update description"
 
@@ -2297,7 +2304,7 @@ msgstr "User"
 #: src/core/context/LoginModal.tsx:60
 #: src/core/context/LoginModal.tsx:62
 #: src/policies/modals/PolicyModal/components/PolicyEffectiveLabel.tsx:39
-#: src/policies/PoliciesPage.tsx:188
+#: src/policies/PoliciesPage.tsx:182
 #: src/repo/ConnectRepoSection.tsx:138
 #: src/repo/CreateRepoSection.tsx:203
 #: src/repo/sections/SFTPServerRepo.tsx:176

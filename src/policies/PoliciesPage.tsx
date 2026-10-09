@@ -2,10 +2,10 @@ import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { ActionIcon, Button, Container, Divider, Group, Stack, Title, Tooltip } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
-import { IconClick, IconFileCertificate, IconPencil, IconPlus } from "@tabler/icons-react";
+import { IconClick, IconFileCertificate, IconPencil } from "@tabler/icons-react";
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router";
-import { refreshButtonProps } from "../core/commonButtons";
+import { newActionProps, refreshButtonProps } from "../core/commonButtons";
 import { useAppContext } from "../core/context/AppContext";
 import { useServerInstanceContext } from "../core/context/ServerInstanceContext";
 import { DataGrid } from "../core/DataGrid/DataGrid";
@@ -155,13 +155,7 @@ function PoliciesPage() {
             disabled={loading}
           />
           <Group>
-            <Button
-              size="xs"
-              leftSection={<IconPlus size={16} />}
-              color="green"
-              disabled={loading}
-              onClick={() => setAction({ action: "new" })}
-            >
+            <Button {...newActionProps} disabled={loading} onClick={() => setAction({ action: "new" })}>
               <Trans>New Policy</Trans>
             </Button>
             <Button
