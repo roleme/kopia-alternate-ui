@@ -147,6 +147,7 @@ msgstr "Active"
 msgid "Add"
 msgstr "Add"
 
+#: src/snapshot-history/components/SnapshotCard.tsx:176
 #: src/snapshot-history/SnapshotHistory.tsx:170
 msgid "Add pin to prevent snapshot deletion"
 msgstr "Add pin to prevent snapshot deletion"
@@ -373,11 +374,15 @@ msgstr "Command Mode - After"
 msgid "Command Mode - Before"
 msgstr "Command Mode - Before"
 
+#: src/snapshot-history/components/SnapshotCard.tsx:157
+msgid "Compare"
+msgstr ""
+
 #: src/snapshot-compare/SnapshotComparePage.tsx:693
 msgid "Compare snapshots"
 msgstr ""
 
-#: src/snapshot-history/components/SnapshotCard.tsx:157
+#: src/snapshot-history/components/SnapshotCard.tsx:154
 #: src/snapshot-history/SnapshotHistory.tsx:142
 msgid "Compare with previous snapshot"
 msgstr ""
@@ -597,6 +602,10 @@ msgstr ""
 msgid "Deprecated"
 msgstr "Deprecated"
 
+#: src/snapshot-history/components/SnapshotCard.tsx:167
+msgid "Describe"
+msgstr ""
+
 #: src/repo/ConnectedRepoSection/RepoDescription.tsx:61
 #: src/snapshot-history/modals/UpdateDescriptionModal.tsx:62
 #: src/tasks/TasksPage.tsx:250
@@ -737,7 +746,11 @@ msgstr "Edit existing policy"
 msgid "Edit items"
 msgstr "Edit items"
 
-#: src/snapshot-history/components/SnapshotCard.tsx:168
+#: src/snapshot-history/components/SnapshotCard.tsx:193
+msgid "Edit pin"
+msgstr ""
+
+#: src/snapshot-history/components/SnapshotCard.tsx:190
 #: src/snapshot-history/SnapshotHistory.tsx:104
 msgid "Edit pin {p}"
 msgstr ""
@@ -1735,8 +1748,8 @@ msgstr "Per-Host Policies"
 msgid "Per-User Policies"
 msgstr "Per-User Policies"
 
-#: src/snapshot-history/components/SnapshotCard.tsx:164
-msgid "Pin snapshot"
+#: src/snapshot-history/components/SnapshotCard.tsx:179
+msgid "Pin"
 msgstr ""
 
 #: src/snapshot-history/modals/PinSnapshotModal.tsx:66
@@ -2139,10 +2152,6 @@ msgstr "SMTP Username"
 msgid "Snapshot"
 msgstr "Snapshot"
 
-#: src/snapshot-history/components/SnapshotCard.tsx:150
-msgid "Snapshot actions"
-msgstr ""
-
 #: src/policies/modals/PolicyModal/PolicyModal.tsx:234
 msgid "Snapshot Actions"
 msgstr "Snapshot Actions"
@@ -2454,7 +2463,7 @@ msgstr ""
 msgid "Upcoming Snapshots"
 msgstr "Upcoming Snapshots"
 
-#: src/snapshot-history/components/SnapshotCard.tsx:161
+#: src/snapshot-history/components/SnapshotCard.tsx:164
 #: src/snapshot-history/modals/UpdateDescriptionModal.tsx:50
 #: src/snapshot-history/SnapshotHistory.tsx:159
 msgid "Update description"
