@@ -4,7 +4,7 @@ import { useLocalStorage } from "@mantine/hooks";
 import { createContext, type PropsWithChildren, useCallback, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { parseColorScheme } from "../../utils/parseColorScheme";
-import useApiRequest from "../hooks/useApiRequest";
+import useApiRequest, { type ErrorInformation } from "../hooks/useApiRequest";
 import type { IKopiaService } from "../kopiaService";
 import SkeletonLayout from "../SkeletonLayout";
 import type { Preferences, Status } from "../types";
@@ -15,6 +15,7 @@ type ContextState = Preferences & {
   reloadStatus: () => void;
   setShowStatistics: (value: boolean) => void;
   repoStatus: Status;
+  statusError?: ErrorInformation;
   showStatistics: boolean;
 };
 const initialState: ContextState = {
@@ -113,6 +114,7 @@ export function AppContextProvider({ children }: AppContextProps) {
             connected: false,
             description: "Unknown"
           } as Status),
+        statusError: loadStatus.error,
         showStatistics: intShowStats,
         setShowStatistics
       }}

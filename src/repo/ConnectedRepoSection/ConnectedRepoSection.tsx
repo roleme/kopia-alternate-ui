@@ -1,25 +1,14 @@
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import {
-  Alert,
-  Button,
-  Card,
-  CardSection,
-  Container,
-  Divider,
-  Group,
-  SimpleGrid,
-  Stack,
-  Text,
-  Title
-} from "@mantine/core";
-import { modals } from "@mantine/modals";
+import { Alert, Button, Card, CardSection, Container, Divider, Group, SimpleGrid, Stack, Text } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import { IconCircleCheck, IconEditOff } from "@tabler/icons-react";
+import { confirmAction } from "../../core/confirmAction";
 import { useAppContext } from "../../core/context/AppContext";
 import { useServerInstanceContext } from "../../core/context/ServerInstanceContext";
 import useApiRequest from "../../core/hooks/useApiRequest";
 import IconWrapper from "../../core/IconWrapper";
+import { PageHeader } from "../../core/PageHeader/PageHeader";
 import { AmazonS3RepoHeader } from "../sections/AmazonS3Repo";
 import { AzureBlobStorageRepoHeader } from "../sections/AzureBlobStorageRepo";
 import { BackblazeB2RepoHeader } from "../sections/BackblazeB2Repo";
@@ -64,23 +53,23 @@ function ConnectedRepoSection() {
   });
 
   const openDisconnectConfirmation = () =>
-    modals.openConfirmModal({
+    confirmAction({
       title: t`Disconnect repository?`,
-      children: (
-        <Text size="sm">
-          <Trans>Are you sure you want to disconnect from this repository?</Trans>
-        </Text>
+      message: (
+        <Trans>
+          This server will no longer be connected to the repository. The repository data is not deleted and you can
+          connect again later.
+        </Trans>
       ),
-      labels: { confirm: t`Disconnect`, cancel: t`Cancel` },
-      confirmProps: { color: "red", size: "xs" },
-      cancelProps: { size: "xs" },
+      confirmLabel: t`Disconnect`,
+      cancelLabel: t`Cancel`,
       onConfirm: () => disconnectRepoAction.execute()
     });
   return (
     <Container>
-      <Title order={1} mb="md">
-        <Trans>Repository</Trans>
-      </Title>
+      <Stack mb="md">
+        <PageHeader title={<Trans>Repository</Trans>} />
+      </Stack>
       <Card withBorder radius="xs" className={classes.connectedRepoSection}>
         <CardSection withBorder inheritPadding py="xs">
           <Group justify="space-between">
@@ -119,12 +108,6 @@ function ConnectedRepoSection() {
               </Stack>
               <Stack gap={0}>
                 <Text fz="xs" c="dimmed">
-                  <Trans>Provider</Trans>
-                </Text>
-                <Text fz="sm">{repoStatus.storage || "-"}</Text>
-              </Stack>
-              <Stack gap={0}>
-                <Text fz="xs" c="dimmed">
                   <Trans>Encryption Algorithm</Trans>
                 </Text>
                 <Text fz="sm">{repoStatus.encryption || "-"}</Text>
@@ -146,7 +129,7 @@ function ConnectedRepoSection() {
                   <Trans>Repository Format</Trans>
                 </Text>
                 <Text fz="sm">
-                  {repoStatus.formatVersion === "1" ? t`Legacy format compatible with v0.8` : t`Latest format`}
+                  {repoStatus.formatVersion === "1" ? t`Older format (works with Kopia 0.8)` : t`Latest format`}
                 </Text>
               </Stack>
               <Stack gap={0}>

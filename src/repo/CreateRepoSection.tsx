@@ -127,7 +127,7 @@ function CreateRepoSection({ form, goBack }: Props) {
           description={t`Confirm the repository password`}
           withAsterisk
           placeholder={t`Enter repository password again`}
-          {...form.getInputProps("confirmedPassword")}
+          {...form.getInputProps("confirmPassword")}
         />
       </Group>
       <Accordion variant="separated">

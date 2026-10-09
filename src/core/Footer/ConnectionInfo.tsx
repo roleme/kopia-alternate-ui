@@ -1,3 +1,4 @@
+import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import {
   ActionIcon,
@@ -45,12 +46,6 @@ export function ConnectionInfo() {
             <Group justify="space-between">
               <Stack gap={0}>
                 <Text ml="xs" fz="xs">
-                  <Trans>Server</Trans> :{" "}
-                  <Text fw="bold" fz="xs" span>
-                    {currentServer?.name}
-                  </Text>
-                </Text>
-                <Text ml="xs" fz="xs">
                   <Trans>Connected to</Trans> :{" "}
                   <Text fw="bold" fz="xs" span>
                     {repoStatus.description}
@@ -59,10 +54,11 @@ export function ConnectionInfo() {
               </Stack>
               {currentServer && (
                 <div>
-                  <Tooltip label="Logout">
+                  <Tooltip label={t`Logout`}>
                     <ActionIcon
                       variant="subtle"
                       color="red.5"
+                      aria-label={t`Logout`}
                       onClick={() => {
                         logoutFromServer(currentServer?.id);
                       }}
@@ -78,8 +74,8 @@ export function ConnectionInfo() {
             <>
               <Divider />
               <Stack px="xs" gap="0">
-                <Text c="dimmed" fz="10" mb="5">
-                  <Trans>SERVERS</Trans>
+                <Text c="dimmed" fz="xs" mb="5" tt="uppercase">
+                  <Trans>Servers</Trans>
                 </Text>
                 {servers.map((s) => (
                   <UnstyledButton
