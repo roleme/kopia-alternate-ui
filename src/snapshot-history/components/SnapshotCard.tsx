@@ -1,6 +1,6 @@
 import { t } from "@lingui/core/macro";
-import { ActionIcon, Badge, Checkbox, Menu, Text, UnstyledButton } from "@mantine/core";
-import { IconArrowsDiff, IconDots, IconFile, IconFileText, IconFolder, IconPin } from "@tabler/icons-react";
+import { Badge, Button, Checkbox, Text, UnstyledButton } from "@mantine/core";
+import { IconArrowsDiff, IconFile, IconFileText, IconFolder, IconPin } from "@tabler/icons-react";
 import type { ReactNode } from "react";
 import { Link } from "react-router";
 import { useAppContext } from "../../core/context/AppContext";
@@ -144,32 +144,56 @@ export function SnapshotCard({
           <Link className={classes.link} to={`/snapshots/dir/${snapshot.rootID}`} state={{ label: sourcePath }}>
             {body}
           </Link>
-          <div className={classes.menu}>
-            <Menu position="bottom-end" withinPortal radius="md">
-              <Menu.Target>
-                <ActionIcon variant="subtle" color="gray" size="xl" aria-label={t`Snapshot actions`}>
-                  <IconDots size={20} />
-                </ActionIcon>
-              </Menu.Target>
-              <Menu.Dropdown>
-                {canCompare && (
-                  <Menu.Item leftSection={<IconArrowsDiff size={18} />} onClick={onCompare}>
-                    {t`Compare with previous snapshot`}
-                  </Menu.Item>
-                )}
-                <Menu.Item leftSection={<IconFileText size={18} />} onClick={onDescribe}>
-                  {t`Update description`}
-                </Menu.Item>
-                <Menu.Item leftSection={<IconPin size={18} />} onClick={onPin}>
-                  {t`Pin snapshot`}
-                </Menu.Item>
-                {snapshot.pins.map((p) => (
-                  <Menu.Item key={p} leftSection={<IconPin size={18} />} onClick={() => onEditPin(p)}>
-                    {t`Edit pin ${p}`}
-                  </Menu.Item>
-                ))}
-              </Menu.Dropdown>
-            </Menu>
+          <div className={classes.actions}>
+            {canCompare && (
+              <Button
+                variant="light"
+                size="sm"
+                classNames={{ root: classes.action, section: classes.actionSection }}
+                leftSection={<IconArrowsDiff size={16} />}
+                aria-label={t`Compare with previous snapshot`}
+                onClick={onCompare}
+              >
+                <span className={classes.actionLabel}>{t`Compare`}</span>
+              </Button>
+            )}
+            <Button
+              variant="light"
+              size="sm"
+              leftSection={<IconFileText size={16} />}
+              aria-label={t`Update description`}
+              onClick={onDescribe}
+            >
+              <span className={classes.actionLabel}>{t`Describe`}</span>
+            </Button>
+            {snapshot.pins.length === 0 ? (
+              <Button
+                variant="light"
+                size="sm"
+                classNames={{ root: classes.action, section: classes.actionSection }}
+                color="grape"
+                leftSection={<IconPin size={16} />}
+                aria-label={t`Add pin to prevent snapshot deletion`}
+                onClick={onPin}
+              >
+                <span className={classes.actionLabel}>{t`Pin`}</span>
+              </Button>
+            ) : (
+              snapshot.pins.map((p) => (
+                <Button
+                  key={p}
+                  variant="light"
+                  size="sm"
+                  classNames={{ root: classes.action, section: classes.actionSection }}
+                  color="grape"
+                  leftSection={<IconPin size={16} />}
+                  aria-label={t`Edit pin ${p}`}
+                  onClick={() => onEditPin(p)}
+                >
+                  <span className={classes.actionLabel}>{snapshot.pins.length === 1 ? t`Edit pin` : p}</span>
+                </Button>
+              ))
+            )}
           </div>
         </>
       )}
