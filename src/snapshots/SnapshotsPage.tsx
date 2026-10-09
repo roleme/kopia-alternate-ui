@@ -6,7 +6,7 @@ import { showNotification } from "@mantine/notifications";
 import { IconCircleCheck, IconClick, IconFileDatabase, IconFolderOpen, IconRefreshAlert } from "@tabler/icons-react";
 import sortBy from "lodash.sortby";
 import type { DataTableSortStatus } from "mantine-datatable";
-import { Fragment, useEffect, useMemo, useState } from "react";
+import { Fragment, lazy, Suspense, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router";
 import { newActionProps, refreshButtonProps } from "../core/commonButtons";
 import { useAppContext } from "../core/context/AppContext";
@@ -27,9 +27,10 @@ import sizeDisplayName from "../utils/formatSize";
 import { onlyUnique } from "../utils/onlyUnique";
 import SourceRowActions from "./components/SourceRowActions";
 import SourceStatusCell, { EmptyCell } from "./components/SourceStatusCell";
-import NewSnapshotModal from "./modals/NewSnapshotModal";
 import { normalizeRefreshInterval } from "./refreshInterval";
 import { sourceHistoryLink } from "./sourceLinks";
+
+const NewSnapshotModal = lazy(() => import("./modals/NewSnapshotModal"));
 
 function SnapshotsPage() {
   const { kopiaService } = useServerInstanceContext();
@@ -311,13 +312,15 @@ function SnapshotsPage() {
         </PageState>
       </Stack>
       {show && (
-        <NewSnapshotModal
-          onSnapshotted={() => {
-            setShow.close();
-            loadAction.execute(undefined, "refresh");
-          }}
-          onCancel={setShow.close}
-        />
+        <Suspense fallback={null}>
+          <NewSnapshotModal
+            onSnapshotted={() => {
+              setShow.close();
+              loadAction.execute(undefined, "refresh");
+            }}
+            onCancel={setShow.close}
+          />
+        </Suspense>
       )}
     </Container>
   );

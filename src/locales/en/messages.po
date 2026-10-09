@@ -96,23 +96,23 @@ msgstr ""
 msgid "1 folder could not be read"
 msgstr ""
 
-#: src/snapshots/SnapshotsPage.tsx:177
+#: src/snapshots/SnapshotsPage.tsx:178
 msgid "1 minute"
 msgstr "1 minute"
 
-#: src/snapshots/SnapshotsPage.tsx:175
+#: src/snapshots/SnapshotsPage.tsx:176
 msgid "10 seconds"
 msgstr "10 seconds"
 
-#: src/snapshots/SnapshotsPage.tsx:174
+#: src/snapshots/SnapshotsPage.tsx:175
 msgid "3 seconds"
 msgstr "3 seconds"
 
-#: src/snapshots/SnapshotsPage.tsx:176
+#: src/snapshots/SnapshotsPage.tsx:177
 msgid "30 seconds"
 msgstr "30 seconds"
 
-#: src/snapshots/SnapshotsPage.tsx:178
+#: src/snapshots/SnapshotsPage.tsx:179
 msgid "5 minutes"
 msgstr "5 minutes"
 
@@ -178,7 +178,7 @@ msgstr "All"
 msgid "All Policies"
 msgstr "All Policies"
 
-#: src/snapshots/SnapshotsPage.tsx:186
+#: src/snapshots/SnapshotsPage.tsx:187
 msgid "All Snapshots"
 msgstr "All Snapshots"
 
@@ -223,7 +223,7 @@ msgstr "Back"
 msgid "Backblaze B2"
 msgstr "Backblaze B2"
 
-#: src/core/Sidebar/Sidebar.tsx:48
+#: src/core/Sidebar/Sidebar.tsx:49
 msgid "Backups"
 msgstr ""
 
@@ -258,7 +258,7 @@ msgstr "Bucket"
 msgid "By default Kopia connects to the server using internal SSH client which supports limited options. Alternatively it may launch external password-less SSH command, which supports additional options, but is generally less efficient than the built-in client."
 msgstr "By default Kopia connects to the server using internal SSH client which supports limited options. Alternatively it may launch external password-less SSH command, which supports additional options, but is generally less efficient than the built-in client."
 
-#: src/preferences/AppearanceSection.tsx:100
+#: src/preferences/AppearanceSection.tsx:101
 msgid "Byte representation"
 msgstr "Byte representation"
 
@@ -328,7 +328,7 @@ msgstr "Change policy parameters"
 msgid "Change this under Advanced Options"
 msgstr ""
 
-#: src/preferences/AppearanceSection.tsx:156
+#: src/preferences/AppearanceSection.tsx:157
 msgid "Charts at the top of the snapshot history page. Stored in this browser only."
 msgstr ""
 
@@ -343,7 +343,7 @@ msgstr ""
 msgid "Clear"
 msgstr ""
 
-#: src/BaseLayout.tsx:20
+#: src/BaseLayout.tsx:21
 #: src/policies/modals/PolicyCodeEditModal/PolicyCodeEditModal.tsx:41
 #: src/snapshots/modals/TaskEstimationModal.tsx:96
 msgid "Close"
@@ -388,7 +388,7 @@ msgstr "Compression Algorithm"
 msgid "Config file"
 msgstr "Config file"
 
-#: src/core/Sidebar/Sidebar.tsx:50
+#: src/core/Sidebar/Sidebar.tsx:51
 msgid "Configuration"
 msgstr ""
 
@@ -532,7 +532,7 @@ msgstr "Currently browsing instance {currentName}"
 msgid "Daily"
 msgstr "Daily"
 
-#: src/preferences/AppearanceSection.tsx:93
+#: src/preferences/AppearanceSection.tsx:94
 msgid "Dark"
 msgstr "Dark"
 
@@ -540,7 +540,7 @@ msgstr "Dark"
 msgid "default"
 msgstr ""
 
-#: src/preferences/AppearanceSection.tsx:115
+#: src/preferences/AppearanceSection.tsx:116
 msgid "Default page size"
 msgstr "Default page size"
 
@@ -640,7 +640,7 @@ msgstr "Disable ZIP compression"
 
 #: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:141
 #: src/repo/CreateRepoSection.tsx:182
-#: src/snapshots/SnapshotsPage.tsx:173
+#: src/snapshots/SnapshotsPage.tsx:174
 msgid "Disabled"
 msgstr "Disabled"
 
@@ -1195,7 +1195,7 @@ msgstr ""
 msgid "Last Modification"
 msgstr "Last Modification"
 
-#: src/snapshots/SnapshotsPage.tsx:290
+#: src/snapshots/SnapshotsPage.tsx:291
 msgid "Last Snapshot"
 msgstr "Last Snapshot"
 
@@ -1222,7 +1222,7 @@ msgstr "Leave empty to remove description"
 msgid "Legacy format compatible with v0.8"
 msgstr "Legacy format compatible with v0.8"
 
-#: src/preferences/AppearanceSection.tsx:92
+#: src/preferences/AppearanceSection.tsx:93
 msgid "Light"
 msgstr "Light"
 
@@ -1251,11 +1251,11 @@ msgstr "Local Directory or NAS"
 msgid "Local Path Policies"
 msgstr "Local Path Policies"
 
-#: src/snapshots/SnapshotsPage.tsx:187
+#: src/snapshots/SnapshotsPage.tsx:188
 msgid "Local Snapshots"
 msgstr "Local Snapshots"
 
-#: src/preferences/AppearanceSection.tsx:129
+#: src/preferences/AppearanceSection.tsx:130
 msgid "Locale"
 msgstr "Locale"
 
@@ -1312,7 +1312,7 @@ msgstr ""
 msgid "Mail From"
 msgstr "Mail From"
 
-#: src/core/Sidebar/Sidebar.tsx:68
+#: src/core/Sidebar/Sidebar.tsx:70
 msgid "Main navigation"
 msgstr ""
 
@@ -1405,7 +1405,7 @@ msgstr "Mounted at"
 msgid "Mounted Snapshots"
 msgstr "Mounted Snapshots"
 
-#: src/core/Sidebar/Sidebar.tsx:33
+#: src/core/Sidebar/Sidebar.tsx:34
 msgid "Mounts"
 msgstr "Mounts"
 
@@ -1446,7 +1446,7 @@ msgctxt "modal-title"
 msgid "New snapshot"
 msgstr "New snapshot"
 
-#: src/snapshots/SnapshotsPage.tsx:205
+#: src/snapshots/SnapshotsPage.tsx:206
 msgid "New Snapshot"
 msgstr "New Snapshot"
 
@@ -1498,7 +1498,7 @@ msgid "No snapshots mounted"
 msgstr "No snapshots mounted"
 
 #: src/snapshot-history/SnapshotHistory.tsx:237
-#: src/snapshots/SnapshotsPage.tsx:228
+#: src/snapshots/SnapshotsPage.tsx:229
 msgid "No snapshots taken"
 msgstr "No snapshots taken"
 
@@ -1621,7 +1621,7 @@ msgstr "Overwrite Files"
 msgid "Overwrite Symbolic Links"
 msgstr "Overwrite Symbolic Links"
 
-#: src/snapshots/SnapshotsPage.tsx:272
+#: src/snapshots/SnapshotsPage.tsx:273
 msgid "Owner"
 msgstr "Owner"
 
@@ -1670,7 +1670,7 @@ msgstr "Paste JSON credentials here"
 #: src/policies/PoliciesPage.tsx:228
 #: src/repo/sections/SFTPServerRepo.tsx:55
 #: src/repo/sections/SFTPServerRepo.tsx:189
-#: src/snapshots/SnapshotsPage.tsx:236
+#: src/snapshots/SnapshotsPage.tsx:237
 msgid "Path"
 msgstr "Path"
 
@@ -1710,7 +1710,7 @@ msgstr "Pin Snapshot"
 msgid "Plain Text Format"
 msgstr "Plain Text Format"
 
-#: src/core/Sidebar/Sidebar.tsx:37
+#: src/core/Sidebar/Sidebar.tsx:38
 #: src/policies/PoliciesPage.tsx:177
 msgid "Policies"
 msgstr "Policies"
@@ -1724,7 +1724,7 @@ msgstr "Port"
 msgid "Port number (e.g., 22)"
 msgstr "Port number (e.g., 22)"
 
-#: src/core/Sidebar/Sidebar.tsx:41
+#: src/core/Sidebar/Sidebar.tsx:42
 #: src/preferences/PreferencesPage.tsx:13
 msgid "Preferences"
 msgstr "Preferences"
@@ -1783,11 +1783,11 @@ msgstr "Records per page"
 msgid "Refresh"
 msgstr "Refresh"
 
-#: src/snapshots/SnapshotsPage.tsx:171
+#: src/snapshots/SnapshotsPage.tsx:172
 msgid "Refresh:"
 msgstr ""
 
-#: src/snapshots/SnapshotsPage.tsx:122
+#: src/snapshots/SnapshotsPage.tsx:123
 msgid "Remote"
 msgstr "Remote"
 
@@ -1803,7 +1803,7 @@ msgstr ""
 msgid "Report"
 msgstr ""
 
-#: src/core/Sidebar/Sidebar.tsx:39
+#: src/core/Sidebar/Sidebar.tsx:40
 #: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:71
 #: src/repo/RepoPage.tsx:15
 msgid "Repository"
@@ -1831,7 +1831,7 @@ msgstr "Repository is connected as read-only"
 msgid "Repository Password"
 msgstr "Repository Password"
 
-#: src/snapshots/SnapshotsPage.tsx:108
+#: src/snapshots/SnapshotsPage.tsx:109
 msgid "Repository synchronized"
 msgstr "Repository synchronized"
 
@@ -1904,7 +1904,7 @@ msgstr "SAS Token"
 #: src/policies/modals/PolicyListModal/PolicyListModal.tsx:116
 #: src/policies/modals/PolicyModal/PolicyModal.tsx:272
 #: src/policies/modals/PolicyTodModal/PolicyTodModal.tsx:127
-#: src/preferences/AppearanceSection.tsx:163
+#: src/preferences/AppearanceSection.tsx:164
 #: src/preferences/modals/EmailModal.tsx:303
 #: src/preferences/modals/PushoverModal.tsx:155
 #: src/preferences/modals/WebhookModal.tsx:231
@@ -2024,7 +2024,7 @@ msgstr "Shallow Restore At Depth"
 msgid "Show {totalLength} individual snapshots"
 msgstr "Show {totalLength} individual snapshots"
 
-#: src/preferences/AppearanceSection.tsx:149
+#: src/preferences/AppearanceSection.tsx:150
 msgid "Show all snapshots by default"
 msgstr "Show all snapshots by default"
 
@@ -2033,7 +2033,7 @@ msgstr "Show all snapshots by default"
 msgid "Show content diff"
 msgstr ""
 
-#: src/preferences/AppearanceSection.tsx:155
+#: src/preferences/AppearanceSection.tsx:156
 msgid "Show snapshot statistics"
 msgstr ""
 
@@ -2044,7 +2044,7 @@ msgstr ""
 #: src/snapshot-directory/SnapshotDirectory.tsx:258
 #: src/snapshot-history/components/SnapshotHistoryStats.tsx:69
 #: src/snapshot-history/SnapshotHistory.tsx:295
-#: src/snapshots/SnapshotsPage.tsx:280
+#: src/snapshots/SnapshotsPage.tsx:281
 msgid "Size"
 msgstr "Size"
 
@@ -2134,9 +2134,9 @@ msgstr "Snapshot unmounted"
 msgid "Snapshot(s) deleted"
 msgstr "Snapshot(s) deleted"
 
-#: src/core/Sidebar/Sidebar.tsx:31
+#: src/core/Sidebar/Sidebar.tsx:32
 #: src/snapshot-history/SnapshotHistory.tsx:197
-#: src/snapshots/SnapshotsPage.tsx:166
+#: src/snapshots/SnapshotsPage.tsx:167
 msgid "Snapshots"
 msgstr "Snapshots"
 
@@ -2191,7 +2191,7 @@ msgstr "Start Time"
 msgid "Started"
 msgstr "Started"
 
-#: src/snapshots/SnapshotsPage.tsx:297
+#: src/snapshots/SnapshotsPage.tsx:298
 #: src/tasks/TasksPage.tsx:238
 msgid "Status"
 msgstr "Status"
@@ -2236,9 +2236,13 @@ msgstr "Switched instance"
 msgid "Symlinks"
 msgstr "Symlinks"
 
-#: src/snapshots/SnapshotsPage.tsx:218
+#: src/snapshots/SnapshotsPage.tsx:219
 msgid "Sync"
 msgstr "Sync"
+
+#: src/preferences/AppearanceSection.tsx:92
+msgid "System"
+msgstr ""
 
 #: src/tasks/TaskDetailsPage.tsx:48
 msgid "Task"
@@ -2264,7 +2268,7 @@ msgstr ""
 msgid "Task succeeded"
 msgstr ""
 
-#: src/core/Sidebar/Sidebar.tsx:35
+#: src/core/Sidebar/Sidebar.tsx:36
 #: src/tasks/TasksPage.tsx:122
 msgid "Tasks"
 msgstr "Tasks"
@@ -2281,7 +2285,7 @@ msgstr "The repository description was successfully updated"
 msgid "The repository was successfully disconnected"
 msgstr "The repository was successfully disconnected"
 
-#: src/snapshots/SnapshotsPage.tsx:109
+#: src/snapshots/SnapshotsPage.tsx:110
 msgid "The repository was synchronized successfully"
 msgstr "The repository was synchronized successfully"
 
