@@ -29,7 +29,7 @@ export default function OtherTab({ form }: Props) {
             />
             <AccordionPanel>
               <Switch
-                label={t`Disable Parent Policy`}
+                label={t`Don't inherit settings from parent policies`}
                 {...form.getInputProps("noParent", {
                   type: "checkbox"
                 })}

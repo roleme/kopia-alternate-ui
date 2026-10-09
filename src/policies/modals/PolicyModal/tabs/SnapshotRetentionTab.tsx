@@ -80,7 +80,7 @@ export default function SnapshotRetentionTab({ form, resolvedValue, definition }
           <PolicyInheritYesNoPolicyInput
             id="ignore-idential-snapshots"
             title={t`Ignore Identical Snapshots`}
-            description={t`Do NOT save a snapshot when no files have been changed`}
+            description={t`Skip creating a snapshot when nothing has changed since the previous one`}
             form={form}
             formKey="retention.ignoreIdenticalSnapshots"
             effective={resolvedValue?.retention?.ignoreIdenticalSnapshots}

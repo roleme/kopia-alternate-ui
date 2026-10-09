@@ -42,8 +42,8 @@ export default function FolderActionsTab({ form, resolvedValue, definition }: Pr
           />
           <PolicyNumberInput
             id="before-timeout"
-            title={t`Timeout - Before`}
-            description={t`Timeout in seconds before Kopia kills the process`}
+            title={t`Stop the before folder script after (seconds)`}
+            description={t`Kopia stops the script if it runs longer than this`}
             form={form}
             formKey="actions.beforeFolder.timeout"
             effective={resolvedValue?.actions?.beforeFolder?.timeout}
@@ -51,13 +51,13 @@ export default function FolderActionsTab({ form, resolvedValue, definition }: Pr
           />
           <PolicySelect
             id="before-command-mode"
-            title={t`Command Mode - Before`}
-            description={t`Essential (must succeed; default behavior), optional (failures are tolerated), or async (Kopia will start the action but not wait for it to finish)`}
+            title={t`If the before folder script fails`}
+            description={t`Choose whether a failing script stops the backup, is ignored, or runs in the background without being waited for`}
             data={[
-              { label: t`Must Succeed`, value: "essential" },
-              { label: t`Ignore failures`, value: "optional" },
+              { label: t`Stop the backup`, value: "essential" },
+              { label: t`Keep going`, value: "optional" },
               {
-                label: t`Run asynchronously, ignore failures`,
+                label: t`Run in the background and keep going`,
                 value: "async"
               }
             ]}
@@ -84,8 +84,8 @@ export default function FolderActionsTab({ form, resolvedValue, definition }: Pr
           />
           <PolicyNumberInput
             id="after-timeout"
-            title={t`Timeout - After`}
-            description={t`Timeout in seconds before Kopia kills the process`}
+            title={t`Stop the after folder script after (seconds)`}
+            description={t`Kopia stops the script if it runs longer than this`}
             form={form}
             formKey="actions.afterFolder.timeout"
             effective={resolvedValue?.actions?.afterFolder?.timeout}
@@ -93,13 +93,13 @@ export default function FolderActionsTab({ form, resolvedValue, definition }: Pr
           />
           <PolicySelect
             id="after-command-mode"
-            title={t`Command Mode - After`}
-            description={t`Essential (must succeed; default behavior), optional (failures are tolerated), or async (Kopia will start the action but not wait for it to finish)`}
+            title={t`If the after folder script fails`}
+            description={t`Choose whether a failing script stops the backup, is ignored, or runs in the background without being waited for`}
             data={[
-              { label: t`Must Succeed`, value: "essential" },
-              { label: t`Ignore failures`, value: "optional" },
+              { label: t`Stop the backup`, value: "essential" },
+              { label: t`Keep going`, value: "optional" },
               {
-                label: t`Run asynchronously, ignore failures`,
+                label: t`Run in the background and keep going`,
                 value: "async"
               }
             ]}
