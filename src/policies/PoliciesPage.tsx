@@ -1,11 +1,11 @@
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { ActionIcon, Button, Container, Divider, Group, Stack, Title, Tooltip } from "@mantine/core";
+import { Button, Container, Divider, Group, Stack } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import { IconClick, IconFileCertificate, IconPencil } from "@tabler/icons-react";
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router";
-import { newActionProps, refreshButtonProps } from "../core/commonButtons";
+import { newActionProps } from "../core/commonButtons";
 import { useAppContext } from "../core/context/AppContext";
 import { useServerInstanceContext } from "../core/context/ServerInstanceContext";
 import { DataGrid } from "../core/DataGrid/DataGrid";
@@ -13,6 +13,8 @@ import { ErrorAlert } from "../core/ErrorAlert/ErrorAlert";
 import useApiRequest from "../core/hooks/useApiRequest";
 import IconWrapper from "../core/IconWrapper";
 import { MenuButton } from "../core/MenuButton/MenuButton";
+import { PageHeader } from "../core/PageHeader/PageHeader";
+import { RowAction } from "../core/RowAction";
 import { type ItemAction, type PolicyRef, type SourceInfo, type Sources } from "../core/types";
 import { formatOwnerName } from "../utils/formatOwnerName";
 import { onlyUnique } from "../utils/onlyUnique";
@@ -132,41 +134,34 @@ function PoliciesPage() {
   return (
     <Container fluid>
       <Stack>
-        <Title order={1}>
-          <Trans>Policies</Trans>
-        </Title>
-        <Group justify="space-between">
-          <MenuButton
-            options={[
-              { label: t`Applicable Policies`, value: "applicable-policies" },
-              { label: t`Local Path Policies`, value: "local-path-policies" },
-              { label: t`All Policies`, value: "all-policies" },
-              { label: "", value: "divider" },
-              { label: t`Global Policy`, value: "global-policy" },
-              { label: t`Per-User Policies`, value: "per-user-policies" },
-              { label: t`Per-Host Policies`, value: "per-host-policies" },
-              { label: "", value: "divider" },
-              ...uniqueOwners.map((own) => ({
-                label: own,
-                value: own
-              }))
-            ]}
-            onClick={setFilterState}
-            disabled={loading}
-          />
-          <Group>
+        <PageHeader
+          title={<Trans>Policies</Trans>}
+          onRefresh={() => execute(undefined, "refresh")}
+          refreshing={loading && loadingKey === "refresh"}
+          actions={
             <Button {...newActionProps} disabled={loading} onClick={() => setAction({ action: "new" })}>
               <Trans>New Policy</Trans>
             </Button>
-            <Button
-              loading={loading && loadingKey === "refresh"}
-              onClick={() => execute(undefined, "refresh")}
-              {...refreshButtonProps}
-            >
-              <Trans>Refresh</Trans>
-            </Button>
-          </Group>
-        </Group>
+          }
+        />
+        <MenuButton
+          options={[
+            { label: t`Applicable Policies`, value: "applicable-policies" },
+            { label: t`Local Path Policies`, value: "local-path-policies" },
+            { label: t`All Policies`, value: "all-policies" },
+            { label: "", value: "divider" },
+            { label: t`Global Policy`, value: "global-policy" },
+            { label: t`Per-User Policies`, value: "per-user-policies" },
+            { label: t`Per-Host Policies`, value: "per-host-policies" },
+            { label: "", value: "divider" },
+            ...uniqueOwners.map((own) => ({
+              label: own,
+              value: own
+            }))
+          ]}
+          onClick={setFilterState}
+          disabled={loading}
+        />
         <Divider />
         <ErrorAlert error={error} />
         <DataGrid
@@ -212,23 +207,20 @@ function PoliciesPage() {
               width: "0%",
               textAlign: "right",
               render: (item) => (
-                <Tooltip label={t`Edit`}>
-                  <ActionIcon
-                    variant="subtle"
-                    color="yellow.5"
-                    onClick={() =>
-                      setAction({
-                        action: "edit",
-                        item: {
-                          isNew: false,
-                          target: item.target
-                        }
-                      })
-                    }
-                  >
-                    <IconWrapper icon={IconPencil} size={18} />
-                  </ActionIcon>
-                </Tooltip>
+                <RowAction
+                  label={t`Edit policy`}
+                  icon={IconPencil}
+                  color="yellow.5"
+                  onClick={() =>
+                    setAction({
+                      action: "edit",
+                      item: {
+                        isNew: false,
+                        target: item.target
+                      }
+                    })
+                  }
+                />
               )
             }
           ]}

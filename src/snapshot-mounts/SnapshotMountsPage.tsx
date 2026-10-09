@@ -1,17 +1,19 @@
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { ActionIcon, Anchor, Button, Container, Divider, Group, Stack, Title, Tooltip } from "@mantine/core";
+import { Anchor, Container, Divider, Stack } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import { IconClick, IconFolderBolt, IconFolderMinus } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
-import { refreshButtonProps } from "../core/commonButtons";
+import { confirmAction } from "../core/confirmAction";
 import { useAppContext } from "../core/context/AppContext";
 import { useServerInstanceContext } from "../core/context/ServerInstanceContext";
 import { DataGrid } from "../core/DataGrid/DataGrid";
 import { ErrorAlert } from "../core/ErrorAlert/ErrorAlert";
 import useApiRequest from "../core/hooks/useApiRequest";
 import IconWrapper from "../core/IconWrapper";
+import { PageHeader } from "../core/PageHeader/PageHeader";
+import { RowAction } from "../core/RowAction";
 import type { MountedSnapshot } from "../core/types";
 
 function SnapshotMountsPage() {
@@ -33,7 +35,7 @@ function SnapshotMountsPage() {
       loadMountsAction.execute(undefined, "refresh");
       showNotification({
         title: t`Snapshot unmounted`,
-        message: t`The snapshout was unmounted from the host`,
+        message: t`The snapshot was unmounted from the host`,
         color: "green"
       });
     }
@@ -47,18 +49,11 @@ function SnapshotMountsPage() {
   return (
     <Container fluid>
       <Stack>
-        <Group justify="space-between">
-          <Title order={1}>
-            <Trans>Mounted Snapshots</Trans>
-          </Title>
-          <Button
-            loading={loadMountsAction.loading && loadMountsAction.loadingKey === "refresh"}
-            onClick={() => loadMountsAction.execute(undefined, "refresh")}
-            {...refreshButtonProps}
-          >
-            <Trans>Refresh</Trans>
-          </Button>
-        </Group>
+        <PageHeader
+          title={<Trans>Mounted Snapshots</Trans>}
+          onRefresh={() => loadMountsAction.execute(undefined, "refresh")}
+          refreshing={loadMountsAction.loading && loadMountsAction.loadingKey === "refresh"}
+        />
 
         <Divider />
         <ErrorAlert error={loadMountsAction.error} />
@@ -90,16 +85,21 @@ function SnapshotMountsPage() {
               width: "0%",
               textAlign: "right",
               render: (item) => (
-                <Tooltip label={t`Unmount`}>
-                  <ActionIcon
-                    variant="subtle"
-                    color="red.5"
-                    onClick={() => unMountAction.execute(item.root, item.root)}
-                    loading={unMountAction.loading && unMountAction.loadingKey === item.root}
-                  >
-                    <IconFolderMinus size={18} />
-                  </ActionIcon>
-                </Tooltip>
+                <RowAction
+                  label={t`Unmount`}
+                  icon={IconFolderMinus}
+                  color="red.5"
+                  loading={unMountAction.loading && unMountAction.loadingKey === item.root}
+                  onClick={() =>
+                    confirmAction({
+                      title: t`Unmount snapshot?`,
+                      message: item.path,
+                      confirmLabel: t`Unmount`,
+                      cancelLabel: t`Cancel`,
+                      onConfirm: () => unMountAction.execute(item.root, item.root)
+                    })
+                  }
+                />
               )
             }
           ]}

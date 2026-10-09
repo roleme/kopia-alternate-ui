@@ -1,8 +1,8 @@
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { Button, Text } from "@mantine/core";
-import { modals } from "@mantine/modals";
+import { Button } from "@mantine/core";
 import { IconTrash } from "@tabler/icons-react";
+import { confirmAction } from "../../../../core/confirmAction";
 import { useServerInstanceContext } from "../../../../core/context/ServerInstanceContext";
 import useApiRequest from "../../../../core/hooks/useApiRequest";
 import type { SourceInfo } from "../../../../core/types";
@@ -23,16 +23,11 @@ export default function DeletePolicyButton({ sourceInfo, onDeleted }: Props) {
   });
 
   const openModal = () =>
-    modals.openConfirmModal({
+    confirmAction({
       title: t`Delete policy`,
-      children: (
-        <Text size="sm">
-          <Trans>Are you sure you want to delete this policy?</Trans>
-        </Text>
-      ),
-      labels: { confirm: t`Delete policy`, cancel: t`No don't delete it` },
-      confirmProps: { color: "red", size: "xs" },
-      cancelProps: { size: "xs" },
+      message: <Trans>Are you sure you want to delete this policy?</Trans>,
+      confirmLabel: t`Delete policy`,
+      cancelLabel: t`Cancel`,
       onConfirm: () => execute()
     });
 
