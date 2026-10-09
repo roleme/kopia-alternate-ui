@@ -365,7 +365,7 @@ MOUNTED = {BROWSE_ROOT: "/tmp/kopia-mount/" + BROWSE_ROOT}
 # Per-source history generator: (path, hours between runs, base size, growth/run, files, special flags)
 SOURCE_SPECS = [
     # path,                         status,     schedule,                         last_ago_h, every_h, size,        files,   extra
-    ("/volume1/photo/immich",       "IDLE",      {"intervalSeconds": 10800},      0.7,  3,   516 * GB, 357_000, {}),
+    ("/volume1/photo/immich",       "IDLE",      {"intervalSeconds": 10800},      0.7,  3,   516 * GB, 357_000, {"failedAt": 2}),
     ("/volume1/docker",             "UPLOADING", {"intervalSeconds": 3600},       1.05, 1,   18 * GB,  92_000,  {}),
     ("/volume1/homes/roman",        "IDLE",      {"intervalSeconds": 86400},      74,   24,  212 * GB, 640_000, {"overdue": True}),
     ("/volume1/video_archive",      "PAUSED",    {"intervalSeconds": 604800},     214,  168, 1_310 * GB, 9_100, {}),
@@ -418,7 +418,7 @@ def _vroot(path, v, size, files):
     return root
 
 
-def _snap_list(path, every_h, size, files, last_ago_h, errors=0, seed=0):
+def _snap_list(path, every_h, size, files, last_ago_h, errors=0, seed=0, failed_at=None):
     rnd = _rnd.Random(seed)
     out = []
     now = _now()
@@ -439,6 +439,8 @@ def _snap_list(path, every_h, size, files, last_ago_h, errors=0, seed=0):
         st = now - _dt.timedelta(hours=ago)
         dur = 40 + rnd.randint(0, 600) if size > 10 * GB else 8 + rnd.randint(0, 40)
         failed = errors if i == 0 else (2 if i == 9 and errors else 0)
+        if i == failed_at:
+            failed = 2
         summary = version_summary.setdefault(vers[i], {
             "size": int(cur),
             "files": max(int(files * (1 - i * 0.0008)) - rnd.randint(0, max(files // 500, 1)), 1),
@@ -476,7 +478,7 @@ def build_sources():
     for seed, (path, status, sched, last_h, every_h, size, files, extra) in enumerate(SOURCE_SPECS):
         e = {"source": _src(path), "status": status, "schedule": sched}
         if last_h is not None:
-            snaps = _snap_list(path, every_h, size, files, last_h, extra.get("errors", 0), seed)
+            snaps = _snap_list(path, every_h, size, files, last_h, extra.get("errors", 0), seed, extra.get("failedAt"))
             hist[path] = snaps
             last = snaps[0]
             e["lastSnapshot"] = {
