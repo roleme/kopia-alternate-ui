@@ -13,11 +13,6 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#. placeholder {0}: counts.total
-#: src/snapshots/components/ChangedFiles.tsx:22
-msgid "{0, plural, one {{changed} of {total} file changed} other {{changed} of {total} files changed}}"
-msgstr ""
-
 #. placeholder {0}: view.count
 #: src/snapshots/components/SourceStatusCell.tsx:58
 #: src/snapshots/components/SourceStatusLine.tsx:44
@@ -107,23 +102,23 @@ msgstr ""
 msgid "1 folder could not be read"
 msgstr ""
 
-#: src/snapshots/SnapshotsPage.tsx:153
+#: src/snapshots/SnapshotsPage.tsx:151
 msgid "1 minute"
 msgstr "1 minute"
 
-#: src/snapshots/SnapshotsPage.tsx:151
+#: src/snapshots/SnapshotsPage.tsx:149
 msgid "10 seconds"
 msgstr "10 seconds"
 
-#: src/snapshots/SnapshotsPage.tsx:150
+#: src/snapshots/SnapshotsPage.tsx:148
 msgid "3 seconds"
 msgstr "3 seconds"
 
-#: src/snapshots/SnapshotsPage.tsx:152
+#: src/snapshots/SnapshotsPage.tsx:150
 msgid "30 seconds"
 msgstr "30 seconds"
 
-#: src/snapshots/SnapshotsPage.tsx:154
+#: src/snapshots/SnapshotsPage.tsx:152
 msgid "5 minutes"
 msgstr "5 minutes"
 
@@ -190,7 +185,7 @@ msgstr "All"
 msgid "All Policies"
 msgstr "All Policies"
 
-#: src/snapshots/SnapshotsPage.tsx:162
+#: src/snapshots/SnapshotsPage.tsx:160
 msgid "All Snapshots"
 msgstr "All Snapshots"
 
@@ -339,10 +334,6 @@ msgstr "Change policy parameters"
 
 #: src/repo/ConnectRepoSection.tsx:103
 msgid "Change this under Advanced Options"
-msgstr ""
-
-#: src/snapshots/SnapshotsPage.tsx:275
-msgid "Changed"
 msgstr ""
 
 #: src/preferences/AppearanceSection.tsx:157
@@ -671,7 +662,7 @@ msgstr "Disable ZIP compression"
 
 #: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:141
 #: src/repo/CreateRepoSection.tsx:182
-#: src/snapshots/SnapshotsPage.tsx:149
+#: src/snapshots/SnapshotsPage.tsx:147
 msgid "Disabled"
 msgstr "Disabled"
 
@@ -992,10 +983,6 @@ msgstr "File Snapshotted"
 msgid "Files"
 msgstr "Files"
 
-#: src/snapshots/components/ChangedFiles.tsx:31
-msgid "Files read again because they are new or modified. Unchanged files are skipped."
-msgstr ""
-
 #: src/policies/modals/PolicyModal/tabs/CompressionTab.tsx:34
 msgid "Files that are smaller than the provided value will not be compressed"
 msgstr "Files that are smaller than the provided value will not be compressed"
@@ -1257,7 +1244,7 @@ msgstr ""
 msgid "Last Modification"
 msgstr "Last Modification"
 
-#: src/snapshots/SnapshotsPage.tsx:269
+#: src/snapshots/SnapshotsPage.tsx:267
 msgid "Last Snapshot"
 msgstr "Last Snapshot"
 
@@ -1317,7 +1304,7 @@ msgstr "Local Directory or NAS"
 msgid "Local Path Policies"
 msgstr "Local Path Policies"
 
-#: src/snapshots/SnapshotsPage.tsx:163
+#: src/snapshots/SnapshotsPage.tsx:161
 msgid "Local Snapshots"
 msgstr "Local Snapshots"
 
@@ -1517,7 +1504,7 @@ msgctxt "modal-title"
 msgid "New snapshot"
 msgstr "New snapshot"
 
-#: src/snapshots/SnapshotsPage.tsx:181
+#: src/snapshots/SnapshotsPage.tsx:179
 msgid "New Snapshot"
 msgstr "New Snapshot"
 
@@ -1551,10 +1538,6 @@ msgstr "No entries in folder"
 msgid "No entries matching your search"
 msgstr ""
 
-#: src/snapshots/components/ChangedFiles.tsx:21
-msgid "No files changed"
-msgstr ""
-
 #: src/preferences/modals/WebhookModal.tsx:202
 msgid "No headers defined"
 msgstr "No headers defined"
@@ -1583,7 +1566,7 @@ msgstr "No snapshots mounted"
 #: src/snapshot-history/components/SnapshotCardList.tsx:92
 #: src/snapshot-history/SnapshotHistory.tsx:270
 #: src/snapshots/components/SourceCardList.tsx:52
-#: src/snapshots/SnapshotsPage.tsx:215
+#: src/snapshots/SnapshotsPage.tsx:213
 msgid "No snapshots taken"
 msgstr "No snapshots taken"
 
@@ -1711,7 +1694,7 @@ msgstr "Overwrite Files"
 msgid "Overwrite Symbolic Links"
 msgstr "Overwrite Symbolic Links"
 
-#: src/snapshots/SnapshotsPage.tsx:253
+#: src/snapshots/SnapshotsPage.tsx:251
 msgid "Owner"
 msgstr "Owner"
 
@@ -1760,7 +1743,7 @@ msgstr "Paste JSON credentials here"
 #: src/policies/PoliciesPage.tsx:228
 #: src/repo/sections/SFTPServerRepo.tsx:55
 #: src/repo/sections/SFTPServerRepo.tsx:189
-#: src/snapshots/SnapshotsPage.tsx:223
+#: src/snapshots/SnapshotsPage.tsx:221
 msgid "Path"
 msgstr "Path"
 
@@ -1810,7 +1793,7 @@ msgstr "Plain Text Format"
 msgid "Policies"
 msgstr "Policies"
 
-#: src/snapshots/components/SourceCard.tsx:91
+#: src/snapshots/components/SourceCard.tsx:89
 msgid "Policy"
 msgstr ""
 
@@ -1883,12 +1866,12 @@ msgstr "Records per page"
 msgid "Refresh"
 msgstr "Refresh"
 
-#: src/snapshots/SnapshotsPage.tsx:147
+#: src/snapshots/SnapshotsPage.tsx:145
 msgid "Refresh:"
 msgstr ""
 
-#: src/snapshots/components/SourceCard.tsx:72
-#: src/snapshots/SnapshotsPage.tsx:123
+#: src/snapshots/components/SourceCard.tsx:71
+#: src/snapshots/SnapshotsPage.tsx:121
 msgid "Remote"
 msgstr "Remote"
 
@@ -1932,7 +1915,7 @@ msgstr "Repository is connected as read-only"
 msgid "Repository Password"
 msgstr "Repository Password"
 
-#: src/snapshots/SnapshotsPage.tsx:109
+#: src/snapshots/SnapshotsPage.tsx:107
 msgid "Repository synchronized"
 msgstr "Repository synchronized"
 
@@ -2156,7 +2139,7 @@ msgstr ""
 #: src/snapshot-directory/SnapshotDirectory.tsx:258
 #: src/snapshot-history/components/SnapshotHistoryStats.tsx:69
 #: src/snapshot-history/SnapshotHistory.tsx:315
-#: src/snapshots/SnapshotsPage.tsx:260
+#: src/snapshots/SnapshotsPage.tsx:258
 msgid "Size"
 msgstr "Size"
 
@@ -2225,7 +2208,7 @@ msgstr "Snapshot is mounted at the following path"
 msgid "Snapshot Mounted"
 msgstr ""
 
-#: src/snapshots/components/SourceCard.tsx:83
+#: src/snapshots/components/SourceCard.tsx:81
 #: src/snapshots/components/SourceRowActions.tsx:24
 #: src/snapshots/modals/NewSnapshotModal.tsx:160
 msgid "Snapshot now"
@@ -2249,7 +2232,7 @@ msgstr "Snapshot(s) deleted"
 
 #: src/core/Sidebar/Sidebar.tsx:32
 #: src/snapshot-history/SnapshotHistory.tsx:202
-#: src/snapshots/SnapshotsPage.tsx:142
+#: src/snapshots/SnapshotsPage.tsx:140
 msgid "Snapshots"
 msgstr "Snapshots"
 
@@ -2304,7 +2287,7 @@ msgstr "Start Time"
 msgid "Started"
 msgstr "Started"
 
-#: src/snapshots/SnapshotsPage.tsx:280
+#: src/snapshots/SnapshotsPage.tsx:273
 #: src/tasks/TasksPage.tsx:238
 msgid "Status"
 msgstr "Status"
@@ -2349,7 +2332,7 @@ msgstr "Switched instance"
 msgid "Symlinks"
 msgstr "Symlinks"
 
-#: src/snapshots/SnapshotsPage.tsx:194
+#: src/snapshots/SnapshotsPage.tsx:192
 msgid "Sync"
 msgstr "Sync"
 
@@ -2398,7 +2381,7 @@ msgstr "The repository description was successfully updated"
 msgid "The repository was successfully disconnected"
 msgstr "The repository was successfully disconnected"
 
-#: src/snapshots/SnapshotsPage.tsx:110
+#: src/snapshots/SnapshotsPage.tsx:108
 msgid "The repository was synchronized successfully"
 msgstr "The repository was synchronized successfully"
 
@@ -2583,7 +2566,7 @@ msgstr ""
 msgid "Verbose"
 msgstr ""
 
-#: src/snapshots/components/SourceCard.tsx:92
+#: src/snapshots/components/SourceCard.tsx:90
 #: src/snapshots/components/SourceRowActions.tsx:32
 msgid "View Policy"
 msgstr "View Policy"

@@ -4,7 +4,6 @@ import {
   formatByteProgress,
   getSourceStatusView,
   scheduleIntervalSeconds,
-  sourceChangedFiles,
   sourceErrorCount
 } from "../../src/snapshots/sourceStatus";
 
@@ -244,27 +243,5 @@ describe("formatByteProgress", () => {
   });
   it("keeps both units when they differ", () => {
     expect(formatByteProgress(800e6, 1.2e9, false)).toBe("800 MB/1.2 GB");
-  });
-});
-
-describe("sourceChangedFiles", () => {
-  const withFiles = (cachedFiles?: number, nonCachedFiles?: number) => {
-    const source = make();
-    source.lastSnapshot!.stats = { ...source.lastSnapshot!.stats, cachedFiles, nonCachedFiles } as never;
-    return source;
-  };
-
-  it("counts the files that were read again against all files", () => {
-    expect(sourceChangedFiles(withFiles(4103, 3))).toEqual({ changed: 3, total: 4106 });
-  });
-
-  it("reports no changes when every file was cached", () => {
-    expect(sourceChangedFiles(withFiles(50, 0))).toEqual({ changed: 0, total: 50 });
-  });
-
-  it("has nothing to report without file counts or a snapshot", () => {
-    expect(sourceChangedFiles(withFiles(0, 0))).toBeUndefined();
-    expect(sourceChangedFiles(withFiles(undefined, undefined))).toBeUndefined();
-    expect(sourceChangedFiles(make({ lastSnapshot: undefined }))).toBeUndefined();
   });
 });
