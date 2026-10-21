@@ -1,0 +1,1 @@
+function e(e){return e.userName+`@`+e.host}export{e as t};

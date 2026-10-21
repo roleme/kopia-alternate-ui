@@ -1,0 +1,1 @@
+import{Jn as e,U as t}from"./AppContext-BS41KOEl.js";import{l as n}from"./index-DBID8TNW.js";var r=e();function i({title:e,message:i,confirmLabel:a,cancelLabel:o,onConfirm:s}){n.openConfirmModal({title:e,children:(0,r.jsx)(t,{size:`sm`,children:i}),labels:{confirm:a,cancel:o},confirmProps:{color:`red`,size:`xs`},cancelProps:{size:`xs`},onConfirm:s})}export{i as t};

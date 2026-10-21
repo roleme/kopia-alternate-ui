@@ -1,0 +1,1 @@
+import{cr as e,dr as t}from"./AppContext-BS41KOEl.js";var n=t(e(),1);function r(e){let t=(0,n.useRef)(void 0);return(0,n.useEffect)(()=>{t.current=e},[e]),t.current}export{r as t};
