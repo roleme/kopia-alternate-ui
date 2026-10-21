@@ -1,10 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  compactDiff,
-  diffLines,
-  looksLikeText,
-  sniffsAsText
-} from "../../src/snapshot-compare/lineDiff";
+import { compactDiff, diffLines, looksLikeText, sniffsAsText } from "../../src/snapshot-compare/lineDiff";
 
 const enc = new TextEncoder();
 

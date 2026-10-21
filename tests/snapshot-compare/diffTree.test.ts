@@ -4,10 +4,10 @@ import {
   aggregate,
   autoExpandIds,
   compareEntries,
+  type DiffNode,
   emptyStats,
   finalizeAggregates,
-  statusCount,
-  type DiffNode
+  statusCount
 } from "../../src/snapshot-compare/diffTree";
 
 function file(name: string, obj: string, size: number, extra?: Partial<DirEntry>): DirEntry {

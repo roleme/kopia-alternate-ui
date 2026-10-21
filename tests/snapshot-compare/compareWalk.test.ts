@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { DirEntry, DirManifest } from "../../src/core/types";
-import { walkTrees, type WalkProgress } from "../../src/snapshot-compare/compareWalk";
+import { type WalkProgress, walkTrees } from "../../src/snapshot-compare/compareWalk";
 
 function file(name: string, obj: string, size: number): DirEntry {
   return { name, type: "f", mode: "0644", mtime: "2026-01-01T00:00:00Z", obj, size };
