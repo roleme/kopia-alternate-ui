@@ -148,7 +148,7 @@ msgstr "Active"
 msgid "Add"
 msgstr "Add"
 
-#: src/snapshot-history/components/SnapshotCard.tsx:167
+#: src/snapshot-history/components/SnapshotCard.tsx:169
 #: src/snapshot-history/SnapshotHistory.tsx:172
 msgid "Add pin to prevent snapshot deletion"
 msgstr "Add pin to prevent snapshot deletion"
@@ -375,7 +375,7 @@ msgstr "Command Mode - After"
 msgid "Command Mode - Before"
 msgstr "Command Mode - Before"
 
-#: src/snapshot-history/components/SnapshotCard.tsx:152
+#: src/snapshot-history/components/SnapshotCard.tsx:154
 msgid "Compare"
 msgstr ""
 
@@ -383,7 +383,7 @@ msgstr ""
 msgid "Compare snapshots"
 msgstr ""
 
-#: src/snapshot-history/components/SnapshotCard.tsx:153
+#: src/snapshot-history/components/SnapshotCard.tsx:155
 #: src/snapshot-history/SnapshotHistory.tsx:144
 msgid "Compare with previous snapshot"
 msgstr ""
@@ -536,7 +536,7 @@ msgstr "Credentials JSON"
 msgid "Cron Expressions"
 msgstr "Cron Expressions"
 
-#: src/core/context/ServerInstanceContext.tsx:92
+#: src/core/context/ServerInstanceContext.tsx:96
 msgid "Currently browsing instance {currentName}"
 msgstr "Currently browsing instance {currentName}"
 
@@ -603,7 +603,7 @@ msgstr ""
 msgid "Deprecated"
 msgstr "Deprecated"
 
-#: src/snapshot-history/components/SnapshotCard.tsx:159
+#: src/snapshot-history/components/SnapshotCard.tsx:161
 msgid "Describe"
 msgstr ""
 
@@ -722,7 +722,7 @@ msgstr "Download"
 msgid "Due <0/>"
 msgstr ""
 
-#: src/snapshot-history/components/SnapshotCard.tsx:89
+#: src/snapshot-history/components/SnapshotCard.tsx:76
 #: src/snapshot-history/SnapshotHistory.tsx:340
 #: src/tasks/TaskDetailsPage.tsx:84
 msgid "Duration"
@@ -750,11 +750,11 @@ msgstr "Edit existing policy"
 msgid "Edit items"
 msgstr "Edit items"
 
-#: src/snapshot-history/components/SnapshotCard.tsx:176
+#: src/snapshot-history/components/SnapshotCard.tsx:178
 msgid "Edit pin"
 msgstr ""
 
-#: src/snapshot-history/components/SnapshotCard.tsx:177
+#: src/snapshot-history/components/SnapshotCard.tsx:179
 #: src/snapshot-history/SnapshotHistory.tsx:106
 msgid "Edit pin {p}"
 msgstr ""
@@ -977,7 +977,7 @@ msgstr "File Snapshotted"
 
 #: src/policies/modals/PolicyModal/PolicyModal.tsx:213
 #: src/snapshot-directory/SnapshotDirectory.tsx:267
-#: src/snapshot-history/components/SnapshotCard.tsx:79
+#: src/snapshot-history/components/SnapshotCard.tsx:85
 #: src/snapshot-history/components/SnapshotHistoryStats.tsx:79
 #: src/snapshot-history/SnapshotHistory.tsx:328
 msgid "Files"
@@ -1017,7 +1017,7 @@ msgstr "Folder Actions"
 msgid "Folder name"
 msgstr ""
 
-#: src/snapshot-history/components/SnapshotCard.tsx:84
+#: src/snapshot-history/components/SnapshotCard.tsx:90
 msgid "Folders"
 msgstr ""
 
@@ -1774,7 +1774,7 @@ msgstr "Per-Host Policies"
 msgid "Per-User Policies"
 msgstr "Per-User Policies"
 
-#: src/snapshot-history/components/SnapshotCard.tsx:166
+#: src/snapshot-history/components/SnapshotCard.tsx:168
 msgid "Pin"
 msgstr ""
 
@@ -2324,7 +2324,7 @@ msgstr "Storage Account"
 msgid "Success"
 msgstr ""
 
-#: src/core/context/ServerInstanceContext.tsx:91
+#: src/core/context/ServerInstanceContext.tsx:95
 msgid "Switched instance"
 msgstr "Switched instance"
 
@@ -2499,7 +2499,7 @@ msgstr ""
 msgid "Upcoming Snapshots"
 msgstr "Upcoming Snapshots"
 
-#: src/snapshot-history/components/SnapshotCard.tsx:160
+#: src/snapshot-history/components/SnapshotCard.tsx:162
 #: src/snapshot-history/modals/UpdateDescriptionModal.tsx:50
 #: src/snapshot-history/SnapshotHistory.tsx:161
 msgid "Update description"

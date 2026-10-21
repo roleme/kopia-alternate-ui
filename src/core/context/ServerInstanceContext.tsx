@@ -2,10 +2,11 @@ import { t } from "@lingui/core/macro";
 import { useLocalStorage } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import { createContext, type PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import useApiRequest from "../hooks/useApiRequest";
 import { type IKopiaService, type KopiaAuth, KopiaService } from "../kopiaService";
 import SkeletonLayout from "../SkeletonLayout";
+import { pathAfterServerSwitch } from "../serverSwitchPath";
 import uiService, { type Instance } from "../uiService";
 import LoginModal from "./LoginModal";
 
@@ -31,6 +32,7 @@ const ServerInstanceContext = createContext<ContextState>(initialState);
 export type ServerInstanceContextProps = PropsWithChildren;
 export function ServerInstanceContextProvider({ children }: ServerInstanceContextProps) {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const [instances, setInstances] = useState<Instance[]>([]);
   const [currentInstance, setCurrentInstance] = useState<Instance>();
   const [loginRequired, setLoginRequired] = useState(false);
@@ -85,6 +87,8 @@ export function ServerInstanceContextProvider({ children }: ServerInstanceContex
   const setServer = useCallback(
     (server: Instance) => {
       const currentName = server.name || server.id;
+      const listPath = pathAfterServerSwitch(pathname);
+      if (listPath) navigate(listPath, { replace: true });
       setCurrentInstance(server);
       setLastInstance(server.id);
       notifications.show({
@@ -92,7 +96,7 @@ export function ServerInstanceContextProvider({ children }: ServerInstanceContex
         message: t`Currently browsing instance ${currentName}`
       });
     },
-    [setLastInstance]
+    [navigate, pathname, setLastInstance]
   );
 
   const logoutFromServer = useCallback(
