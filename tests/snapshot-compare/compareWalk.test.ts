@@ -26,7 +26,7 @@ function dirAt(name: string, obj: string, mtime: string): DirEntry {
 }
 
 function manifest(entries: DirEntry[]): DirManifest {
-  return { steam: "", entries, summary: { size: 0, files: 0, symlinks: 0, dirs: 0, maxTime: "", numFailed: 0 } };
+  return { stream: "", entries, summary: { size: 0, files: 0, symlinks: 0, dirs: 0, maxTime: "", numFailed: 0 } };
 }
 
 describe("walkTrees", () => {

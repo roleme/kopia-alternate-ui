@@ -69,8 +69,8 @@ export type DirectorySummary = {
   maxTime: string;
   numFailed: number;
   incomplete?: string;
-  ignoredErrorCount?: number;
-  failedEntries?: EntryWithError[];
+  numIgnoredErrors?: number;
+  errors?: EntryWithError[];
 };
 export type EntryWithError = {
   path: string;
@@ -129,7 +129,7 @@ export type Snapshots = {
 };
 
 export type DirManifest = {
-  steam: string;
+  stream: string;
   entries: DirEntry[];
   summary: DirectorySummary;
 };
