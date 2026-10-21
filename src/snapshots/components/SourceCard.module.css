@@ -60,14 +60,9 @@
 
 .owner {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: 2px 8px;
+  gap: 8px;
   margin: 4px 0 0 28px;
   color: var(--mantine-color-dimmed);
   font-size: var(--mantine-font-size-xs);
-}
-
-.changed {
-  margin-inline-start: auto;
 }

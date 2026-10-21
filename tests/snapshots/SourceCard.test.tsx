@@ -41,28 +41,6 @@ describe("SourceCard", () => {
     expect(getByText("–")).toBeTruthy();
   });
 
-  test("shows how many files changed in the last snapshot", () => {
-    const changed = source();
-    changed.lastSnapshot!.stats = { cachedFiles: 4103, nonCachedFiles: 3 } as never;
-    const { getByText } = render(<SourceCard source={changed} {...props} />);
-
-    expect(getByText("3 of 4,106 files changed")).toBeTruthy();
-  });
-
-  test("says so when no file changed", () => {
-    const unchanged = source();
-    unchanged.lastSnapshot!.stats = { cachedFiles: 40, nonCachedFiles: 0 } as never;
-    const { getByText } = render(<SourceCard source={unchanged} {...props} />);
-
-    expect(getByText("No files changed")).toBeTruthy();
-  });
-
-  test("shows no change line without file counts", () => {
-    const { queryByText } = render(<SourceCard source={source()} {...props} />);
-
-    expect(queryByText(/files? changed/)).toBeNull();
-  });
-
   test("shows the error count when the last snapshot had errors", () => {
     const failing = source();
     failing.lastSnapshot!.stats = { errorCount: 3 } as never;
