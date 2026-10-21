@@ -10,6 +10,7 @@ import type { SourceInfo, SourceStatus } from "../../core/types";
 import sizeDisplayName from "../../utils/formatSize";
 import { sourceHistoryLink, sourcePolicyLink } from "../sourceLinks";
 import { getSourceStatusView } from "../sourceStatus";
+import ChangedFiles from "./ChangedFiles";
 import classes from "./SourceCard.module.css";
 import SourceStatusLine from "./SourceStatusLine";
 
@@ -71,6 +72,7 @@ export function SourceCard({ source, bytesStringBase2, snapshotNowLoading, onSna
               <Trans>Remote</Trans>
             </Badge>
           )}
+          <ChangedFiles source={source} className={classes.changed} />
         </div>
       </Link>
       {canAct && (

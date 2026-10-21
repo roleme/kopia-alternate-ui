@@ -26,6 +26,15 @@ export function sourceErrorCount(source: SourceStatus): number {
   return source.lastSnapshot?.rootEntry?.summ?.numFailed ?? 0;
 }
 
+export type ChangedFiles = { changed: number; total: number };
+
+export function sourceChangedFiles(source: SourceStatus): ChangedFiles | undefined {
+  const stats = source.lastSnapshot?.stats;
+  const changed = stats?.nonCachedFiles ?? 0;
+  const total = (stats?.cachedFiles ?? 0) + changed;
+  return total > 0 ? { changed, total } : undefined;
+}
+
 function runningView(source: SourceStatus): SourceStatusView {
   const upload = source.upload;
   if (!upload?.estimatedBytes || upload.estimatedBytes <= 0) return { kind: "running" };

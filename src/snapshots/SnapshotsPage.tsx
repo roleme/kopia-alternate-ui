@@ -23,11 +23,13 @@ import { formatOwnerName } from "../utils/formatOwnerName";
 import sizeDisplayName from "../utils/formatSize";
 import { onlyUnique } from "../utils/onlyUnique";
 import { sortWithMissingLast } from "../utils/sortWithMissingLast";
+import ChangedFiles from "./components/ChangedFiles";
 import SourceCardList from "./components/SourceCardList";
 import SourceRowActions from "./components/SourceRowActions";
 import SourceStatusCell, { EmptyCell } from "./components/SourceStatusCell";
 import { normalizeRefreshInterval } from "./refreshInterval";
 import { sourceHistoryLink } from "./sourceLinks";
+import { sourceChangedFiles } from "./sourceStatus";
 
 const NewSnapshotModal = lazy(() => import("./modals/NewSnapshotModal"));
 
@@ -267,6 +269,11 @@ function SnapshotsPage() {
                   title: <Trans>Last Snapshot</Trans>,
                   render: (item) =>
                     item.lastSnapshot ? <RelativeDate value={item.lastSnapshot.startTime} /> : <EmptyCell />
+                },
+                {
+                  accessor: "changedFiles",
+                  title: <Trans>Changed</Trans>,
+                  render: (item) => (sourceChangedFiles(item) ? <ChangedFiles source={item} /> : <EmptyCell />)
                 },
                 {
                   accessor: "status",
