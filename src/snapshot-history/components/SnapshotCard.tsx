@@ -1,17 +1,19 @@
 import { t } from "@lingui/core/macro";
 import { Badge, Checkbox, Text, UnstyledButton } from "@mantine/core";
-import { IconArrowsDiff, IconFile, IconFileText, IconFolder, IconPin } from "@tabler/icons-react";
+import { IconArrowsDiff, IconFile, IconFileText, IconFolder, IconPin, IconStopwatch } from "@tabler/icons-react";
 import type { ReactNode } from "react";
 import { Link } from "react-router";
 import { CardActions, CardButton } from "../../core/CardActions";
 import { useAppContext } from "../../core/context/AppContext";
 import FormattedDate from "../../core/FormattedDate";
 import { OneLine } from "../../core/OneLine";
+import TimeDuration from "../../core/TimeDuration";
 import type { Snapshot } from "../../core/types";
 import signedSizeDisplayName from "../../utils/formatSignedSize";
 import sizeDisplayName from "../../utils/formatSize";
 import RetentionBadge from "./RetentionBadge";
 import classes from "./SnapshotCard.module.css";
+import { SnapshotFlags } from "./SnapshotFlags";
 
 export const SNAPSHOT_DATE_FORMAT = "ll, LT";
 
@@ -61,15 +63,20 @@ export function SnapshotCard({
   const { locale } = useAppContext();
   const number = new Intl.NumberFormat(locale);
   const { summary } = snapshot;
-  const failed = summary.numFailed ?? 0;
 
   const body: ReactNode = (
     <>
       {selecting && <Checkbox className={classes.checkbox} checked={selected} readOnly tabIndex={-1} aria-hidden />}
       <div className={classes.top}>
-        <Text span fz="sm" className={classes.date}>
-          <FormattedDate value={snapshot.startTime} format={SNAPSHOT_DATE_FORMAT} />
-        </Text>
+        <span className={classes.when}>
+          <Text span fz="sm" className={classes.date}>
+            <FormattedDate value={snapshot.startTime} format={SNAPSHOT_DATE_FORMAT} />
+          </Text>
+          <span className={classes.duration}>
+            <IconStopwatch size={14} aria-label={t`Duration`} />
+            <TimeDuration from={snapshot.startTime} to={snapshot.endTime} />
+          </span>
+        </span>
         <Text span fz="md" className={classes.size}>
           {sizeDisplayName(summary.size, bytesStringBase2)}
         </Text>
@@ -116,12 +123,7 @@ export function SnapshotCard({
                   {p}
                 </Badge>
               ))}
-              {failed > 0 && (
-                <Text span fz="xs" fw={800} c="red.6" style={{ display: "inline-flex", alignItems: "center", gap: 5 }}>
-                  <span className={classes.dot} />
-                  {t`${failed} failed`}
-                </Text>
-              )}
+              <SnapshotFlags snapshot={snapshot} />
             </>
           }
         />

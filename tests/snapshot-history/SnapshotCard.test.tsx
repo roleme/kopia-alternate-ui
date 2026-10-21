@@ -62,6 +62,23 @@ describe("SnapshotCard", () => {
     expect(queryByText(/failed/)).toBeNull();
   });
 
+  test("shows how long the snapshot took", () => {
+    const { getByText } = render(<SnapshotCard snapshot={snapshot()} {...props} />);
+
+    expect(getByText("2m 44s")).toBeTruthy();
+  });
+
+  test("marks an incomplete snapshot with its reason", () => {
+    const { getByText, queryByText, rerender } = render(
+      <SnapshotCard snapshot={snapshot({ incomplete: "checkpoint" })} {...props} />
+    );
+
+    expect(getByText("Incomplete").getAttribute("title")).toBe("checkpoint");
+
+    rerender(<SnapshotCard snapshot={snapshot()} {...props} />);
+    expect(queryByText("Incomplete")).toBeNull();
+  });
+
   test("shows the pin name", () => {
     const { getByText } = render(<SnapshotCard snapshot={snapshot({ pins: ["do-not-delete"] })} {...props} />);
 

@@ -1,11 +1,11 @@
 import type { DirManifest } from "../core/types";
 import {
   compareEntries,
+  type DiffNode,
+  type DiffStats,
   emptyStats,
   finalizeAggregates,
-  pruneUnchanged,
-  type DiffNode,
-  type DiffStats
+  pruneUnchanged
 } from "./diffTree";
 
 export type WalkProgress = {

@@ -16,6 +16,7 @@ import IconWrapper from "../core/IconWrapper";
 import { PageHeader } from "../core/PageHeader/PageHeader";
 import { PageState } from "../core/PageState/PageState";
 import { RowAction } from "../core/RowAction";
+import TimeDuration from "../core/TimeDuration";
 import type { ItemAction, Snapshot, Snapshots, SourceInfo } from "../core/types";
 import signedSizeDisplayName from "../utils/formatSignedSize";
 import sizeDisplayName from "../utils/formatSize";
@@ -23,6 +24,7 @@ import RetentionBadge from "./components/RetentionBadge";
 import { SNAPSHOT_DATE_FORMAT } from "./components/SnapshotCard";
 import SnapshotCardList from "./components/SnapshotCardList";
 import SnapshotCountControl from "./components/SnapshotCountControl";
+import { hasSnapshotFlags, SnapshotFlags } from "./components/SnapshotFlags";
 import SnapshotHistoryStats from "./components/SnapshotHistoryStats";
 import DeleteSnapshotModal from "./modals/DeleteSnapshotModal";
 import PinSnapshotModal from "./modals/PinSnapshotModal";
@@ -288,6 +290,11 @@ function SnapshotHistory() {
                           <FormattedDate value={item.startTime} format={SNAPSHOT_DATE_FORMAT} />
                         </Anchor>
                       </Tooltip>
+                      {hasSnapshotFlags(item) && (
+                        <Group gap="sm">
+                          <SnapshotFlags snapshot={item} />
+                        </Group>
+                      )}
                       {item.description && (
                         <Tooltip label={item.description}>
                           <Text truncate fz="xs" c="dimmed" maw={280}>
@@ -327,6 +334,12 @@ function SnapshotHistory() {
                   title: t`Dirs`,
                   sortable: true,
                   textAlign: "center"
+                },
+                {
+                  accessor: "duration",
+                  title: t`Duration`,
+                  textAlign: "center",
+                  render: (item) => <TimeDuration from={item.startTime} to={item.endTime} />
                 },
                 {
                   accessor: "actions",

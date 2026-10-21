@@ -4,10 +4,10 @@ import {
   aggregate,
   autoExpandIds,
   compareEntries,
+  type DiffNode,
   emptyStats,
   finalizeAggregates,
-  statusCount,
-  type DiffNode
+  statusCount
 } from "../../src/snapshot-compare/diffTree";
 
 function file(name: string, obj: string, size: number, extra?: Partial<DirEntry>): DirEntry {
@@ -28,7 +28,7 @@ function dir(name: string, obj: string, summ?: { size: number; files: number; di
 }
 
 function manifest(entries: DirEntry[]): DirManifest {
-  return { steam: "", entries, summary: { size: 0, files: 0, symlinks: 0, dirs: 0, maxTime: "", numFailed: 0 } };
+  return { stream: "", entries, summary: { size: 0, files: 0, symlinks: 0, dirs: 0, maxTime: "", numFailed: 0 } };
 }
 
 function walk(listA: DirEntry[], listB: DirEntry[]) {

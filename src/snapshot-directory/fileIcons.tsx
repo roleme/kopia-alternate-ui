@@ -1,5 +1,5 @@
-import { IconFile } from "@tabler/icons-react";
 import {
+  IconFile,
   IconFile3d,
   IconFileTypeCss,
   IconFileTypeCsv,

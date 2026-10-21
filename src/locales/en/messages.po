@@ -49,7 +49,7 @@ msgstr ""
 msgid "{currentLength} out of {totalLength}"
 msgstr "{currentLength} out of {totalLength}"
 
-#: src/snapshot-history/components/SnapshotCard.tsx:122
+#: src/snapshot-history/components/SnapshotFlags.tsx:23
 msgid "{failed} failed"
 msgstr ""
 
@@ -102,23 +102,23 @@ msgstr ""
 msgid "1 folder could not be read"
 msgstr ""
 
-#: src/snapshots/SnapshotsPage.tsx:152
+#: src/snapshots/SnapshotsPage.tsx:151
 msgid "1 minute"
 msgstr "1 minute"
 
-#: src/snapshots/SnapshotsPage.tsx:150
+#: src/snapshots/SnapshotsPage.tsx:149
 msgid "10 seconds"
 msgstr "10 seconds"
 
-#: src/snapshots/SnapshotsPage.tsx:149
+#: src/snapshots/SnapshotsPage.tsx:148
 msgid "3 seconds"
 msgstr "3 seconds"
 
-#: src/snapshots/SnapshotsPage.tsx:151
+#: src/snapshots/SnapshotsPage.tsx:150
 msgid "30 seconds"
 msgstr "30 seconds"
 
-#: src/snapshots/SnapshotsPage.tsx:153
+#: src/snapshots/SnapshotsPage.tsx:152
 msgid "5 minutes"
 msgstr "5 minutes"
 
@@ -149,7 +149,7 @@ msgid "Add"
 msgstr "Add"
 
 #: src/snapshot-history/components/SnapshotCard.tsx:167
-#: src/snapshot-history/SnapshotHistory.tsx:170
+#: src/snapshot-history/SnapshotHistory.tsx:172
 msgid "Add pin to prevent snapshot deletion"
 msgstr "Add pin to prevent snapshot deletion"
 
@@ -185,7 +185,7 @@ msgstr "All"
 msgid "All Policies"
 msgstr "All Policies"
 
-#: src/snapshots/SnapshotsPage.tsx:161
+#: src/snapshots/SnapshotsPage.tsx:160
 msgid "All Snapshots"
 msgstr "All Snapshots"
 
@@ -324,7 +324,7 @@ msgstr "Canceling for"
 msgid "Canceling task"
 msgstr ""
 
-#: src/snapshot-history/SnapshotHistory.tsx:315
+#: src/snapshot-history/SnapshotHistory.tsx:322
 msgid "Change"
 msgstr ""
 
@@ -384,7 +384,7 @@ msgid "Compare snapshots"
 msgstr ""
 
 #: src/snapshot-history/components/SnapshotCard.tsx:153
-#: src/snapshot-history/SnapshotHistory.tsx:142
+#: src/snapshot-history/SnapshotHistory.tsx:144
 msgid "Compare with previous snapshot"
 msgstr ""
 
@@ -587,7 +587,7 @@ msgstr ""
 msgid "Delete policy"
 msgstr "Delete policy"
 
-#: src/snapshot-history/SnapshotHistory.tsx:217
+#: src/snapshot-history/SnapshotHistory.tsx:219
 msgid "Delete Selected"
 msgstr "Delete Selected"
 
@@ -648,7 +648,7 @@ msgid "Directory to create policy for"
 msgstr "Directory to create policy for"
 
 #: src/snapshot-directory/SnapshotDirectory.tsx:274
-#: src/snapshot-history/SnapshotHistory.tsx:327
+#: src/snapshot-history/SnapshotHistory.tsx:334
 msgid "Dirs"
 msgstr "Dirs"
 
@@ -662,7 +662,7 @@ msgstr "Disable ZIP compression"
 
 #: src/repo/ConnectedRepoSection/ConnectedRepoSection.tsx:141
 #: src/repo/CreateRepoSection.tsx:182
-#: src/snapshots/SnapshotsPage.tsx:148
+#: src/snapshots/SnapshotsPage.tsx:147
 msgid "Disabled"
 msgstr "Disabled"
 
@@ -722,6 +722,8 @@ msgstr "Download"
 msgid "Due <0/>"
 msgstr ""
 
+#: src/snapshot-history/components/SnapshotCard.tsx:89
+#: src/snapshot-history/SnapshotHistory.tsx:340
 #: src/tasks/TaskDetailsPage.tsx:84
 msgid "Duration"
 msgstr "Duration"
@@ -753,7 +755,7 @@ msgid "Edit pin"
 msgstr ""
 
 #: src/snapshot-history/components/SnapshotCard.tsx:177
-#: src/snapshot-history/SnapshotHistory.tsx:104
+#: src/snapshot-history/SnapshotHistory.tsx:106
 msgid "Edit pin {p}"
 msgstr ""
 
@@ -975,9 +977,9 @@ msgstr "File Snapshotted"
 
 #: src/policies/modals/PolicyModal/PolicyModal.tsx:213
 #: src/snapshot-directory/SnapshotDirectory.tsx:267
-#: src/snapshot-history/components/SnapshotCard.tsx:78
+#: src/snapshot-history/components/SnapshotCard.tsx:79
 #: src/snapshot-history/components/SnapshotHistoryStats.tsx:79
-#: src/snapshot-history/SnapshotHistory.tsx:321
+#: src/snapshot-history/SnapshotHistory.tsx:328
 msgid "Files"
 msgstr "Files"
 
@@ -1015,7 +1017,7 @@ msgstr "Folder Actions"
 msgid "Folder name"
 msgstr ""
 
-#: src/snapshot-history/components/SnapshotCard.tsx:83
+#: src/snapshot-history/components/SnapshotCard.tsx:84
 msgid "Folders"
 msgstr ""
 
@@ -1166,6 +1168,10 @@ msgstr "Ignore Well-Known Cache Directories"
 msgid "Immediately run any missed snapshots when kopia starts (only relevant for Time-of-day snapshots)"
 msgstr "Immediately run any missed snapshots when kopia starts (only relevant for Time-of-day snapshots)"
 
+#: src/snapshot-history/components/SnapshotFlags.tsx:17
+msgid "Incomplete"
+msgstr ""
+
 #: src/policies/modals/PolicyModal/components/InheritYesNoPolicyControl.tsx:38
 msgid "Inherit"
 msgstr "Inherit"
@@ -1238,7 +1244,7 @@ msgstr ""
 msgid "Last Modification"
 msgstr "Last Modification"
 
-#: src/snapshots/SnapshotsPage.tsx:268
+#: src/snapshots/SnapshotsPage.tsx:267
 msgid "Last Snapshot"
 msgstr "Last Snapshot"
 
@@ -1298,7 +1304,7 @@ msgstr "Local Directory or NAS"
 msgid "Local Path Policies"
 msgstr "Local Path Policies"
 
-#: src/snapshots/SnapshotsPage.tsx:162
+#: src/snapshots/SnapshotsPage.tsx:161
 msgid "Local Snapshots"
 msgstr "Local Snapshots"
 
@@ -1498,7 +1504,7 @@ msgctxt "modal-title"
 msgid "New snapshot"
 msgstr "New snapshot"
 
-#: src/snapshots/SnapshotsPage.tsx:180
+#: src/snapshots/SnapshotsPage.tsx:179
 msgid "New Snapshot"
 msgstr "New Snapshot"
 
@@ -1558,9 +1564,9 @@ msgid "No snapshots mounted"
 msgstr "No snapshots mounted"
 
 #: src/snapshot-history/components/SnapshotCardList.tsx:92
-#: src/snapshot-history/SnapshotHistory.tsx:268
+#: src/snapshot-history/SnapshotHistory.tsx:270
 #: src/snapshots/components/SourceCardList.tsx:52
-#: src/snapshots/SnapshotsPage.tsx:214
+#: src/snapshots/SnapshotsPage.tsx:213
 msgid "No snapshots taken"
 msgstr "No snapshots taken"
 
@@ -1688,7 +1694,7 @@ msgstr "Overwrite Files"
 msgid "Overwrite Symbolic Links"
 msgstr "Overwrite Symbolic Links"
 
-#: src/snapshots/SnapshotsPage.tsx:252
+#: src/snapshots/SnapshotsPage.tsx:251
 msgid "Owner"
 msgstr "Owner"
 
@@ -1737,7 +1743,7 @@ msgstr "Paste JSON credentials here"
 #: src/policies/PoliciesPage.tsx:228
 #: src/repo/sections/SFTPServerRepo.tsx:55
 #: src/repo/sections/SFTPServerRepo.tsx:189
-#: src/snapshots/SnapshotsPage.tsx:222
+#: src/snapshots/SnapshotsPage.tsx:221
 msgid "Path"
 msgstr "Path"
 
@@ -1860,12 +1866,12 @@ msgstr "Records per page"
 msgid "Refresh"
 msgstr "Refresh"
 
-#: src/snapshots/SnapshotsPage.tsx:146
+#: src/snapshots/SnapshotsPage.tsx:145
 msgid "Refresh:"
 msgstr ""
 
 #: src/snapshots/components/SourceCard.tsx:71
-#: src/snapshots/SnapshotsPage.tsx:122
+#: src/snapshots/SnapshotsPage.tsx:121
 msgid "Remote"
 msgstr "Remote"
 
@@ -1909,7 +1915,7 @@ msgstr "Repository is connected as read-only"
 msgid "Repository Password"
 msgstr "Repository Password"
 
-#: src/snapshots/SnapshotsPage.tsx:108
+#: src/snapshots/SnapshotsPage.tsx:107
 msgid "Repository synchronized"
 msgstr "Repository synchronized"
 
@@ -1937,7 +1943,7 @@ msgstr "Restore files and directories"
 msgid "Results are partial — counts cover what was read."
 msgstr ""
 
-#: src/snapshot-history/SnapshotHistory.tsx:303
+#: src/snapshot-history/SnapshotHistory.tsx:310
 msgid "Retention"
 msgstr "Retention"
 
@@ -1945,7 +1951,7 @@ msgstr "Retention"
 msgid "Retry"
 msgstr ""
 
-#: src/snapshot-history/SnapshotHistory.tsx:280
+#: src/snapshot-history/SnapshotHistory.tsx:282
 msgid "Root"
 msgstr "Root"
 
@@ -2132,8 +2138,8 @@ msgstr ""
 
 #: src/snapshot-directory/SnapshotDirectory.tsx:258
 #: src/snapshot-history/components/SnapshotHistoryStats.tsx:69
-#: src/snapshot-history/SnapshotHistory.tsx:308
-#: src/snapshots/SnapshotsPage.tsx:259
+#: src/snapshot-history/SnapshotHistory.tsx:315
+#: src/snapshots/SnapshotsPage.tsx:258
 msgid "Size"
 msgstr "Size"
 
@@ -2220,13 +2226,13 @@ msgstr "Snapshot schedules using UNIX crontab syntax:"
 msgid "Snapshot unmounted"
 msgstr "Snapshot unmounted"
 
-#: src/snapshot-history/SnapshotHistory.tsx:380
+#: src/snapshot-history/SnapshotHistory.tsx:393
 msgid "Snapshot(s) deleted"
 msgstr "Snapshot(s) deleted"
 
 #: src/core/Sidebar/Sidebar.tsx:32
-#: src/snapshot-history/SnapshotHistory.tsx:200
-#: src/snapshots/SnapshotsPage.tsx:141
+#: src/snapshot-history/SnapshotHistory.tsx:202
+#: src/snapshots/SnapshotsPage.tsx:140
 msgid "Snapshots"
 msgstr "Snapshots"
 
@@ -2272,7 +2278,7 @@ msgstr "SSH Command"
 msgid "SSH host name (e.g., example.com)"
 msgstr "SSH host name (e.g., example.com)"
 
-#: src/snapshot-history/SnapshotHistory.tsx:276
+#: src/snapshot-history/SnapshotHistory.tsx:278
 #: src/tasks/TasksPage.tsx:217
 msgid "Start Time"
 msgstr "Start Time"
@@ -2281,7 +2287,7 @@ msgstr "Start Time"
 msgid "Started"
 msgstr "Started"
 
-#: src/snapshots/SnapshotsPage.tsx:274
+#: src/snapshots/SnapshotsPage.tsx:273
 #: src/tasks/TasksPage.tsx:238
 msgid "Status"
 msgstr "Status"
@@ -2326,7 +2332,7 @@ msgstr "Switched instance"
 msgid "Symlinks"
 msgstr "Symlinks"
 
-#: src/snapshots/SnapshotsPage.tsx:193
+#: src/snapshots/SnapshotsPage.tsx:192
 msgid "Sync"
 msgstr "Sync"
 
@@ -2375,7 +2381,7 @@ msgstr "The repository description was successfully updated"
 msgid "The repository was successfully disconnected"
 msgstr "The repository was successfully disconnected"
 
-#: src/snapshots/SnapshotsPage.tsx:109
+#: src/snapshots/SnapshotsPage.tsx:108
 msgid "The repository was synchronized successfully"
 msgstr "The repository was synchronized successfully"
 
@@ -2383,7 +2389,7 @@ msgstr "The repository was synchronized successfully"
 msgid "The snapshot was unmounted from the host"
 msgstr ""
 
-#: src/snapshot-history/SnapshotHistory.tsx:381
+#: src/snapshot-history/SnapshotHistory.tsx:394
 msgid "The snapshot(s) were deleted successfully"
 msgstr ""
 
@@ -2495,7 +2501,7 @@ msgstr "Upcoming Snapshots"
 
 #: src/snapshot-history/components/SnapshotCard.tsx:160
 #: src/snapshot-history/modals/UpdateDescriptionModal.tsx:50
-#: src/snapshot-history/SnapshotHistory.tsx:159
+#: src/snapshot-history/SnapshotHistory.tsx:161
 msgid "Update description"
 msgstr "Update description"
 
