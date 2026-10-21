@@ -39,12 +39,30 @@
   grid-template-columns: minmax(0, 1fr) auto;
   column-gap: 10px;
   row-gap: 3px;
+  align-items: baseline;
+}
+
+.when {
+  display: flex;
+  flex-wrap: wrap;
+  min-width: 0;
+  gap: 2px 10px;
   align-items: center;
 }
 
 .date {
   color: var(--mantine-color-anchor);
   font-weight: 700;
+}
+
+.duration {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--mantine-color-dimmed);
+  font-size: var(--mantine-font-size-xs);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 .size {
@@ -79,14 +97,6 @@
 
 .labels {
   margin-top: 10px;
-}
-
-.dot {
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--mantine-color-red-6);
 }
 
 .pin {
